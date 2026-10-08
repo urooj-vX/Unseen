@@ -1,0 +1,27 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Secrets & Environment variables
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# Generated benchmark & test results
+results/*.json
+results/*.csv
+!results/.gitkeep
