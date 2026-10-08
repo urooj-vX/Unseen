@@ -4,7 +4,13 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Environments
+# Caches and temporary files
+.cache/
+.pytest_cache/
+*.tmp
+*.log
+
+# Environments & Virtual Environments
 .venv/
 venv/
 ENV/
@@ -14,14 +20,27 @@ env/
 .DS_Store
 Thumbs.db
 
-# Secrets & Environment variables
+# Model weights
+*.gguf
+*.bin
+*.safetensors
+*.pt
+*.onnx
+
+# Secrets & Environment Variables
 .env
 .env.*
 *.pem
 *.key
 secrets/
 
-# Generated benchmark & test results
-results/*.json
-results/*.csv
-!results/.gitkeep
+# Data & World state
+data/world.json
+logs/
+
+# Exclude raw image dataset from repository (privacy & rights compliance)
+experiments/kill-test/photos/*.jpeg
+experiments/kill-test/photos/*.jpg
+experiments/kill-test/photos/*.png
+experiments/kill-test/photos/*.webp
+!experiments/kill-test/photos/.gitkeep

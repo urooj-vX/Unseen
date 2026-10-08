@@ -1,0 +1,72 @@
+[
+  {
+    "id": "01",
+    "a": "p01_a.jpeg",
+    "b": "p01_b.jpeg",
+    "expected": "unrelated",
+    "note": "Two different road signs photographed independently; no known specific relationship."
+  },
+  {
+    "id": "02",
+    "a": "p02_a.jpeg",
+    "b": "p02_b.jpeg",
+    "expected": "related",
+    "note": "The two photos show different parts of the same local drainage system."
+  },
+  {
+    "id": "03",
+    "a": "p03_a.jpeg",
+    "b": "p03_b.jpeg",
+    "expected": "related",
+    "note": "Two sculptural/architectural features from the same location or installation."
+  },
+  {
+    "id": "04",
+    "a": "p04_a.jpeg",
+    "b": "p04_b.jpeg",
+    "expected": "related",
+    "note": "The two photos show different sections of the same street-art/mural installation."
+  },
+  {
+    "id": "05",
+    "a": "p05_a.jpeg",
+    "b": "p05_b.jpeg",
+    "expected": "unrelated",
+    "note": "A tree and a wooded area photographed independently; no known specific relationship."
+  },
+  {
+    "id": "06",
+    "a": "p06_a.jpeg",
+    "b": "p06_b.jpeg",
+    "expected": "unrelated",
+    "note": "Two separate nighttime road scenes photographed independently; no known specific relationship."
+  },
+  {
+    "id": "07",
+    "a": "p07_a.jpeg",
+    "b": "p07_b.jpeg",
+    "expected": "unrelated",
+    "note": "Bench and clustered set of birds photographed independently; no known relationship."
+  },
+  {
+    "id": "08",
+    "a": "p08_a.jpeg",
+    "b": "p08_b.jpeg",
+    "expected": "unrelated",
+    "note": "A tree in a farm and a separate nighttime cycle photographed independently; no known specific relationship."
+  },
+  {
+    "id": "09",
+    "a": "p09_a.jpeg",
+    "b": "p09_b.jpeg",
+    "expected": "unrelated",
+    "note": "An architectural artwork/ceiling and a flower photographed independently; no known specific relationship."
+  },
+  {
+    "id": "10",
+    "a": "p10_a.jpeg",
+    "b": "p10_b.jpeg",
+    "expected": "unrelated",
+    "note": "An old sign/plaque and a decorated vehicle photographed independently; no known specific relationship."
+  }
+]

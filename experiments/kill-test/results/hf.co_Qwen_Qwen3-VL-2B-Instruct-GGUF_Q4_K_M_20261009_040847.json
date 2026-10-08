@@ -1,0 +1,50 @@
+[
+  {
+    "pair": {
+      "id": "01",
+      "a": "p01_a.jpeg",
+      "b": "p01_b.jpeg",
+      "expected": "unrelated",
+      "note": "Two different road signs photographed independently; no known specific relationship."
+    },
+    "desc_a": "The image displays a vertical stack of four road signs against a black background. The top sign is a red-bordered triangle with a black pictogram of a worker with a shovel, indicating a construction zone. Below it is a red-bordered triangle with a black symbol of a road narrowing. The third sign is a circular sign with the number \"40\" in black, indicating a speed limit. The bottom sign is a rectangular sign with a black arrow pointing left and the text \"50 M\" in black, indicating a 50-meter distance to the left. The signs are visibly worn and have a distressed, weathered appearance, with some scratches and faded paint.",
+    "desc_b": "A red, octagonal stop sign is mounted on a wooden utility pole at a street corner at night. The sign is illuminated by a bright light source, and the pole is positioned on a concrete curb. The street signs above the stop sign read \"SE Division St\" and \"SE 158th Ave\". The background shows a dark street with a few houses, trees, and a chain-link fence. The photo is blurry and the scene is dark.",
+    "relate_raw": "{\n  \"relationship\": \"hypothesis\",\n  \"hypothesis\": \"The two observations may be linked by the presence of a construction zone, as the first observation shows a stack of road signs indicating a construction zone, and the second observation shows a stop sign at a street corner with a red octagonal sign and a construction zone symbol on the top sign.\",\n  \"evidence_needed\": \"The player should look for a red, octagonal sign with a construction zone symbol or a similar sign in the area, or check for a construction zone marker or a sign indicating a road narrowing in the vicinity of the stop sign.\",\n  \"confidence\": 0.7,\n  \"next_objective\": \"The player should search for a red, octagonal sign with a construction zone symbol or a similar sign in the area, or check for a construction zone marker or a sign indicating a road narrowing in the vicinity of the stop sign.\"\n}",
+    "parsed": {
+      "relationship": "hypothesis",
+      "hypothesis": "The two observations may be linked by the presence of a construction zone, as the first observation shows a stack of road signs indicating a construction zone, and the second observation shows a stop sign at a street corner with a red octagonal sign and a construction zone symbol on the top sign.",
+      "evidence_needed": "The player should look for a red, octagonal sign with a construction zone symbol or a similar sign in the area, or check for a construction zone marker or a sign indicating a road narrowing in the vicinity of the stop sign.",
+      "confidence": 0.7,
+      "next_objective": "The player should search for a red, octagonal sign with a construction zone symbol or a similar sign in the area, or check for a construction zone marker or a sign indicating a road narrowing in the vicinity of the stop sign."
+    },
+    "parse_error": null,
+    "t_vision_a": 2.391268500010483,
+    "t_vision_b": 1.6613096249639057,
+    "t_relate": 3.9437997090280987,
+    "t_total": 7.996377834002487
+  },
+  {
+    "pair": {
+      "id": "02",
+      "a": "p02_a.jpeg",
+      "b": "p02_b.jpeg",
+      "expected": "related",
+      "note": "The two photos show different parts of the same local drainage system."
+    },
+    "desc_a": "The image shows a concrete drainage channel running alongside a paved road. The channel is filled with dark, murky water and contains floating debris, including leaves and a small green plastic bottle. The channel is lined with concrete slabs and is bordered by green bushes and trees. In the background, there are buildings and a yellow and black striped barrier. The scene is outdoors, and the lighting appears to be natural daylight.",
+    "desc_b": "The image shows a long, narrow concrete drainage channel running down the center of a paved sidewalk. The channel is flanked by a grassy area on the left and a row of modern, light-colored brick townhouses on the right. The main object is the concrete channel, which is in good condition and has a dark, ribbed metal grate at its base. The surrounding area is bright and clear, with a person visible in the distance on the path.",
+    "relate_raw": "{\n  \"relationship\": \"hypothesis\",\n  \"hypothesis\": \"The two observations both depict a concrete drainage channel, suggesting a shared infrastructure type that could be a potential clue.\",\n  \"evidence_needed\": \"The player should look for a concrete drainage channel in the area that matches the description of a long, narrow channel with a dark, ribbed metal grate at its base, as seen in Observation B.\",\n  \"confidence\": 0.7,\n  \"next_objective\": \"Search for a concrete drainage channel in the area that has a dark, ribbed metal grate at its base, as described in Observation B.\"\n}",
+    "parsed": {
+      "relationship": "hypothesis",
+      "hypothesis": "The two observations both depict a concrete drainage channel, suggesting a shared infrastructure type that could be a potential clue.",
+      "evidence_needed": "The player should look for a concrete drainage channel in the area that matches the description of a long, narrow channel with a dark, ribbed metal grate at its base, as seen in Observation B.",
+      "confidence": 0.7,
+      "next_objective": "Search for a concrete drainage channel in the area that has a dark, ribbed metal grate at its base, as described in Observation B."
+    },
+    "parse_error": null,
+    "t_vision_a": 1.5831809579976834,
+    "t_vision_b": 1.6472424159874208,
+    "t_relate": 2.8355239999946207,
+    "t_total": 6.065947373979725
+  }
+]

@@ -26,6 +26,7 @@ from datetime import datetime
 from pathlib import Path
 
 try:
+    # pyrefly: ignore [missing-import]
     import ollama
 except ImportError:
     sys.exit("Missing dependency. Run: pip install ollama")
@@ -46,20 +47,27 @@ recorded two observations. You only know what the two descriptions say.
 Observation A: {a}
 Observation B: {b}
 
-Decide whether there is a MEANINGFUL, SPECIFIC link between the two.
-These do NOT count as a link: both being outdoors, both being objects,
-both being the same colour, or any other vague similarity.
+Decide whether there is a MEANINGFUL, SPECIFIC link between the two observations.
+
+Choose "hypothesis" when both descriptions provide concrete evidence of a specific shared feature, object type, mechanism, or function that could make an interesting exploration clue. The relationship does NOT need to be confirmed, but the hypothesis must be supported by both descriptions.
+
+Choose "none" when the only evidence is a vague similarity, coincidence, or imagined story. Similar colours, shapes, broad categories, or simply being outdoors are not enough by themselves.
+
+Examples:
+- A stack of road signs in one photo and a STOP sign at a different intersection in another: "none". The fact that both show road signs does not establish a specific relationship. Do not invent a construction-zone connection.
+- Two concrete drainage channels: a cautious hypothesis about a shared type or function of infrastructure may be appropriate. Do not claim they are physically connected.
+- Two objects that merely share a colour: "none".
+- A distinctive, specific feature visibly shared by both observations: a hypothesis may be appropriate if the descriptions support it.
 
 Rules:
-- Never state a connection as fact. Use hypotheses ("might", "may").
+- Never state an unconfirmed connection as fact. Use hypotheses ("might", "may").
 - Use only the two descriptions. Do not invent details that are not in them.
-- If there is no meaningful link, set "relationship" to "none", set
-  "hypothesis" to "No clear relationship", and make "next_objective" a safe
-  task: find another object within about 100 metres that clearly relates to
-  either A or B.
-- "next_objective" must be doable on foot in under 15 minutes. Never ask the
-  player to touch, taste, pick or disturb plants or animals, or to enter
-  private or unsafe places.
+- Distinguish a plausible shared function or feature from a confirmed physical connection.
+- If there is no meaningful link, set "relationship" to "none" and "hypothesis" to "No clear relationship".
+- When relationship is "none", next_objective MUST be: "Find another visible object within about 100 metres that clearly relates to either Observation A or Observation B."
+- Do not ask the player to search for a connection between A and B when relationship is "none".
+- When relationship is "hypothesis", next_objective must help the player find visible evidence that could confirm or rule out the hypothesis.
+- Every objective must be doable on foot in under 15 minutes. Never ask the player to touch, taste, pick, or disturb plants or animals, or enter private or unsafe places.
 
 Reply with ONLY this JSON object and nothing else:
 {{
@@ -89,7 +97,12 @@ def chat(model, prompt, image=None, want_json=False):
     msg = {"role": "user", "content": prompt}
     if image:
         msg["images"] = [str(image)]
-    kwargs = {"model": model, "messages": [msg], "options": {"temperature": 0}}
+    kwargs = {
+        "model": model, 
+        "messages": [msg], 
+        "think": False,
+        "options": {"temperature": 0}
+        }
     if want_json:
         kwargs["format"] = "json"
     t0 = time.perf_counter()

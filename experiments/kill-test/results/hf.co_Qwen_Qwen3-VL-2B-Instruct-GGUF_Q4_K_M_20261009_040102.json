@@ -1,0 +1,50 @@
+[
+  {
+    "pair": {
+      "id": "01",
+      "a": "p01_a.jpeg",
+      "b": "p01_b.jpeg",
+      "expected": "unrelated",
+      "note": "Two different road signs photographed independently; no known specific relationship."
+    },
+    "desc_a": "The image displays a vertical stack of four road signs against a black background. The top sign is a red-bordered triangle with a black pictogram of a worker with a shovel, indicating a construction zone. Below it is a red-bordered triangle with a black symbol of a road narrowing. The third sign is a circular sign with the number \"40\" in black, indicating a speed limit. The bottom sign is a rectangular sign with a black arrow pointing left and the text \"50 M\" in black, indicating a 50-meter distance to the left. The signs are visibly worn and have a distressed, weathered appearance, with some scratches and faded paint.",
+    "desc_b": "A red, octagonal stop sign is mounted on a wooden utility pole at a street corner at night. The sign is illuminated by a bright light source, and the pole is positioned on a concrete curb. The street signs above the stop sign read \"SE Division St\" and \"SE 158th Ave\". The background shows a dark street with a few houses, trees, and a chain-link fence. The photo is blurry and the scene is dark.",
+    "relate_raw": "{\n  \"relationship\": \"none\",\n  \"hypothesis\": \"No clear relationship is established between the two observations.\",\n  \"evidence_needed\": \"A second clue that shows a specific connection, such as a shared location, a common road, or a visible landmark, would be needed to confirm or rule out the hypothesis.\",\n  \"confidence\": 0.0,\n  \"next_objective\": \"Find another visible object within about 100 metres that clearly relates to either Observation A or Observation B.\"\n}",
+    "parsed": {
+      "relationship": "none",
+      "hypothesis": "No clear relationship is established between the two observations.",
+      "evidence_needed": "A second clue that shows a specific connection, such as a shared location, a common road, or a visible landmark, would be needed to confirm or rule out the hypothesis.",
+      "confidence": 0.0,
+      "next_objective": "Find another visible object within about 100 metres that clearly relates to either Observation A or Observation B."
+    },
+    "parse_error": null,
+    "t_vision_a": 2.495593291008845,
+    "t_vision_b": 2.0242350000189617,
+    "t_relate": 2.329749249969609,
+    "t_total": 6.849577540997416
+  },
+  {
+    "pair": {
+      "id": "02",
+      "a": "p02_a.jpeg",
+      "b": "p02_b.jpeg",
+      "expected": "related",
+      "note": "The two photos show different parts of the same local drainage system."
+    },
+    "desc_a": "The image shows a concrete drainage channel running alongside a paved road. The channel is filled with dark, murky water and contains floating debris, including leaves and a small green plastic bottle. The channel is lined with concrete slabs and is bordered by green bushes and trees. In the background, there are buildings and a yellow and black striped barrier. The scene is outdoors, and the lighting appears to be natural daylight.",
+    "desc_b": "The image shows a long, narrow concrete drainage channel running down the center of a paved sidewalk. The channel is flanked by a grassy area on the left and a row of modern, light-colored brick townhouses on the right. The main object is the concrete channel, which is in good condition and has a dark, ribbed metal grate at its base. The surrounding area is bright and clear, with a person visible in the distance on the path.",
+    "relate_raw": "{\n  \"relationship\": \"none\",\n  \"hypothesis\": \"No clear relationship\",\n  \"evidence_needed\": \"A second clue that shows a specific connection between the two observations, such as a shared location, object, or feature that is visible in both descriptions.\",\n  \"confidence\": 0.0,\n  \"next_objective\": \"Find another visible object within about 100 metres that clearly relates to either Observation A or Observation B.\"\n}",
+    "parsed": {
+      "relationship": "none",
+      "hypothesis": "No clear relationship",
+      "evidence_needed": "A second clue that shows a specific connection between the two observations, such as a shared location, object, or feature that is visible in both descriptions.",
+      "confidence": 0.0,
+      "next_objective": "Find another visible object within about 100 metres that clearly relates to either Observation A or Observation B."
+    },
+    "parse_error": null,
+    "t_vision_a": 6.516493458999321,
+    "t_vision_b": 6.726593916013371,
+    "t_relate": 2.491026832954958,
+    "t_total": 15.73411420796765
+  }
+]

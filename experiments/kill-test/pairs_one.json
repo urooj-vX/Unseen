@@ -1,0 +1,9 @@
+[
+  {
+    "id": "01",
+    "a": "p01_a.jpeg",
+    "b": "p01_b.jpeg",
+    "expected": "unrelated",
+    "note": "Two different road signs photographed independently; no known specific relationship."
+  }
+]

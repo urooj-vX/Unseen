@@ -1,0 +1,26 @@
+[
+  {
+    "pair": {
+      "id": "01",
+      "a": "p01_a.jpeg",
+      "b": "p01_b.jpeg",
+      "expected": "unrelated",
+      "note": "Two different road signs photographed independently; no known specific relationship."
+    },
+    "desc_a": "The image displays a vertical stack of four road signs against a black background. The top sign is a red-bordered triangle with a black pictogram of a worker with a shovel, indicating a construction zone. Below it is a red-bordered triangle with a black symbol of a road narrowing. The third sign is a circular sign with the number \"40\" in black, indicating a speed limit. The bottom sign is a rectangular sign with a black arrow pointing left and the text \"50 M\" in black, indicating a 50-meter distance to the left. The signs are visibly worn and have a distressed, weathered appearance, with some scratches and faded paint.",
+    "desc_b": "A red, octagonal stop sign is mounted on a wooden utility pole at a street corner at night. The sign is illuminated by a bright light source, and the pole is positioned on a concrete curb. The street signs above the stop sign read \"SE Division St\" and \"SE 158th Ave\". The background shows a dark street with a few houses, trees, and a chain-link fence. The photo is blurry and the scene is dark.",
+    "relate_raw": "{\n  \"relationship\": \"hypothesis\",\n  \"hypothesis\": \"The signs in Observation A may be related to the stop sign in Observation B, as both are road signs, and the stop sign in B is illuminated at night, possibly indicating a construction zone or a similar context.\",\n  \"evidence_needed\": \"A second clue would need to show that the construction zone signs in A are located near or associated with the stop sign in B, or that the signs in A are in a similar environment or context.\",\n  \"confidence\": 0.5,\n  \"next_objective\": \"Search for a nearby construction zone or area with signs that match the description in Observation A, or look for a location with a stop sign and a nearby road sign that could be related to the signs in A.\"\n}",
+    "parsed": {
+      "relationship": "hypothesis",
+      "hypothesis": "The signs in Observation A may be related to the stop sign in Observation B, as both are road signs, and the stop sign in B is illuminated at night, possibly indicating a construction zone or a similar context.",
+      "evidence_needed": "A second clue would need to show that the construction zone signs in A are located near or associated with the stop sign in B, or that the signs in A are in a similar environment or context.",
+      "confidence": 0.5,
+      "next_objective": "Search for a nearby construction zone or area with signs that match the description in Observation A, or look for a location with a stop sign and a nearby road sign that could be related to the signs in A."
+    },
+    "parse_error": null,
+    "t_vision_a": 7.279721250000875,
+    "t_vision_b": 6.116125957982149,
+    "t_relate": 3.771512334002182,
+    "t_total": 17.167359541985206
+  }
+]

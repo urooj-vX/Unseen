@@ -2,7 +2,7 @@
 import ollama
 import time
 
-model = "qwen3-vl:2b"
+model = "hf.co/Qwen/Qwen3-VL-2B-Instruct-GGUF:Q4_K_M"
 image = "photos/test.jpeg"
 
 prompt = """

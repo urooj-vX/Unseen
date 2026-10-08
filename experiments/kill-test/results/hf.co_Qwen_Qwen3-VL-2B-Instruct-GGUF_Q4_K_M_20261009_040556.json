@@ -1,0 +1,50 @@
+[
+  {
+    "pair": {
+      "id": "01",
+      "a": "p01_a.jpeg",
+      "b": "p01_b.jpeg",
+      "expected": "unrelated",
+      "note": "Two different road signs photographed independently; no known specific relationship."
+    },
+    "desc_a": "The image displays a vertical stack of four road signs against a black background. The top sign is a red-bordered triangle with a black pictogram of a worker with a shovel, indicating a construction zone. Below it is a red-bordered triangle with a black symbol of a road narrowing. The third sign is a circular sign with the number \"40\" in black, indicating a speed limit. The bottom sign is a rectangular sign with a black arrow pointing left and the text \"50 M\" in black, indicating a 50-meter distance to the left. The signs are visibly worn and have a distressed, weathered appearance, with some scratches and faded paint.",
+    "desc_b": "A red, octagonal stop sign is mounted on a wooden utility pole at a street corner at night. The sign is illuminated by a bright light source, and the pole is positioned on a concrete curb. The street signs above the stop sign read \"SE Division St\" and \"SE 158th Ave\". The background shows a dark street with a few houses, trees, and a chain-link fence. The photo is blurry and the scene is dark.",
+    "relate_raw": "{\n  \"relationship\": \"hypothesis\",\n  \"hypothesis\": \"The two observations may be linked by the presence of a construction zone and a speed limit sign, both of which are commonly found in the same area, possibly near a road intersection or a construction site.\",\n  \"evidence_needed\": \"The player should look for a red, octagonal stop sign or a construction zone sign in the area, as the descriptions suggest a possible connection between the signs and the location.\",\n  \"confidence\": 0.6,\n  \"next_objective\": \"Search the area for a red, octagonal stop sign or a construction zone sign, as the descriptions suggest a possible connection between the signs and the location.\"\n}",
+    "parsed": {
+      "relationship": "hypothesis",
+      "hypothesis": "The two observations may be linked by the presence of a construction zone and a speed limit sign, both of which are commonly found in the same area, possibly near a road intersection or a construction site.",
+      "evidence_needed": "The player should look for a red, octagonal stop sign or a construction zone sign in the area, as the descriptions suggest a possible connection between the signs and the location.",
+      "confidence": 0.6,
+      "next_objective": "Search the area for a red, octagonal stop sign or a construction zone sign, as the descriptions suggest a possible connection between the signs and the location."
+    },
+    "parse_error": null,
+    "t_vision_a": 2.4516466669738293,
+    "t_vision_b": 1.7200000830343924,
+    "t_relate": 3.965271416993346,
+    "t_total": 8.136918167001568
+  },
+  {
+    "pair": {
+      "id": "02",
+      "a": "p02_a.jpeg",
+      "b": "p02_b.jpeg",
+      "expected": "related",
+      "note": "The two photos show different parts of the same local drainage system."
+    },
+    "desc_a": "The image shows a concrete drainage channel running alongside a paved road. The channel is filled with dark, murky water and contains floating debris, including leaves and a small green plastic bottle. The channel is lined with concrete slabs and is bordered by green bushes and trees. In the background, there are buildings and a yellow and black striped barrier. The scene is outdoors, and the lighting appears to be natural daylight.",
+    "desc_b": "The image shows a long, narrow concrete drainage channel running down the center of a paved sidewalk. The channel is flanked by a grassy area on the left and a row of modern, light-colored brick townhouses on the right. The main object is the concrete channel, which is in good condition and has a dark, ribbed metal grate at its base. The surrounding area is bright and clear, with a person visible in the distance on the path.",
+    "relate_raw": "{\n  \"relationship\": \"hypothesis\",\n  \"hypothesis\": \"The two observations both describe a concrete drainage channel, suggesting a possible shared feature in the infrastructure of a drainage system.\",\n  \"evidence_needed\": \"The player should look for a concrete drainage channel that has a dark, ribbed metal grate at its base, as this is a specific feature mentioned in Observation B and not in Observation A.\",\n  \"confidence\": 0.7,\n  \"next_objective\": \"Search for a concrete drainage channel with a dark, ribbed metal grate at its base, as this is a specific feature mentioned in Observation B and not in Observation A.\"\n}",
+    "parsed": {
+      "relationship": "hypothesis",
+      "hypothesis": "The two observations both describe a concrete drainage channel, suggesting a possible shared feature in the infrastructure of a drainage system.",
+      "evidence_needed": "The player should look for a concrete drainage channel that has a dark, ribbed metal grate at its base, as this is a specific feature mentioned in Observation B and not in Observation A.",
+      "confidence": 0.7,
+      "next_objective": "Search for a concrete drainage channel with a dark, ribbed metal grate at its base, as this is a specific feature mentioned in Observation B and not in Observation A."
+    },
+    "parse_error": null,
+    "t_vision_a": 1.7118177499505691,
+    "t_vision_b": 1.711542000004556,
+    "t_relate": 2.8880905419937335,
+    "t_total": 6.311450291948859
+  }
+]
