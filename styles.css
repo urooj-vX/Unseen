@@ -1,0 +1,947 @@
+/* UNSEEN — Art Direction Overhaul: Citrus Fields × Botanical Pastels × Living 3D World
+   Core Palette: Forest Green (#064E2D), Fern Green (#538B57), Warm Linen (#EDEAE4),
+   Citrus Yellow (#E7CA49), Tangerine Orange (#E96D2C)
+   Complementary Pastels: Mint Green (#95D5B2), Baby Pink (#F4C6D7), Sky Blue (#8EC9E8),
+   Soft Sage (#DDE8D7), Warm Cream (#F8F2E6), Deep Ink (#182A20) */
+
+:root {
+  /* Core Brand Colors */
+  --color-forest: #064E2D;
+  --color-forest-deep: #032E1A;
+  --color-forest-dark: #0B3822;
+  --color-fern: #538B57;
+  --color-fern-light: #68A46C;
+  --color-linen: #EDEAE4;
+  --color-cream: #F8F2E6;
+  --color-cream-card: #FFFFFF;
+  --color-cream-warm: #F3EFE6;
+  --color-citrus: #E7CA49;
+  --color-citrus-light: #F6E47A;
+  --color-citrus-glow: rgba(231, 202, 73, 0.35);
+  --color-tangerine: #E96D2C;
+  --color-tangerine-hover: #D65C1D;
+  --color-sage-soft: #DDE8D7;
+  --color-sage-border: #C8D6C3;
+  --color-text-dark: #14281D;
+  --color-text-muted: #5A6E5F;
+  --color-ink: #182A20;
+
+  /* Botanical Pastels & Water Accents */
+  --color-mint: #95D5B2;
+  --color-mint-light: #C7EBD7;
+  --color-mint-soft: #E8F5EE;
+  --color-pink: #F4C6D7;
+  --color-pink-soft: #FDE8F0;
+  --color-pink-accent: #E89BB5;
+  --color-sky: #8EC9E8;
+  --color-sky-light: #D4EDFA;
+  --color-sky-deep: #4A8EBA;
+
+  /* Typography Stacks */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-heading: 'Nunito', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Spacing Scale */
+  --space-2xs: 2px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Border Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-full: 9999px;
+
+  /* Elevation & Shadows */
+  --shadow-subtle: 0 2px 8px rgba(24, 42, 32, 0.04);
+  --shadow-card: 0 10px 30px -8px rgba(24, 42, 32, 0.08), 0 4px 12px rgba(24, 42, 32, 0.03);
+  --shadow-float: 0 16px 36px -10px rgba(6, 78, 45, 0.14);
+  --shadow-glow-citrus: 0 0 20px rgba(231, 202, 73, 0.4);
+  --shadow-glow-mint: 0 0 20px rgba(149, 213, 178, 0.4);
+
+  /* Motion & Easing */
+  --ease-nature: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 180ms;
+  --duration-normal: 320ms;
+  --duration-slow: 600ms;
+
+  /* Focus Ring */
+  --focus-ring: 0 0 0 3px rgba(149, 213, 178, 0.65);
+}
+
+/* Base resets & typography */
+html {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-text-dark);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Custom Botanical Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream-warm);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-sage-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-fern);
+}
+
+/* Typography Utility Classes */
+.font-display {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 36, 'wght' 700;
+}
+.font-heading { font-family: var(--font-heading); }
+.font-sans { font-family: var(--font-sans); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Botanical Color Utility Classes */
+.bg-forest { background-color: var(--color-forest); }
+.bg-forest-deep { background-color: var(--color-forest-deep); }
+.bg-forest-dark { background-color: var(--color-forest-dark); }
+.bg-fern { background-color: var(--color-fern); }
+.bg-mint { background-color: var(--color-mint); }
+.bg-mint-soft { background-color: var(--color-mint-soft); }
+.bg-pink { background-color: var(--color-pink); }
+.bg-pink-soft { background-color: var(--color-pink-soft); }
+.bg-sky { background-color: var(--color-sky); }
+.bg-sky-light { background-color: var(--color-sky-light); }
+.bg-linen { background-color: var(--color-linen); }
+.bg-cream { background-color: var(--color-cream); }
+.bg-cream-card { background-color: var(--color-cream-card); }
+.bg-cream-warm { background-color: var(--color-cream-warm); }
+.bg-citrus { background-color: var(--color-citrus); }
+.bg-tangerine { background-color: var(--color-tangerine); }
+.bg-sage-soft { background-color: var(--color-sage-soft); }
+
+.text-forest { color: var(--color-forest); }
+.text-fern { color: var(--color-fern); }
+.text-mint { color: #2B7A54; }
+.text-pink { color: #C24B75; }
+.text-sky { color: var(--color-sky-deep); }
+.text-citrus { color: var(--color-citrus); }
+.text-tangerine { color: var(--color-tangerine); }
+.text-dark { color: var(--color-text-dark); }
+.text-muted { color: var(--color-text-muted); }
+
+/* Tactile Buttons & Interactive States */
+button, a {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--color-tangerine);
+  outline-offset: 3px;
+}
+
+.btn-tangerine-primary {
+  background-color: var(--color-tangerine);
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  border-radius: 9999px;
+  box-shadow: 0 4px 16px rgba(233, 109, 44, 0.35);
+  cursor: pointer;
+}
+.btn-tangerine-primary:hover {
+  background-color: var(--color-tangerine-hover);
+  transform: translateY(-1.5px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(233, 109, 44, 0.45);
+}
+.btn-tangerine-primary:active {
+  transform: translateY(0.5px) scale(0.99);
+}
+
+.btn-forest-secondary {
+  background-color: var(--color-forest);
+  color: var(--color-linen);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+.btn-forest-secondary:hover {
+  background-color: var(--color-forest-deep);
+  transform: translateY(-1px);
+}
+
+.btn-mint-pill {
+  background-color: var(--color-mint-soft);
+  color: var(--color-forest);
+  border: 1px solid var(--color-mint);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+.btn-mint-pill:hover {
+  background-color: var(--color-mint-light);
+  transform: translateY(-1px);
+}
+
+/* Tactile Field Journal & Specimen Card Styling */
+.journal-plate {
+  background-color: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-sage-border);
+  box-shadow: 0 10px 30px -8px rgba(24, 42, 32, 0.08), 0 4px 12px rgba(24, 42, 32, 0.03);
+  position: relative;
+}
+
+.journal-paper-ruled {
+  background-color: var(--color-cream-warm);
+  background-image: repeating-linear-gradient(transparent, transparent 23px, rgba(200, 214, 195, 0.45) 24px);
+  line-height: 24px;
+}
+
+.washi-tab {
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  height: 18px;
+  width: 54px;
+  background-color: rgba(244, 198, 215, 0.85);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-left: 1px dashed rgba(232, 155, 181, 0.6);
+  border-right: 1px dashed rgba(232, 155, 181, 0.6);
+  transform: rotate(-1.5deg);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.washi-tab-mint {
+  background-color: rgba(149, 213, 178, 0.85);
+  border-left: 1px dashed rgba(104, 164, 108, 0.6);
+  border-right: 1px dashed rgba(104, 164, 108, 0.6);
+  transform: rotate(1.2deg);
+}
+
+.specimen-card {
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s ease, border-color 0.2s ease;
+}
+.specimen-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -6px rgba(24, 42, 32, 0.1);
+}
+
+/* Subtle Pressed Leaf / Sun Topographic Watermark */
+.botanical-bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.045;
+  background-image: 
+    radial-gradient(#538B57 1.2px, transparent 1.2px), 
+    radial-gradient(#E7CA49 1.2px, transparent 1.2px),
+    radial-gradient(#F4C6D7 1px, transparent 1px);
+  background-size: 40px 40px, 40px 40px, 80px 80px;
+  background-position: 0 0, 20px 20px, 10px 30px;
+}
+
+/* Ambient Mist and Floating Pollen Keyframes */
+.hero-mist-layer {
+  background: radial-gradient(circle at 50% 35%, rgba(231, 202, 73, 0.09) 0%, transparent 65%);
+  animation: floatMist 18s ease-in-out infinite alternate;
+}
+
+@keyframes floatMist {
+  0% { transform: translateY(0) scale(1); opacity: 0.7; }
+  50% { transform: translateY(-12px) scale(1.04); opacity: 0.9; }
+  100% { transform: translateY(8px) scale(0.98); opacity: 0.6; }
+}
+
+@keyframes gentleSway {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(1.5deg); }
+  100% { transform: rotate(-1deg); }
+}
+
+@keyframes bloomPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes floatPollen {
+  0% { transform: translateY(0px) translateX(0px); opacity: 0.4; }
+  50% { transform: translateY(-15px) translateX(8px); opacity: 0.9; }
+  100% { transform: translateY(5px) translateX(-6px); opacity: 0.5; }
+}
+
+.animate-sway {
+  animation: gentleSway 6s ease-in-out infinite;
+}
+
+.animate-pollen {
+  animation: floatPollen 8s ease-in-out infinite;
+}
+
+/* World View & Inventory Dock Styling */
+.dock-card-active {
+  border-color: var(--color-tangerine) !important;
+  background-color: rgba(149, 213, 178, 0.35) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(233, 109, 44, 0.2);
+}
+
+/* ========================================================================== */
+/* WALK SCREEN V2 — FULL-VIEWPORT LIVING FIELD JOURNAL SYSTEM                 */
+/* ========================================================================== */
+
+.walk-panorama-root {
+  background-color: transparent !important;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Atmospheric Day / Twilight Lighting Shifts */
+.walk-sky-day {
+  transition: opacity var(--duration-slow) var(--ease-nature);
+  opacity: 1;
+}
+
+.walk-sky-twilight {
+  transition: opacity var(--duration-slow) var(--ease-nature);
+  opacity: 0;
+}
+
+.walk-fireflies-layer {
+  transition: opacity var(--duration-slow) var(--ease-nature);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* When in active walk mode: atmospheric twilight takes over */
+.walk-mode-active .walk-sky-day {
+  opacity: 0;
+}
+
+.walk-mode-active .walk-sky-twilight {
+  opacity: 1;
+}
+
+.walk-mode-active .walk-fireflies-layer {
+  opacity: 0.95;
+}
+
+/* Expedition Explorer Avatar on Path */
+#svg-explorer {
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+@keyframes explorerStride {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-3px) rotate(1.5deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+.explorer-walking {
+  animation: explorerStride 0.75s ease-in-out infinite;
+}
+
+/* Interactive Field-Note Hotspots */
+.field-hotspot {
+  cursor: pointer;
+  transition: transform 0.25s var(--ease-nature), filter 0.25s ease;
+}
+
+.field-hotspot:hover {
+  transform: scale(1.22);
+}
+
+.field-hotspot-badge {
+  filter: drop-shadow(0 2px 6px rgba(6, 78, 45, 0.25));
+}
+
+.field-hotspot:hover .field-hotspot-badge {
+  filter: drop-shadow(0 4px 12px rgba(231, 202, 73, 0.5));
+}
+
+/* Floating Field-Note Tooltip */
+.field-note-popup {
+  position: absolute;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  transition: opacity 0.25s var(--ease-nature), transform 0.25s var(--ease-nature);
+}
+
+.field-note-popup.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+/* Journal Console (Floating Lower Deck) */
+.journal-console {
+  background: rgba(248, 242, 230, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid var(--color-sage-border);
+  box-shadow: 0 20px 48px -12px rgba(6, 78, 45, 0.16), 0 4px 16px rgba(24, 42, 32, 0.04);
+}
+
+/* Tactile Duration Stepper Ribbon */
+.walk-dur-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 14px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.825rem;
+  transition: all var(--duration-fast) var(--ease-nature);
+  cursor: pointer;
+  border: 1.5px solid var(--color-sage-border);
+  background-color: var(--color-cream-warm);
+  color: var(--color-forest);
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.walk-dur-btn:hover {
+  border-color: var(--color-pink);
+  background-color: var(--color-pink-soft);
+  color: var(--color-forest-deep);
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px rgba(244, 198, 215, 0.4);
+}
+
+.walk-dur-btn:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+/* Selected state: Forest Green with contrasting cream text and Citrus Yellow dot */
+.walk-dur-btn.walk-dur-active {
+  background-color: var(--color-forest) !important;
+  color: var(--color-cream) !important;
+  border-color: var(--color-forest-deep) !important;
+  box-shadow: 0 6px 18px rgba(6, 78, 45, 0.3) !important;
+  transform: translateY(-2px) scale(1.02);
+}
+
+.walk-dur-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--color-citrus);
+  box-shadow: 0 0 6px var(--color-citrus);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Trail Milestone Waypoints on SVG */
+.trail-waypoint-node {
+  cursor: pointer;
+  transition: all 0.3s var(--ease-nature);
+}
+
+.trail-waypoint-node:hover circle {
+  fill: var(--color-citrus);
+  stroke: var(--color-forest);
+}
+
+.trail-waypoint-node.node-active circle {
+  fill: var(--color-forest);
+  stroke: var(--color-citrus);
+  stroke-width: 3.5px;
+  filter: drop-shadow(0 0 8px rgba(231, 202, 73, 0.7));
+}
+
+/* Winding Landscape Vector Animation */
+@keyframes floatCloud {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes plantSway {
+  0% { transform: rotate(0deg); }
+  35% { transform: rotate(2.2deg); }
+  70% { transform: rotate(-2.4deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes waterGlimmer {
+  0% { opacity: 0.35; }
+  50% { opacity: 0.85; }
+  100% { opacity: 0.35; }
+}
+
+@keyframes pulseBeacon {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.7; }
+}
+
+@keyframes fireflyDrift {
+  0% { transform: translate(0, 0); opacity: 0.4; }
+  50% { transform: translate(15px, -18px); opacity: 0.9; }
+  100% { transform: translate(0, 0); opacity: 0.4; }
+}
+
+.anim-cloud {
+  animation: floatCloud 26s ease-in-out infinite;
+}
+
+.anim-sway {
+  transform-origin: bottom center;
+  animation: plantSway 5.5s ease-in-out infinite;
+}
+
+.anim-sway-alt {
+  transform-origin: bottom center;
+  animation: plantSway 6.8s ease-in-out 1.2s infinite;
+}
+
+.anim-water {
+  animation: waterGlimmer 3.8s ease-in-out infinite;
+}
+
+.anim-beacon-glow {
+  transform-origin: center;
+  animation: pulseBeacon 4.2s ease-in-out infinite;
+}
+
+.anim-firefly-1 { animation: fireflyDrift 6s ease-in-out infinite; }
+.anim-firefly-2 { animation: fireflyDrift 7.5s ease-in-out 1.5s infinite; }
+.anim-firefly-3 { animation: fireflyDrift 8s ease-in-out 3s infinite; }
+
+/* Active Walk Overlay Animation */
+.active-overlay-enter {
+  animation: fadeInDown 0.45s var(--ease-nature) forwards;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========================================================================== */
+/* SCOPED WALK TIMER ACTIVE OVERLAY — HIGH-CONTRAST 3D EXPEDITION SYSTEM      */
+/* ========================================================================== */
+
+#walk-active-overlay .walk-active-card {
+  background: rgba(3, 46, 26, 0.90) !important;
+  background-image: radial-gradient(circle at 50% 15%, rgba(231, 202, 73, 0.14) 0%, transparent 68%) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 2px solid rgba(83, 139, 87, 0.5) !important;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.65), 0 0 35px rgba(6, 78, 45, 0.35) !important;
+}
+
+/* Active Status Badge */
+#walk-active-overlay .walk-active-badge {
+  background: rgba(231, 202, 73, 0.16) !important;
+  border: 1.5px solid rgba(231, 202, 73, 0.55) !important;
+  color: #F6E47A !important;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+#walk-active-overlay .walk-active-badge .badge-pulse-dot {
+  background-color: #E7CA49 !important;
+  box-shadow: 0 0 8px #E7CA49 !important;
+}
+
+/* Countdown Typography: Warm Linen #EDEAE4 primary, luminous Citrus #E7CA49 on pause */
+#screen-walk #active-timer-display {
+  color: #EDEAE4 !important;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 35px rgba(231, 202, 73, 0.2) !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+#screen-walk #active-timer-display.text-citrus {
+  color: #E7CA49 !important;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.7), 0 0 40px rgba(231, 202, 73, 0.6) !important;
+}
+
+/* Active Timer Meta Information: Mint #95D5B2 */
+#screen-walk #active-timer-meta {
+  color: #95D5B2 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Botanical Progress Bar */
+#walk-active-overlay .walk-progress-track {
+  background-color: #0B3822 !important;
+  border: 1.5px solid rgba(83, 139, 87, 0.6) !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+}
+
+#walk-active-overlay #active-timer-progressbar {
+  background: linear-gradient(90deg, #95D5B2 0%, #E7CA49 55%, #E96D2C 100%) !important;
+  box-shadow: 0 0 12px rgba(231, 202, 73, 0.6) !important;
+}
+
+#walk-active-overlay .walk-progress-labels {
+  color: #95D5B2 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+#walk-active-overlay #active-timer-pct {
+  color: #E7CA49 !important;
+  font-weight: 800;
+  text-shadow: 0 0 6px rgba(231, 202, 73, 0.4);
+}
+
+/* Mindful Exploration Directive */
+#walk-active-overlay .walk-guidance-box {
+  background: rgba(11, 56, 34, 0.82) !important;
+  border: 1.5px solid rgba(83, 139, 87, 0.45) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+}
+
+#walk-active-overlay .walk-guidance-title {
+  color: #F6E47A !important;
+  font-weight: 800 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+#walk-active-overlay .walk-guidance-text {
+  color: #EDEAE4 !important;
+  opacity: 0.95 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Controls: Visible, tactile, accessible */
+#screen-walk #btn-pause-walk {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1.5px solid rgba(149, 213, 178, 0.5) !important;
+  color: #EDEAE4 !important;
+  font-weight: 800 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+#screen-walk #btn-pause-walk:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-color: #95D5B2 !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+#screen-walk #btn-pause-walk:active {
+  transform: translateY(0.5px);
+}
+
+#screen-walk #btn-pause-walk:focus-visible {
+  outline: 2px solid #E7CA49 !important;
+  outline-offset: 3px !important;
+}
+
+#screen-walk #btn-pause-walk.is-paused {
+  background: rgba(231, 202, 73, 0.18) !important;
+  border-color: #E7CA49 !important;
+  color: #F6E47A !important;
+}
+
+#screen-walk #btn-end-early-walk {
+  color: #95D5B2 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+#screen-walk #btn-end-early-walk:hover {
+  color: #E7CA49 !important;
+  text-shadow: 0 0 8px rgba(231, 202, 73, 0.5);
+}
+
+#screen-walk #btn-end-early-walk:focus-visible {
+  outline: 2px solid #E7CA49 !important;
+  outline-offset: 2px !important;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .hero-mist-layer, .anim-sway, .anim-sway-alt, .anim-cloud, .anim-water, .anim-beacon-glow, .explorer-walking {
+    animation: none !important;
+  }
+}
+
+/* ========================================================================== */
+/* SCREEN B: 3D OBSERVATION JOURNAL STYLING (ISOLATED UNDER #screen-observe)  */
+/* ========================================================================== */
+#screen-observe .observe-journal-panel {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: rgba(248, 242, 230, 0.94);
+  box-shadow: 0 20px 45px -12px rgba(24, 42, 32, 0.22);
+}
+
+#screen-observe .observe-specimen-card {
+  background-color: #F3EFE6;
+  border: 1.5px solid #CAD8C5;
+}
+
+#screen-observe .observe-specimen-card:hover {
+  border-color: #538B57;
+  background-color: #EBF4EC;
+}
+
+#screen-observe .observe-specimen-active {
+  background-color: #E8F5EE !important;
+  border-color: #064E2D !important;
+  box-shadow: 0 4px 14px -3px rgba(6, 78, 45, 0.12);
+}
+
+#screen-observe .observe-dropzone {
+  background-color: #F8F2E6;
+}
+
+#screen-observe .observe-dropzone.drag-active {
+  background-color: #E8F5EE;
+  border-color: #064E2D;
+}
+
+#screen-observe .btn-forest-primary {
+  background-color: #064E2D;
+  color: #EDEAE4;
+  border: 1px solid rgba(149, 213, 178, 0.25);
+}
+
+#screen-observe .btn-forest-primary:hover {
+  background-color: #083D24;
+  color: #FFFFFF;
+}
+
+#screen-observe .btn-forest-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ========================================================================== */
+/* SCOPED DISCOVERY TAB — EDITORIAL FIELD RESEARCH INTERFACE                  */
+/* ========================================================================== */
+
+#screen-discovery {
+  background-color: #F8F6F1;
+}
+
+#screen-discovery .discovery-screen-container {
+  color: #2D3830;
+}
+
+#screen-discovery .evidence-card,
+#screen-discovery .field-notes-card,
+#screen-discovery .method-card,
+#screen-discovery .transfer-card {
+  background-color: #EDEAE4;
+  border: 1px solid #D9D4C8;
+}
+
+#screen-discovery .finding-row {
+  border-bottom: 1px solid #E2DED5;
+  transition: background-color 0.15s ease;
+}
+
+#screen-discovery .finding-row:hover {
+  background-color: rgba(237, 234, 228, 0.45);
+}
+
+#screen-discovery .btn-toggle-find {
+  transition: all 0.18s ease;
+}
+
+#screen-discovery .btn-toggle-find:hover {
+  transform: translateY(-1px);
+}
+
+#screen-discovery #btn-claim-rewards:not(:disabled):hover {
+  background-color: #083D24;
+  box-shadow: 0 8px 20px -4px rgba(6, 78, 45, 0.28);
+}
+
+/* ========================================================================== */
+/* SANCTUARY 3D WORLD HUD OVERLAY STYLING                                     */
+/* ========================================================================== */
+.sanctuary-hud-glass {
+  background: rgba(244, 241, 235, 0.92);
+  background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 80%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(83, 139, 87, 0.28);
+  box-shadow: 0 16px 36px -8px rgba(6, 78, 45, 0.14), 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.sanctuary-hud-pill {
+  background: rgba(244, 241, 235, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(83, 139, 87, 0.24);
+}
+
+.sanctuary-hud-subtle {
+  background: rgba(244, 241, 235, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(83, 139, 87, 0.18);
+}
+
+.sanctuary-hud-btn {
+  background: rgba(244, 241, 235, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(83, 139, 87, 0.28);
+}
+
+.sanctuary-hud-btn:hover {
+  background: rgba(235, 244, 238, 0.98);
+  border-color: #538B57;
+}
+
+.sanctuary-hud-btn-active {
+  background: #E7CA49 !important;
+  color: #064E2D !important;
+  border-color: #064E2D !important;
+  box-shadow: 0 4px 12px rgba(231, 202, 73, 0.4);
+}
+
+.sanctuary-inv-card {
+  background: rgba(250, 247, 242, 0.95);
+  border: 1.5px solid rgba(83, 139, 87, 0.22);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sanctuary-inv-card:hover {
+  transform: translateY(-2px);
+  border-color: #538B57;
+  background: #FFFFFF;
+  box-shadow: 0 6px 16px -4px rgba(6, 78, 45, 0.16);
+}
+
+.sanctuary-inv-card-active {
+  border-color: #064E2D !important;
+  background: #E8F5EE !important;
+  box-shadow: 0 0 0 2px #538B57, 0 6px 18px -4px rgba(6, 78, 45, 0.22) !important;
+}
+
+/* ========================================================================== */
+/* WILDERNESS (THE WILDS) EXPLORATION HUD STYLING                            */
+/* ========================================================================== */
+.wild-hud-glass {
+  background: rgba(244, 241, 235, 0.94);
+  background-image: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.6) 0%, transparent 80%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(83, 139, 87, 0.32);
+  box-shadow: 0 16px 36px -8px rgba(6, 78, 45, 0.16), 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.wild-waypoint-chip {
+  background: rgba(250, 247, 242, 0.95);
+  border: 1.5px solid rgba(83, 139, 87, 0.22);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.wild-waypoint-chip:hover {
+  background: #FFFFFF;
+  border-color: #538B57;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px -4px rgba(6, 78, 45, 0.18);
+}
+
+.wild-waypoint-chip.active {
+  background: #E8F5EE !important;
+  border-color: #064E2D !important;
+  box-shadow: 0 0 0 2px #538B57, 0 6px 18px -4px rgba(6, 78, 45, 0.25) !important;
+}
+
+/* ========================================================================== */
+/* MOBILE TOUCH JOYSTICK FOR THE WILDS EXPLORATION                           */
+/* ========================================================================== */
+.wild-touch-joystick {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .wild-touch-joystick {
+    display: block;
+  }
+}
+
+.wild-touch-base {
+  width: 92px;
+  height: 92px;
+  border-radius: 9999px;
+  background: rgba(6, 78, 45, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid rgba(231, 202, 73, 0.6);
+  box-shadow: 0 8px 24px rgba(6, 78, 45, 0.28), inset 0 2px 6px rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  touch-action: none;
+  cursor: grab;
+}
+
+.wild-touch-knob {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #EDEAE4 80%, #D8CAB4 100%);
+  border: 2px solid #E96D2C;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: transform;
+}

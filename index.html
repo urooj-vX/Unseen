@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNSEEN — A game that only works because reality exists</title>
+  <meta name="description" content="UNSEEN is a local AI-powered outdoor exploration game experiment. Notice real-world observations, explore your surroundings, and turn evidence into physical clues.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Google Fonts: Fraunces, Nunito, Manrope, DM Sans, Instrument Serif -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&family=Instrument+Serif:ital@0;1&family=Manrope:wght@600;700;800&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN Engine -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'forest': '#064E2D',
+            'forest-dark': '#032E1A',
+            'forest-light': '#0B4729',
+            'fern': '#538B57',
+            'linen': '#EDEAE4',
+            'cream': '#F9F8F5',
+            'citrus': '#E7CA49',
+            'tangerine': '#E96D2C',
+            'tangerine-hover': '#D65C1D',
+            'sage': '#DCE5D8',
+            'moss': '#538B57',
+            'warm-paper': '#EDEAE4',
+            'mist': '#F9F8F5',
+            'earth': '#E96D2C',
+            'gold': '#E7CA49',
+          },
+          fontFamily: {
+            heading: ['Nunito', 'Manrope', 'sans-serif'],
+            display: ['Manrope', 'Nunito', 'Syne', 'sans-serif'],
+            serif: ['Instrument Serif', 'Georgia', 'serif'],
+            sans: ['DM Sans', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP Animation Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="bg-forest text-warm-paper font-sans antialiased selection:bg-moss selection:text-mist">
+
+  <!-- Background Topographic Overlay Effect -->
+  <div class="topo-bg-layer aria-hidden" aria-hidden="true"></div>
+
+  <!-- CONTINUOUS 3D SCROLL-DRIVEN STORY EXPERIENCE CONTAINER (220vh) -->
+  <div id="hero-story-container" class="relative w-full h-[220vh]">
+    
+    <!-- Sticky Full-Viewport Camera Viewport Frame -->
+    <div id="hero" class="sticky top-0 left-0 w-full h-screen overflow-hidden z-0 flex items-center justify-center">
+      
+      <!-- Three.js 3D WebGL Canvas Layer -->
+      <div class="absolute inset-0 z-0 opacity-100">
+        <canvas id="hero-canvas" class="w-full h-full object-cover"></canvas>
+        <div class="absolute inset-0 bg-gradient-to-tr from-forest-dark/85 via-forest-dark/30 to-transparent pointer-events-none"></div>
+      </div>
+
+      <!-- Floating Atmosphere Mist Layer -->
+      <div class="hero-mist-layer pointer-events-none absolute inset-0 z-0 opacity-60"></div>
+
+      <!-- STORY BEAT OVERLAYS LAYER (Controlled by 3D Scroll Progress) -->
+      <div class="relative z-10 w-full h-full max-w-6xl mx-auto px-6 md:px-16 pointer-events-none flex items-center justify-center">
+        
+        <!-- SCENE 1 — OPENING: UNSEEN WORDMARK -->
+        <div id="story-beat-wordmark" class="story-beat absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-700">
+          <h1 class="hero-wordmark-title font-display font-extrabold text-6xl sm:text-7xl md:text-9xl text-warm-paper select-none text-center drop-shadow-[0_10px_35px_rgba(0,0,0,0.92)] leading-none">
+            UNSEEN
+          </h1>
+        </div>
+
+        <!-- SCENE 2 — THE INVITATION -->
+        <div id="story-beat-invitation" class="story-beat absolute inset-0 flex items-center justify-start px-6 md:px-16 opacity-0 transition-opacity duration-500 pointer-events-none">
+          <div class="max-w-xl text-left drop-shadow-[0_4px_22px_rgba(0,0,0,0.9)]">
+            <h2 class="font-serif text-4xl sm:text-5xl md:text-7xl text-warm-paper tracking-tight leading-[1.08] mb-4">
+              There’s more out there<br class="hidden sm:inline"> than you notice.
+            </h2>
+            <p class="text-base sm:text-lg md:text-2xl font-light text-sage/90 max-w-md leading-relaxed">
+              Step off the path you know.
+            </p>
+          </div>
+        </div>
+
+        <!-- SCENE 3 — THE RETURN & CTA -->
+        <div id="story-beat-return" class="story-beat absolute inset-0 flex items-end justify-center pb-16 md:pb-24 px-6 text-center opacity-0 transition-opacity duration-500 pointer-events-none">
+          <div class="max-w-2xl flex flex-col items-center drop-shadow-[0_4px_18px_rgba(0,0,0,0.85)]">
+            <h2 class="font-serif text-4xl sm:text-5xl md:text-6xl text-warm-paper tracking-tight mb-3">
+              Bring back what you found.
+            </h2>
+            <p class="text-sm sm:text-base md:text-xl font-light text-sage/90 mb-6 sm:mb-8">
+              Your observation becomes part of your world.
+            </p>
+            <button id="final-cta-btn" class="btn-expedition-trigger px-10 py-4.5 rounded-full bg-tangerine hover:bg-tangerine-hover text-white font-heading font-extrabold text-sm tracking-widest uppercase transition-all shadow-2xl hover:shadow-tangerine/40 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-citrus flex items-center gap-3 group pointer-events-auto cursor-pointer" aria-label="Enter the forest and launch expedition">
+              <span>ENTER THE FOREST</span>
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EXPEDITION MODAL -->
+  <div id="expedition-modal" class="fixed inset-0 bg-forest-dark/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-forest border border-sage/30 rounded-3xl max-w-lg w-full p-8 shadow-2xl relative text-warm-paper">
+      <button id="modal-close-btn" class="absolute top-6 right-6 p-2 rounded-full hover:bg-forest-light text-sage hover:text-warm-paper transition-colors cursor-pointer" aria-label="Close Modal">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-tangerine/20 text-tangerine border border-tangerine/30 text-xs font-heading font-extrabold mb-4">
+        <span>FIELD JOURNAL — EXPEDITION LAUNCHER</span>
+      </div>
+
+      <h3 class="font-heading font-black text-3xl mb-2 text-warm-paper">Begin an Outdoor Expedition</h3>
+      
+      <p class="text-sm text-sage leading-relaxed mb-6 font-normal">
+        UNSEEN is powered by physical exploration and local vision intelligence. Step outside, observe distinct physical details, and bring back a photograph to grow your sanctuary world.
+      </p>
+
+      <div class="p-4 rounded-2xl bg-forest-dark/70 border border-sage/20 mb-6 text-xs font-heading space-y-2">
+        <div class="flex items-center justify-between text-sage">
+          <span class="font-bold">RECOMMENDED DURATION:</span>
+          <span class="text-warm-paper font-extrabold">15–30 Minutes</span>
+        </div>
+        <div class="flex items-center justify-between text-sage">
+          <span class="font-bold">LOCAL AI STATUS:</span>
+          <span class="text-citrus font-extrabold">On-Device Vision Ready</span>
+        </div>
+        <div class="flex items-center justify-between text-sage">
+          <span class="font-bold">SANCTUARY REWARDS:</span>
+          <span class="text-tangerine font-extrabold">Trees, Stones, Streams</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <a href="/dashboard.html#walk" id="modal-start-btn" class="btn-tangerine-primary w-full py-4 text-xs font-heading font-extrabold tracking-widest uppercase flex items-center justify-center gap-2">
+          <span>START OUTDOOR WALK</span>
+          <span>→</span>
+        </a>
+        <button id="modal-cancel-btn" class="w-full py-3 rounded-full border border-sage/30 text-sage hover:text-warm-paper text-xs font-heading font-bold uppercase tracking-wider transition-colors cursor-pointer">
+          Close Preview
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>

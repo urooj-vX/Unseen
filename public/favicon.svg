@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="16" fill="#263B2D"/>
+  <!-- Topographic contour concentric curves -->
+  <path d="M 12 32 C 12 18, 52 18, 52 32 C 52 46, 12 46, 12 32 Z" fill="none" stroke="#52664B" stroke-width="2" stroke-dasharray="2 2"/>
+  <path d="M 18 32 C 18 22, 46 22, 46 32 C 46 42, 18 42, 18 32 Z" fill="none" stroke="#B9C69D" stroke-width="2"/>
+  <path d="M 25 32 C 25 27, 39 27, 39 32 C 39 37, 25 37, 25 32 Z" fill="none" stroke="#EDE7D8" stroke-width="1.5"/>
+  <circle cx="32" cy="32" r="3" fill="#B56D48"/>
+</svg>

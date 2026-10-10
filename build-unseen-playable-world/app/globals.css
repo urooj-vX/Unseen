@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+:root { --forest: #263b2d; --moss: #52664b; --sage: #b9c69d; --paper: #ede7d8; --mist: #f8f5ed; --earth: #b56d48; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: var(--forest); }
+body { overflow: hidden; font-family: Arial, Helvetica, sans-serif; }
+button { font: inherit; cursor: pointer; }
+.unseen-shell { position: relative; width: 100vw; height: 100svh; overflow: hidden; background: var(--sage); color: var(--mist); }
+.world-canvas { position: absolute; inset: 0; }
+.world-canvas canvas { display: block; }
+.title-screen { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(180deg, rgba(38,59,45,.22), rgba(38,59,45,.54)); text-align: center; }
+.title-mark { font-family: Georgia, serif; font-size: clamp(4rem, 12vw, 9rem); letter-spacing: -.08em; line-height: .8; text-shadow: 0 3px 0 rgba(38,59,45,.24); }
+.title-mark span { display: inline-block; margin-left: .08em; color: var(--sage); font: 400 .4em Arial; vertical-align: top; transform: translateY(-.1em); }
+.title-kicker, .eyebrow, .card-index { font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; }
+.title-kicker { margin: 2.1rem 0 1.2rem; color: var(--sage); }
+.title-copy { margin: 0 0 2rem; font: 400 clamp(1.25rem, 2.5vw, 2rem)/1.25 Georgia, serif; color: var(--mist); }
+.enter-button { border: 0; background: var(--paper); color: var(--forest); padding: 1.05rem 1.35rem; min-width: 220px; font-weight: 700; letter-spacing: .12em; font-size: .72rem; box-shadow: 5px 5px 0 var(--forest); transition: transform .2s, box-shadow .2s; }
+.enter-button:hover, .enter-button:focus-visible { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--forest); outline: none; }
+.enter-button span { margin-left: 1.4rem; font-size: 1.1rem; }
+.quiet-button { margin-top: 1.2rem; border: 0; background: transparent; color: var(--mist); text-transform: uppercase; letter-spacing: .16em; font-size: .62rem; opacity: .75; }
+.title-footer { position: absolute; bottom: 1.8rem; left: 2rem; right: 2rem; display: flex; justify-content: space-between; color: var(--sage); font-size: .62rem; letter-spacing: .15em; text-transform: uppercase; }
+.world-hud { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 1.35rem 1.7rem; background: linear-gradient(rgba(38,59,45,.54), transparent); }
+.wordmark { border: 0; padding: 0; background: transparent; color: var(--mist); font: 700 1.1rem Georgia, serif; letter-spacing: .11em; }
+.hud-center { display: flex; flex-direction: column; align-items: center; gap: .7rem; }
+.progress-dots { display: flex; gap: .45rem; }
+.progress-dots i { display: block; width: 7px; height: 7px; border: 1px solid var(--mist); border-radius: 50%; opacity: .7; }
+.progress-dots i.found { background: var(--paper); box-shadow: 0 0 12px var(--paper); }
+.hud-actions { display: flex; gap: 1.1rem; }
+.hud-actions button { border: 0; color: var(--mist); background: transparent; font-size: .62rem; letter-spacing: .15em; }
+.hud-actions span { color: var(--sage); margin-left: .3rem; }
+.control-hint { position: absolute; bottom: 1.6rem; left: 1.7rem; display: flex; align-items: center; gap: .35rem; color: var(--paper); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+.keycap { border: 1px solid rgba(248,245,237,.65); padding: .25rem .35rem; font-size: .62rem; }
+.discovery-card, .completion { position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%); width: min(420px, calc(100% - 2rem)); padding: 1.4rem 1.5rem; background: rgba(38,59,45,.94); border-left: 3px solid var(--sage); box-shadow: 8px 8px 0 rgba(38,59,45,.3); }
+.card-index { color: var(--sage); }
+.discovery-card h2, .completion h2 { margin: .7rem 0 .45rem; font: 400 1.65rem Georgia, serif; }
+.discovery-card p { margin: 0; color: var(--paper); line-height: 1.5; font-size: .9rem; }
+.discovery-card button, .completion button { margin-top: 1.2rem; padding: 0; border: 0; background: transparent; color: var(--paper); font-size: .68rem; letter-spacing: .14em; font-weight: 700; }
+.discovery-card button span { margin-left: 1rem; font-size: 1rem; }
+.completion { text-align: center; border: 0; background: rgba(237,231,216,.95); color: var(--forest); }
+.completion span { color: var(--moss); font-size: .68rem; letter-spacing: .2em; }
+.completion h2 { color: var(--forest); }
+.completion button { color: var(--forest); }
+.journal-overlay, .pause-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; background: var(--forest); color: var(--paper); text-align: center; z-index: 3; }
+.journal-overlay h1, .pause-overlay h2 { margin: 1.2rem 0 1rem; font: 400 clamp(3rem, 8vw, 6rem) Georgia, serif; letter-spacing: -.06em; }
+.journal-overlay > p { max-width: 470px; color: var(--sage); line-height: 1.6; }
+.journal-note { display: flex; flex-direction: column; gap: .7rem; width: min(480px, 100%); margin: 2rem 0; padding: 1.5rem; border: 1px solid rgba(185,198,157,.35); text-align: left; }
+.journal-note span { color: var(--sage); font-size: .62rem; letter-spacing: .18em; }
+.journal-note strong { font: 400 1.45rem/1.25 Georgia, serif; }
+.journal-note em { color: var(--sage); font-size: .82rem; }
+.close-button { position: absolute; top: 1.5rem; right: 1.8rem; border: 0; color: var(--paper); background: transparent; font-size: 2rem; font-weight: 200; }
+.pause-overlay { background: rgba(38,59,45,.94); }
+.pause-overlay h2 { font-size: clamp(2.2rem, 6vw, 4.5rem); }
+@media (max-width: 600px) { .world-hud { padding: 1.2rem 1rem; } .hud-center { display: none; } .hud-actions { gap: .6rem; } .control-hint { left: 50%; transform: translateX(-50%); white-space: nowrap; } .title-footer { left: 1rem; right: 1rem; } .title-footer span:last-child { display: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
