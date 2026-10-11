@@ -1,8 +1,6 @@
 // UNSEEN — Discovery Agent Interface
 // Premium Editorial Natural History Field Journal & Real-Time 3D Specimen Viewer
-// Split-Screen Composition:
-// Left: Interactive Three.js 3D Specimen Viewer (Stone Archway, Forest Stream, Compacted Trail)
-// Right: Refined Field Research Journal (Evidence evaluation, findings confirmation, sanctuary transfer)
+// Powered by On-Device Local Open-Weight Vision AI (hf.co/Qwen/Qwen3-VL-2B-Instruct-GGUF:Q4_K_M)
 
 import { DiscoverySpecimen3D } from './discovery-scene-3d.js';
 
@@ -82,8 +80,6 @@ export function validateVisionAnalysis(parsed) {
   };
 }
 
-
-
 export function generateObservationId(imageSrc, isDemo = false, sampleId = null) {
   if (isDemo) return `demo_${sampleId || 'sample'}`;
   if (!imageSrc || typeof imageSrc !== 'string') return `obs_${Date.now()}`;
@@ -135,9 +131,6 @@ export function evaluateEvidenceEligibility({ structuredAnalysis, fieldNote = ''
 
   const noteLower = (fieldNote || '').toLowerCase();
 
-  // Guard: Evaluate ONLY affirmative description fields (evidence_summary, visible_features).
-  // The 'uncertainties' key contains model boundary hedges on what the photo cannot prove;
-  // scanning uncertainties for synthetic phrases causes false positives on genuine outdoor photos.
   // Synthetic / digital rendering indicators
   const syntheticKeywords = [
     'digital rendering',
@@ -243,7 +236,6 @@ export function evaluateEvidenceEligibility({ structuredAnalysis, fieldNote = ''
   };
 }
 
-
 export function getCleanObservationTitle(obs) {
   if (!obs) return 'Field Observation';
 
@@ -296,47 +288,61 @@ export function getCleanObservationTitle(obs) {
   return 'Natural Field Observation';
 }
 
-
 export const SAMPLE_OBSERVATIONS = [
   {
     id: 'sample_archway',
-    title: 'Weathered Cut-Granite Archway',
+    title: 'Cut-Granite Archway (3D Baseline)',
     location: 'North Meadow Boundary',
     imageSrc: null,
     isDemo: true,
-    inferenceSource: 'Demo Specimen Baseline (3D Simulator)',
+    inferenceSource: '3D Simulator Specimen Baseline',
+    modelName: 'Interactive 3D Study Reference',
+    eligibilityStatus: 'demo_baseline',
+    isRewardEligible: true,
+    eligibilityBadge: '🔬 3D Specimen Baseline',
+    eligibilityReason: 'Pre-verified 3D natural history baseline specimen. Interactive simulator study model for demonstration.',
     notes: 'Weathered cut-granite mortar archway with dense ivy rootlets spanning dry drainage ditch.',
     detectedElements: [
-      { id: 'el_arch_1', name: 'Weathered Cut Granite Arch', category: 'Historic Masonry', evidenceStatus: 'Demo Baseline (Pre-verified)', confirmed: true, suggestedReward: 2, grantsItem: 'stone_cairn', grantsItemName: 'Stone Cairn (x1)' },
-      { id: 'el_arch_2', name: 'Living Ivy & Wild Ferns', category: 'Flora / Lichen', evidenceStatus: 'Demo Baseline (Pre-verified)', confirmed: true, suggestedReward: 1, grantsItem: 'wild_ferns', grantsItemName: 'Wild Ferns (x1)' },
+      { id: 'el_arch_1', name: 'Weathered Cut Granite Arch', category: 'Historic Masonry', evidenceStatus: 'Simulator Baseline (Interactive Study)', confirmed: true, suggestedReward: 2, grantsItem: 'stone_cairn', grantsItemName: 'Stone Cairn (x1)' },
+      { id: 'el_arch_2', name: 'Living Ivy & Wild Ferns', category: 'Flora / Lichen', evidenceStatus: 'Simulator Baseline (Interactive Study)', confirmed: true, suggestedReward: 1, grantsItem: 'wild_ferns', grantsItemName: 'Wild Ferns (x1)' },
       { id: 'el_arch_3', name: 'Drainage Embankment', category: 'Terrain Feature', evidenceStatus: 'Unverified Candidate · Review needed', confirmed: false, suggestedReward: 0, grantsItem: null, grantsItemName: null }
     ]
   },
   {
     id: 'sample_stream',
-    title: 'Forest Runoff Stream & Reeds',
+    title: 'Forest Runoff Stream (3D Baseline)',
     location: 'West Creek Corridor',
     imageSrc: null,
     isDemo: true,
-    inferenceSource: 'Demo Specimen Baseline (3D Simulator)',
+    inferenceSource: '3D Simulator Specimen Baseline',
+    modelName: 'Interactive 3D Study Reference',
+    eligibilityStatus: 'demo_baseline',
+    isRewardEligible: true,
+    eligibilityBadge: '🔬 3D Specimen Baseline',
+    eligibilityReason: 'Pre-verified 3D natural history baseline specimen. Interactive simulator study model for demonstration.',
     notes: 'Clear shallow creek flowing over rounded river stones with aquatic fern clumps along edges.',
     detectedElements: [
-      { id: 'el_str_1', name: 'Clear Glacial Stream Channel', category: 'Hydrology', evidenceStatus: 'Demo Baseline (Pre-verified)', confirmed: true, suggestedReward: 2, grantsItem: 'stream_tile', grantsItemName: 'Forest Stream (x1)' },
-      { id: 'el_str_2', name: 'Smooth River Granite Rocks', category: 'Geology', evidenceStatus: 'Demo Baseline (Pre-verified)', confirmed: true, suggestedReward: 1, grantsItem: 'mossy_boulder', grantsItemName: 'Mossy Boulder (x1)' },
-      { id: 'el_str_3', name: 'Wetland Reeds & Ferns', category: 'Flora', evidenceStatus: 'Demo Baseline (Pre-verified)', confirmed: true, suggestedReward: 1, grantsItem: 'wild_ferns', grantsItemName: 'Wild Ferns (x1)' }
+      { id: 'el_str_1', name: 'Clear Glacial Stream Channel', category: 'Hydrology', evidenceStatus: 'Simulator Baseline (Interactive Study)', confirmed: true, suggestedReward: 2, grantsItem: 'stream_tile', grantsItemName: 'Forest Stream (x1)' },
+      { id: 'el_str_2', name: 'Smooth River Granite Rocks', category: 'Geology', evidenceStatus: 'Simulator Baseline (Interactive Study)', confirmed: true, suggestedReward: 1, grantsItem: 'mossy_boulder', grantsItemName: 'Mossy Boulder (x1)' },
+      { id: 'el_str_3', name: 'Wetland Reeds & Ferns', category: 'Flora', evidenceStatus: 'Simulator Baseline (Interactive Study)', confirmed: true, suggestedReward: 1, grantsItem: 'wild_ferns', grantsItemName: 'Wild Ferns (x1)' }
     ]
   },
   {
     id: 'sample_trailhead',
-    title: 'Compacted Trailhead & Forest Pine',
+    title: 'Compacted Trailhead (3D Baseline)',
     location: 'Elder Ridge Path',
     imageSrc: null,
     isDemo: true,
-    inferenceSource: 'Demo Specimen Baseline (3D Simulator)',
+    inferenceSource: '3D Simulator Specimen Baseline',
+    modelName: 'Interactive 3D Study Reference',
+    eligibilityStatus: 'demo_baseline',
+    isRewardEligible: true,
+    eligibilityBadge: '🔬 3D Specimen Baseline',
+    eligibilityReason: 'Pre-verified 3D natural history baseline specimen. Interactive simulator study model for demonstration.',
     notes: 'Beaten dirt trail packed solid by walkers, winding into a cluster of evergreen trees.',
     detectedElements: [
-      { id: 'el_trl_1', name: 'Compacted Earth Footpath', category: 'Pedestrian Trail', evidenceStatus: 'Demo Baseline (Pre-verified)', confirmed: true, suggestedReward: 1, grantsItem: 'earth_trail', grantsItemName: 'Beaten Trail (x2)' },
-      { id: 'el_trl_2', name: 'Mountain Evergreen Conifers', category: 'Canopy Flora', evidenceStatus: 'Demo Baseline (Pre-verified)', confirmed: true, suggestedReward: 2, grantsItem: 'pine_cluster', grantsItemName: 'Pine Cluster (x1)' },
+      { id: 'el_trl_1', name: 'Compacted Earth Footpath', category: 'Pedestrian Trail', evidenceStatus: 'Simulator Baseline (Interactive Study)', confirmed: true, suggestedReward: 1, grantsItem: 'earth_trail', grantsItemName: 'Beaten Trail (x2)' },
+      { id: 'el_trl_2', name: 'Mountain Evergreen Conifers', category: 'Canopy Flora', evidenceStatus: 'Simulator Baseline (Interactive Study)', confirmed: true, suggestedReward: 2, grantsItem: 'pine_cluster', grantsItemName: 'Pine Cluster (x1)' },
       { id: 'el_trl_3', name: 'Survey Milepost Marker', category: 'Trail Marker', evidenceStatus: 'Unverified Candidate · Review needed', confirmed: false, suggestedReward: 0, grantsItem: null, grantsItemName: null }
     ]
   }
@@ -344,7 +350,7 @@ export const SAMPLE_OBSERVATIONS = [
 
 export class DiscoveryAgent {
   constructor(state, containerEl, options = {}) {
-    this.state = state;
+    this.state = state || new DashboardState();
     this.containerEl = containerEl;
     this.onClaimSuccess = options.onClaimSuccess || (() => {});
     this.onGoToWorld = options.onGoToWorld || (() => {});
@@ -355,8 +361,12 @@ export class DiscoveryAgent {
     this.activeSpecimenKey = this.inferSpecimenKey(this.currentObservation);
 
     this.isAnalyzing = false;
+    this.analysisStartTime = 0;
+    this.analysisElapsed = 0;
+    this.analysisInterval = null;
+
     this.ollamaOnline = false;
-    this.activeModel = 'hf.co/Qwen/Qwen3-VL-2B-Instruct-GGUF:Q4_K_M';
+    this.activeModel = LOCAL_VISION_MODEL_TAG;
 
     this.specimen3D = null;
 
@@ -364,40 +374,251 @@ export class DiscoveryAgent {
     this.render();
   }
 
+  inferSpecimenKey(obs) {
+    if (!obs) return 'sample_archway';
+    const summaryText = obs.structuredAnalysis 
+      ? (obs.structuredAnalysis.evidence_summary + ' ' + (obs.structuredAnalysis.visible_features || []).join(' ')) 
+      : '';
+    const combined = ((obs.title || '') + ' ' + (obs.notes || '') + ' ' + (obs.fieldNote || '') + ' ' + summaryText).toLowerCase();
+
+    if (combined.includes('stream') || combined.includes('water') || combined.includes('creek') || combined.includes('reed') || combined.includes('brook') || combined.includes('river')) {
+      return 'sample_stream';
+    }
+    if (combined.includes('trail') || combined.includes('path') || combined.includes('pine') || combined.includes('marker') || combined.includes('signpost') || combined.includes('footpath') || combined.includes('track')) {
+      return 'sample_trailhead';
+    }
+    return 'sample_archway';
+  }
 
   async checkOllamaStatus() {
     try {
-      const res = await fetch('http://127.0.0.1:11434/api/tags');
-      if (!res.ok) return { available: false, modelFound: false };
-      const data = await res.json();
-      const models = data.models || [];
-      const hasModel = models.some(m => m.name && (m.name.includes('Qwen3-VL-2B') || m.name.includes(LOCAL_VISION_MODEL_TAG)));
-      return { available: true, modelFound: hasModel, models };
-    } catch (err) {
-      return { available: false, modelFound: false, error: err.message };
+      const res = await fetch('/api/ollama/api/tags');
+      if (res.ok) {
+        const data = await res.json();
+        const hasExactModel = data.models && data.models.some(m => m.name === LOCAL_VISION_MODEL_TAG);
+        const hasAnyQwen = data.models && data.models.some(m => m.name.toLowerCase().includes('qwen'));
+        this.ollamaOnline = true;
+        if (hasExactModel) {
+          this.activeModel = LOCAL_VISION_MODEL_TAG;
+        } else if (hasAnyQwen) {
+          const m = data.models.find(m => m.name.toLowerCase().includes('qwen'));
+          this.activeModel = m.name;
+        }
+      } else {
+        this.ollamaOnline = false;
+      }
+    } catch {
+      this.ollamaOnline = false;
+    }
+    if (!this.isAnalyzing) {
+      this.updateJournalDOM();
     }
   }
 
-  async analyzeObservation({ imageSrc = null, fieldNote = '', title = 'Field Observation' }) {
-    if (!imageSrc) return null;
-    const base64Data = imageSrc.includes(',') ? imageSrc.split(',')[1] : imageSrc;
-    try {
-      const response = await fetch('http://127.0.0.1:11434/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: LOCAL_VISION_MODEL_TAG,
-          prompt: VISION_STRUCTURED_PROMPT,
-          images: [base64Data],
-          stream: false
-        })
-      });
-      return await response.json();
-    } catch (err) {
-      console.warn('Local Ollama inference failed:', err.message);
-      return null;
+  setObservation(obs) {
+    if (!obs) {
+      this.currentObservation = JSON.parse(JSON.stringify(SAMPLE_OBSERVATIONS[0]));
+    } else {
+      this.currentObservation = JSON.parse(JSON.stringify(obs));
     }
+    this.activeSpecimenKey = this.inferSpecimenKey(this.currentObservation);
+    this.render();
   }
+
+  loadSample(sampleId) {
+    const found = SAMPLE_OBSERVATIONS.find(s => s.id === sampleId);
+    if (!found) return;
+
+    this.activeSpecimenKey = sampleId;
+    this.currentObservation = {
+      ...JSON.parse(JSON.stringify(found)),
+      id: `demo_${Date.now()}`,
+      isDemo: true,
+      modelName: 'Interactive 3D Study Reference',
+      isRunningLocally: false,
+      inferenceLatencySec: null,
+      structuredAnalysis: null,
+      analysisError: null,
+      eligibilityStatus: 'demo_baseline',
+      isRewardEligible: true,
+      eligibilityBadge: '🔬 3D Specimen Baseline',
+      eligibilityTitle: 'Simulation Reference Specimen',
+      eligibilityReason: 'Pre-verified 3D natural history baseline specimen. Interactive simulator study model for demonstration.',
+      allowPhysicalRewards: true,
+      claimed: false
+    };
+    this.state.setPendingObservation(this.currentObservation);
+
+    // Update 3D scene smoothly without tearing down the WebGL canvas
+    if (this.specimen3D) {
+      this.specimen3D.setSpecimen(sampleId);
+    }
+    this.update3DOverlayDOM();
+    this.updateJournalDOM();
+  }
+
+  startAnalysisTimer() {
+    this.analysisElapsed = 0;
+    clearInterval(this.analysisInterval);
+    this.analysisInterval = setInterval(() => {
+      this.analysisElapsed += 1;
+      const el = document.getElementById('analysis-timer-sec');
+      if (el) el.textContent = this.analysisElapsed;
+    }, 1000);
+  }
+
+  stopAnalysisTimer() {
+    clearInterval(this.analysisInterval);
+    this.analysisInterval = null;
+  }
+
+  async analyzeObservation({ imageSrc = null, fieldNote = '', title = '', isDemo = false, sampleId = null }) {
+    this.isAnalyzing = true;
+    this.analysisStartTime = performance.now();
+    this.startAnalysisTimer();
+    this.render();
+
+    // 1. Explicit demo specimen without custom photograph
+    if (isDemo && !imageSrc) {
+      this.stopAnalysisTimer();
+      const sample = SAMPLE_OBSERVATIONS.find(s => s.id === sampleId) || SAMPLE_OBSERVATIONS[0];
+      this.activeSpecimenKey = sample.id;
+      this.currentObservation = {
+        id: `demo_${Date.now()}`,
+        title: sample.title,
+        location: sample.location,
+        imageSrc: null,
+        fieldNote: fieldNote || sample.notes,
+        isDemo: true,
+        inferenceSource: '3D Simulator Specimen Baseline',
+        modelName: 'Interactive 3D Study Reference',
+        isRunningLocally: false,
+        inferenceLatencySec: null,
+        structuredAnalysis: null,
+        analysisError: null,
+        eligibilityStatus: 'demo_baseline',
+        isRewardEligible: true,
+        eligibilityBadge: '🔬 3D Specimen Baseline',
+        eligibilityTitle: 'Simulation Reference Specimen',
+        eligibilityReason: 'Pre-verified 3D natural history baseline specimen. Interactive simulator study model for demonstration.',
+        allowPhysicalRewards: true,
+        detectedElements: JSON.parse(JSON.stringify(sample.detectedElements)),
+        notes: sample.notes,
+        claimed: false
+      };
+      this.state.setPendingObservation(this.currentObservation);
+      this.isAnalyzing = false;
+      this.render();
+      return;
+    }
+
+    // 2. Real photograph observation
+    let structuredAnalysis = null;
+    let analysisError = null;
+    let inferenceLatencySec = null;
+    let isRunningLocally = false;
+    let analysisSource = 'Local Vision Model';
+
+    if (imageSrc && imageSrc.startsWith('data:image/')) {
+      const base64Data = imageSrc.split(',')[1];
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 120000);
+      const t0 = performance.now();
+
+      try {
+        const res = await fetch('/api/ollama/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: this.activeModel,
+            prompt: VISION_STRUCTURED_PROMPT,
+            images: [base64Data],
+            stream: false,
+            format: 'json',
+            options: {
+              temperature: 0
+            }
+          }),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        const latency = ((performance.now() - t0) / 1000).toFixed(1);
+
+        if (res.ok) {
+          const data = await res.json();
+          const rawResponse = data.response || '';
+          const parsed = parseJsonFromResponse(rawResponse);
+          const validated = validateVisionAnalysis(parsed);
+
+          if (validated) {
+            structuredAnalysis = validated;
+            inferenceLatencySec = latency;
+            isRunningLocally = true;
+            this.ollamaOnline = true;
+            analysisSource = `Local Vision Model (${this.activeModel})`;
+          } else {
+            analysisError = 'Vision model response failed strict JSON schema validation. No simulated findings substituted.';
+            analysisSource = 'Local Vision Model (Schema Validation Error)';
+            inferenceLatencySec = latency;
+          }
+        } else {
+          analysisError = `Local Ollama server returned HTTP error ${res.status}. Verify local server status.`;
+          analysisSource = 'Local Vision Model (HTTP Error)';
+          this.ollamaOnline = false;
+        }
+      } catch (err) {
+        clearTimeout(timeoutId);
+        if (err.name === 'AbortError') {
+          analysisError = 'Local vision inference timed out after 120 seconds. Check device load.';
+        } else {
+          analysisError = 'Could not connect to local Ollama server at http://127.0.0.1:11434. Verify ollama serve is running.';
+        }
+        analysisSource = 'Local Vision Model (Offline / Unreachable)';
+        this.ollamaOnline = false;
+      }
+    } else {
+      analysisError = 'No photograph provided for local vision analysis.';
+    }
+
+    this.stopAnalysisTimer();
+
+    // 3. Evaluate Evidence-Eligibility Gate
+    const eligibility = evaluateEvidenceEligibility({ structuredAnalysis, fieldNote, isDemo: false });
+
+    // 4. Grounded Candidate Detections (distinct from confirmed user facts)
+    const detections = this.deriveCandidateDetections(structuredAnalysis, fieldNote, analysisError, eligibility);
+    this.activeSpecimenKey = this.inferSpecimenKey({ title, structuredAnalysis, fieldNote });
+
+    this.currentObservation = {
+      id: generateObservationId(imageSrc, isDemo, sampleId),
+      title: title || 'Walk Field Observation',
+      location: 'Local Field Discovery',
+      imageSrc: imageSrc,
+      fieldNote: fieldNote,
+      isDemo: false,
+      inferenceSource: analysisSource,
+      modelName: this.activeModel,
+      isRunningLocally: isRunningLocally,
+      inferenceLatencySec: inferenceLatencySec,
+      structuredAnalysis: structuredAnalysis,
+      analysisError: analysisError,
+      eligibilityStatus: eligibility.status,
+      isRewardEligible: eligibility.isRewardEligible,
+      eligibilityBadge: eligibility.badge,
+      eligibilityTitle: eligibility.title,
+      eligibilityReason: eligibility.reason,
+      allowPhysicalRewards: eligibility.allowPhysicalRewards,
+      detectedElements: detections,
+      notes: fieldNote || (structuredAnalysis ? structuredAnalysis.evidence_summary : 'Field observation recorded.'),
+      claimed: false
+    };
+
+    this.state.setPendingObservation(this.currentObservation);
+    this.isAnalyzing = false;
+    this.render();
+  }
+
   deriveCandidateDetections(structuredAnalysis, fieldNote = '', analysisError = null, eligibility = null) {
     const detections = [];
     let idCounter = 1;
@@ -620,272 +841,6 @@ export class DiscoveryAgent {
     return detections;
   }
 
-
-  inferSpecimenKey(obs) {
-    if (!obs) return 'sample_archway';
-    const combined = ((obs.title || '') + ' ' + (obs.notes || '') + ' ' + (obs.fieldNote || '')).toLowerCase();
-    if (combined.includes('stream') || combined.includes('water') || combined.includes('creek') || combined.includes('reed') || combined.includes('brook')) {
-      return 'sample_stream';
-    }
-    if (combined.includes('trail') || combined.includes('path') || combined.includes('pine') || combined.includes('marker') || combined.includes('signpost') || combined.includes('footpath')) {
-      return 'sample_trailhead';
-    }
-    return 'sample_archway';
-  }
-
-  async checkOllamaStatus() {
-    try {
-      const res = await fetch('/api/ollama/api/tags');
-      if (res.ok) {
-        const data = await res.json();
-        const hasModel = data.models && data.models.some(m => m.name.toLowerCase().includes('qwen'));
-        this.ollamaOnline = true;
-        if (hasModel) {
-          const m = data.models.find(m => m.name.toLowerCase().includes('qwen'));
-          this.activeModel = m.name;
-        }
-      } else {
-        this.ollamaOnline = false;
-      }
-    } catch {
-      this.ollamaOnline = false;
-    }
-    if (!this.isAnalyzing) {
-      this.updateJournalDOM();
-    }
-  }
-
-  setObservation(obs) {
-    if (!obs) {
-      this.currentObservation = JSON.parse(JSON.stringify(SAMPLE_OBSERVATIONS[0]));
-    } else {
-      this.currentObservation = JSON.parse(JSON.stringify(obs));
-    }
-    this.activeSpecimenKey = this.inferSpecimenKey(this.currentObservation);
-    this.render();
-  }
-
-  loadSample(sampleId) {
-    const found = SAMPLE_OBSERVATIONS.find(s => s.id === sampleId);
-    if (!found) return;
-
-    this.activeSpecimenKey = sampleId;
-    this.currentObservation = {
-      ...JSON.parse(JSON.stringify(found)),
-      id: `demo_${Date.now()}`,
-      isDemo: true,
-      claimed: false
-    };
-    this.state.setPendingObservation(this.currentObservation);
-
-    // Update 3D scene smoothly without tearing down the WebGL canvas
-    if (this.specimen3D) {
-      this.specimen3D.setSpecimen(sampleId);
-    }
-    this.update3DOverlayDOM();
-    this.updateJournalDOM();
-  }
-
-  async analyzeObservation({ imageSrc = null, fieldNote = '', title = '', isDemo = false, sampleId = null }) {
-    this.isAnalyzing = true;
-    this.render();
-
-    // 1. Explicit demo specimen without custom photograph
-    if (isDemo && !imageSrc) {
-      const sample = SAMPLE_OBSERVATIONS.find(s => s.id === sampleId) || SAMPLE_OBSERVATIONS[0];
-      this.activeSpecimenKey = sample.id;
-      this.currentObservation = {
-        id: `demo_${Date.now()}`,
-        title: sample.title,
-        location: sample.location,
-        imageSrc: null,
-        fieldNote: fieldNote || sample.notes,
-        isDemo: true,
-        inferenceSource: 'Demo Specimen Baseline (3D Simulator)',
-        detectedElements: JSON.parse(JSON.stringify(sample.detectedElements)),
-        notes: sample.notes,
-        claimed: false
-      };
-      this.state.setPendingObservation(this.currentObservation);
-      this.isAnalyzing = false;
-      this.render();
-      return;
-    }
-
-    // 2. Real photograph observation
-    let modelResponseText = '';
-    let analysisSource = 'Rule-Based Baseline (Field Notes)';
-
-    if (this.ollamaOnline && imageSrc && imageSrc.startsWith('data:image/')) {
-      try {
-        const base64Data = imageSrc.split(',')[1];
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-        const res = await fetch('/api/ollama/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: this.activeModel,
-            prompt: 'Identify the nature subjects in this outdoor photo. Note if it shows trees, rocks, stone structures, rivers, trails, or foliage.',
-            images: [base64Data],
-            stream: false
-          }),
-          signal: controller.signal
-        });
-        clearTimeout(timeoutId);
-
-        if (res.ok) {
-          const data = await res.json();
-          modelResponseText = data.response || '';
-          analysisSource = `Local Vision Model (${this.activeModel.split(':')[0]})`;
-        }
-      } catch {
-        // Fallback to grounded rule-based parsing
-      }
-    }
-
-    const detections = this.parseInferenceToDetections(modelResponseText, fieldNote);
-    this.activeSpecimenKey = this.inferSpecimenKey({ title, notes: modelResponseText, fieldNote });
-
-    this.currentObservation = {
-      id: `obs_${Date.now()}`,
-      title: title || 'Outdoor Field Observation',
-      location: 'Local Field Discovery',
-      imageSrc: imageSrc,
-      fieldNote: fieldNote,
-      isDemo: false,
-      inferenceSource: analysisSource,
-      modelResponse: modelResponseText,
-      detectedElements: detections,
-      notes: fieldNote || 'Verified field observation.',
-      claimed: false
-    };
-
-    this.state.setPendingObservation(this.currentObservation);
-    this.isAnalyzing = false;
-    this.render();
-  }
-
-  parseInferenceToDetections(text = '', fieldNote = '') {
-    const combined = ((text || '') + ' ' + (fieldNote || '')).toLowerCase();
-    const detections = [];
-    let idCounter = 1;
-
-    // Deciduous Oak
-    if (combined.includes('oak') || combined.includes('deciduous') || (combined.includes('tree') && !combined.includes('pine') && !combined.includes('evergreen')) || combined.includes('canopy') || combined.includes('branches')) {
-      detections.push({
-        id: `det_${idCounter++}`,
-        name: 'Deciduous Oak Tree',
-        category: 'Canopy Flora',
-        evidenceStatus: text ? 'Vision Verified (Direct photograph evidence)' : 'Grounded in Field Notes',
-        confirmed: true,
-        suggestedReward: 2,
-        grantsItem: 'ancient_oak',
-        grantsItemName: 'Ancient Oak (x1)'
-      });
-    }
-
-    // Evergreen Pine
-    if (combined.includes('pine') || combined.includes('conifer') || combined.includes('evergreen') || combined.includes('spruce') || combined.includes('fir') || combined.includes('needle')) {
-      detections.push({
-        id: `det_${idCounter++}`,
-        name: 'Evergreen Conifer Spire',
-        category: 'Canopy Flora',
-        evidenceStatus: text ? 'Vision Verified (Direct photograph evidence)' : 'Grounded in Field Notes',
-        confirmed: true,
-        suggestedReward: 1,
-        grantsItem: 'pine_cluster',
-        grantsItemName: 'Pine Cluster (x1)'
-      });
-    }
-
-    // Historic Stone Masonry / Arch
-    if (combined.includes('arch') || combined.includes('cairn') || combined.includes('masonry') || combined.includes('ruin') || combined.includes('stone wall') || combined.includes('carved stone') || combined.includes('statue') || combined.includes('monument')) {
-      detections.push({
-        id: `det_${idCounter++}`,
-        name: 'Historic Stone Cairn / Masonry',
-        category: 'Historic Masonry',
-        evidenceStatus: text ? 'Vision Verified (Direct photograph evidence)' : 'Grounded in Field Notes',
-        confirmed: true,
-        suggestedReward: 2,
-        grantsItem: 'stone_cairn',
-        grantsItemName: 'Stone Cairn (x1)'
-      });
-    }
-
-    // Granite Boulder
-    if (combined.includes('boulder') || combined.includes('granite') || combined.includes('rock') || (combined.includes('stone') && !combined.includes('arch'))) {
-      detections.push({
-        id: `det_${idCounter++}`,
-        name: 'Mossy Granite Boulder',
-        category: 'Geology',
-        evidenceStatus: text ? 'Vision Verified (Direct photograph evidence)' : 'Grounded in Field Notes',
-        confirmed: true,
-        suggestedReward: 1,
-        grantsItem: 'mossy_boulder',
-        grantsItemName: 'Mossy Boulder (x1)'
-      });
-    }
-
-    // Stream / Watercourse
-    if (combined.includes('stream') || combined.includes('river') || combined.includes('creek') || combined.includes('water') || combined.includes('brook') || combined.includes('pond')) {
-      detections.push({
-        id: `det_${idCounter++}`,
-        name: 'Freshwater Stream Corridor',
-        category: 'Hydrology',
-        evidenceStatus: text ? 'Vision Verified (Direct photograph evidence)' : 'Grounded in Field Notes',
-        confirmed: true,
-        suggestedReward: 2,
-        grantsItem: 'stream_tile',
-        grantsItemName: 'Forest Stream (x1)'
-      });
-    }
-
-    // Footpath / Trail
-    if (combined.includes('trail') || combined.includes('path') || combined.includes('footpath') || combined.includes('dirt road') || combined.includes('track') || combined.includes('walkway')) {
-      detections.push({
-        id: `det_${idCounter++}`,
-        name: 'Beaten Earth Trail',
-        category: 'Pedestrian Trail',
-        evidenceStatus: text ? 'Vision Verified (Direct photograph evidence)' : 'Grounded in Field Notes',
-        confirmed: true,
-        suggestedReward: 1,
-        grantsItem: 'earth_trail',
-        grantsItemName: 'Beaten Trail (x2)'
-      });
-    }
-
-    // Ferns / Moss / Wildflowers
-    if (combined.includes('fern') || combined.includes('moss') || combined.includes('lichen') || combined.includes('ivy') || combined.includes('foliage') || combined.includes('undergrowth') || combined.includes('wildflower') || combined.includes('grass')) {
-      detections.push({
-        id: `det_${idCounter++}`,
-        name: 'Wild Ferns & Forest Undergrowth',
-        category: 'Forest Undergrowth',
-        evidenceStatus: text ? 'Vision Verified (Direct photograph evidence)' : 'Grounded in Field Notes',
-        confirmed: true,
-        suggestedReward: 1,
-        grantsItem: 'wild_ferns',
-        grantsItemName: 'Wild Ferns (x1)'
-      });
-    }
-
-    if (detections.length === 0) {
-      detections.push({
-        id: `det_${idCounter++}`,
-        name: text ? 'Uncatalogued Field Subject' : 'Unspecified Field Observation',
-        category: 'Field Observation',
-        evidenceStatus: 'Unverified Candidate · Does not match known sanctuary flora/geology',
-        confirmed: false,
-        suggestedReward: 0,
-        grantsItem: null,
-        grantsItemName: null
-      });
-    }
-
-    return detections;
-  }
-
   attachPhotoFile(file) {
     if (!file || !file.type.startsWith('image/')) {
       alert('Please select a valid image file (JPEG, PNG, WebP).');
@@ -914,37 +869,6 @@ export class DiscoveryAgent {
     }
   }
 
-  claimObservation() {
-    const obs = this.currentObservation;
-    if (!obs) return;
-
-    if (obs.claimed || this.state.claimedObservationIds.has(obs.id)) {
-      alert('This observation has already been transferred to your sanctuary.');
-      return;
-    }
-
-    const confirmed = obs.detectedElements.filter(e => e.confirmed);
-    if (confirmed.length === 0) {
-      alert('Please confirm at least one verified finding before claiming.');
-      return;
-    }
-
-    const result = this.state.claimObservationRewards(obs.id, confirmed);
-    if (result.success) {
-      obs.claimed = true;
-      this.state.setPendingObservation(obs);
-      this.updateJournalDOM();
-      if (this.onClaimSuccess) {
-        this.onClaimSuccess(result);
-      }
-    } else {
-      alert(result.message);
-    }
-  }
-
-  /* -------------------------------------------------------------------------- */
-  /* LIFECYCLE FOR 3D ENGINE                                                    */
-  /* -------------------------------------------------------------------------- */
   claimObservation() {
     const obs = this.currentObservation;
     if (!obs) return;
@@ -990,7 +914,6 @@ export class DiscoveryAgent {
   /* -------------------------------------------------------------------------- */
   /* LIFECYCLE FOR 3D ENGINE                                                    */
   /* -------------------------------------------------------------------------- */
-
   pause3D() {
     if (this.specimen3D) {
       this.specimen3D.pause();
@@ -1014,23 +937,43 @@ export class DiscoveryAgent {
   /* FULL RENDERING & SPLIT-SCREEN LAYOUT                                       */
   /* -------------------------------------------------------------------------- */
   render() {
-    // 1. Analyzing Loading State
+    if (!this.containerEl) return;
+
+    // 1. Analyzing Loading State (Demonstrable Local AI with live timer)
     if (this.isAnalyzing) {
       this.containerEl.innerHTML = `
         <div class="w-full h-full flex items-center justify-center p-8 bg-[#F8F6F1]">
           <div class="p-8 sm:p-10 rounded-3xl bg-[#EDEAE4] border border-[#D9D4C8] text-center max-w-md mx-auto space-y-4 shadow-xl">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#E8F5EE] border border-[#95D5B2] shadow-sm">
-              <div class="w-7 h-7 border-3 border-[#064E2D] border-t-transparent rounded-full animate-spin"></div>
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#E8F5EE] border border-[#95D5B2] shadow-sm">
+              <div class="w-8 h-8 border-3 border-[#064E2D] border-t-transparent rounded-full animate-spin"></div>
             </div>
             <div class="space-y-1.5">
               <h3 class="font-display font-extrabold text-2xl text-[#064E2D] tracking-tight">Examining Field Evidence</h3>
               <p class="text-xs text-[#538B57] leading-relaxed">
-                Evaluating specimen features, flora, geology, and terrain markers against catalog baseline...
+                Running on-device visual analysis via local vision model. Extracting visible evidence and physical features...
               </p>
             </div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E2DED5] text-[11px] font-medium text-[#4A5B4E]">
-              <span class="w-2 h-2 rounded-full bg-[#538B57] animate-pulse"></span>
-              <span>${this.ollamaOnline ? `Local Vision Model (${this.activeModel.split(':')[0]})` : 'Rule-Based Baseline Parser'}</span>
+            
+            <!-- Live Model Tag & Timer -->
+            <div class="p-3 rounded-2xl bg-[#E2DED5]/70 border border-[#D9D4C8] text-left space-y-2">
+              <div class="flex items-center justify-between text-[11px]">
+                <span class="font-heading font-extrabold text-[#064E2D] uppercase tracking-wider">Engine:</span>
+                <span class="px-2 py-0.5 rounded-full bg-[#E8F5EE] text-[#064E2D] font-bold text-[10px] border border-[#95D5B2] flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#538B57] animate-pulse"></span>
+                  <span>Running Locally</span>
+                </span>
+              </div>
+              <div class="font-mono text-[10px] text-[#2D3830] truncate" title="${this.activeModel}">
+                ${this.activeModel}
+              </div>
+              <div class="flex items-center justify-between text-[11px] pt-1 border-t border-[#D9D4C8]/60 text-[#538B57]">
+                <span>Inference Time:</span>
+                <span class="font-mono font-bold text-[#064E2D]"><span id="analysis-timer-sec">0</span>s elapsed</span>
+              </div>
+            </div>
+
+            <div class="text-[10px] text-[#6B7280]">
+              🔒 100% On-Device · Private · Zero Cloud Telemetry
             </div>
           </div>
         </div>
@@ -1067,13 +1010,15 @@ export class DiscoveryAgent {
                 }">
                   ${obs.isDemo ? '🔬 3D SPECIMEN REFERENCE' : '📸 FIELD PHOTO REFERENCE'}
                 </span>
-                <span class="text-[10px] text-[#538B57] font-medium">· Simulated Model</span>
+                <span id="discovery-3d-sublabel" class="text-[10px] text-[#538B57] font-medium">
+                  · ${obs.isDemo ? '3D Simulator Specimen' : (obs.isRunningLocally ? 'Analyzed via Local Vision AI' : 'Field Photograph Evidence')}
+                </span>
               </div>
               <h3 id="discovery-3d-title" class="font-display font-extrabold text-lg text-[#064E2D] tracking-tight">
-                ${obs.title || 'Weathered Cut-Granite Archway'}
+                ${getCleanObservationTitle(obs)}
               </h3>
               <p id="discovery-3d-desc" class="text-xs text-[#538B57] leading-tight">
-                ${obs.notes || 'Weathered cut-granite mortar archway with creeping ivy roots.'}
+                ${obs.notes || obs.fieldNote || 'Weathered cut-granite mortar archway with creeping ivy roots.'}
               </p>
             </div>
           </div>
@@ -1160,7 +1105,7 @@ export class DiscoveryAgent {
         <!-- ================================================================== -->
         <!-- RIGHT COLUMN: EDITORIAL FIELD JOURNAL (42% desktop width)           -->
         <!-- ================================================================== -->
-        <div id="discovery-journal-panel" class="w-full md:w-[42%] lg:w-[40%] h-[52vh] md:h-full overflow-y-auto custom-scrollbar bg-[#F8F6F1] p-5 sm:p-7 lg:p-8 space-y-5 text-[#2D3830]">
+        <div id="discovery-journal-panel" class="w-full md:w-[42%] lg:w-[40%] h-[52vh] md:h-full overflow-y-auto custom-scrollbar journal-paper-panel p-5 sm:p-7 lg:p-8 space-y-5 text-[#2D3830]">
           <!-- Injected via updateJournalDOM() -->
         </div>
 
@@ -1234,237 +1179,554 @@ export class DiscoveryAgent {
     const obs = this.currentObservation;
     if (!obs) return;
 
+    const cleanTitle = getCleanObservationTitle(obs);
     const titleEl = this.containerEl.querySelector('#discovery-3d-title');
     const descEl = this.containerEl.querySelector('#discovery-3d-desc');
     const badgeEl = this.containerEl.querySelector('#discovery-3d-badge');
+    const sublabelEl = this.containerEl.querySelector('#discovery-3d-sublabel');
 
-    if (titleEl) titleEl.textContent = obs.title;
+    if (titleEl) titleEl.textContent = cleanTitle;
     if (descEl) descEl.textContent = obs.notes || obs.fieldNote || '';
     if (badgeEl) {
-      badgeEl.className = `inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-heading font-extrabold uppercase tracking-wider ${
-        obs.isDemo ? 'bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]' : 'bg-[#E8F5EE] text-[#064E2D] border border-[#95D5B2]'
-      }`;
-      badgeEl.textContent = obs.isDemo ? '🔬 3D SPECIMEN REFERENCE' : '📸 FIELD PHOTO REFERENCE';
+      if (obs.isDemo) {
+        badgeEl.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-heading font-extrabold uppercase tracking-wider bg-[#EDEAE4] text-[#064E2D] border border-[#CAD8C5]';
+        badgeEl.textContent = '🔬 3D SPECIMEN REFERENCE';
+      } else if (obs.eligibilityStatus === 'ineligible' || obs.isRewardEligible === false) {
+        badgeEl.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-heading font-extrabold uppercase tracking-wider bg-[#FEE2E2] text-[#991B1B] border border-[#FECACA]';
+        badgeEl.textContent = '📓 FIELD STUDY ENTRY';
+      } else {
+        badgeEl.className = 'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-heading font-extrabold uppercase tracking-wider bg-[#E8F5EE] text-[#064E2D] border border-[#95D5B2]';
+        badgeEl.textContent = '📸 FIELD PHOTO REFERENCE';
+      }
+    }
+    if (sublabelEl) {
+      sublabelEl.textContent = '· ' + (obs.isDemo ? '3D Simulator Specimen' : (obs.isRunningLocally ? 'Local Vision AI' : 'Field Photo Evidence'));
     }
 
     // Update specimen picker active states
     this.containerEl.querySelectorAll('.btn-pick-sample').forEach(btn => {
       const isSelected = btn.getAttribute('data-sample-id') === this.activeSpecimenKey;
       btn.className = `btn-pick-sample px-2.5 py-1.5 rounded-lg text-xs font-heading font-bold cursor-pointer transition-all ${
-        isSelected ? 'bg-[#064E2D] text-[#EDEAE4] shadow-xs' : 'text-[#4A5B4E] hover:bg-[#E2DED5]'
+        isSelected 
+          ? 'bg-[#064E2D] text-[#EDEAE4] shadow-xs' 
+          : 'text-[#4A5B4E] hover:bg-[#E2DED5]'
       }`;
     });
   }
 
+  recordStudyEntryInJournal() {
+    const obs = this.currentObservation;
+    if (!obs) return;
+    obs.preserved = true;
+    this.state.setPendingObservation(obs);
+    this.updateJournalDOM();
+    if (this.onClaimSuccess) {
+      this.onClaimSuccess({ success: true, message: 'Study entry recorded in field journal.' });
+    }
+  }
+
   updateJournalDOM() {
+    if (!this.containerEl) return;
     const journalPanel = this.containerEl.querySelector('#discovery-journal-panel');
     if (!journalPanel) return;
 
     const obs = this.currentObservation;
     if (!obs) return;
 
-    const isAlreadyClaimed = obs.claimed || this.state.claimedObservationIds.has(obs.id);
-    const confirmedCount = (obs.detectedElements || []).filter(e => e.confirmed).length;
-    const totalMaterials = (obs.detectedElements || []).filter(e => e.confirmed).reduce((sum, e) => sum + (e.suggestedReward || 0), 0);
-    const eligibleItems = (obs.detectedElements || []).filter(e => e.confirmed && e.grantsItemName);
+    const hasError = !!obs.analysisError;
+    const isRunningLocally = !!obs.isRunningLocally;
+    const isAlreadyClaimed = obs.claimed || (this.state.claimedObservationIds && this.state.claimedObservationIds.has(obs.id));
+    const isPreserved = !!obs.preserved || isAlreadyClaimed;
+    const isEligible = obs.eligibilityStatus !== 'ineligible' && obs.isRewardEligible !== false && !hasError;
+    const cleanTitle = getCleanObservationTitle(obs);
+
+    const candidates = obs.detectedElements || [];
+    const totalCandidates = candidates.length;
+    const validConfirmedCount = candidates.filter(e => e.confirmed && !e.ineligible).length;
+    const totalMaterials = isEligible 
+      ? candidates.filter(e => e.confirmed && !e.ineligible).reduce((sum, e) => sum + (e.suggestedReward || 0), 0)
+      : 0;
+    const eligibleItems = isEligible 
+      ? candidates.filter(e => e.confirmed && !e.ineligible && e.grantsItemName)
+      : [];
 
     const getFindIcon = (name = '', category = '') => {
       const lower = (name + ' ' + category).toLowerCase();
-      if (lower.includes('oak') || lower.includes('canopy')) return '🌳';
+      if (lower.includes('oak') || lower.includes('canopy') || lower.includes('tree')) return '🌳';
       if (lower.includes('pine') || lower.includes('conifer')) return '🌲';
-      if (lower.includes('arch') || lower.includes('cairn') || lower.includes('masonry')) return '🏛️';
+      if (lower.includes('arch') || lower.includes('cairn') || lower.includes('masonry') || lower.includes('stone')) return '🏛️';
       if (lower.includes('boulder') || lower.includes('rock') || lower.includes('granite')) return '🪨';
       if (lower.includes('stream') || lower.includes('water') || lower.includes('creek')) return '🌊';
       if (lower.includes('trail') || lower.includes('path') || lower.includes('footpath')) return '🪵';
       if (lower.includes('fern') || lower.includes('moss') || lower.includes('flora')) return '🌿';
-      if (lower.includes('cart') || lower.includes('bike') || lower.includes('wagon')) return '🛒';
       return '✨';
     };
 
+    const hasStructured = !!obs.structuredAnalysis;
+    const allFeatures = (obs.structuredAnalysis?.visible_features && obs.structuredAnalysis.visible_features.length > 0)
+      ? obs.structuredAnalysis.visible_features
+      : candidates.map(e => e.name);
+    const prominentFeatures = allFeatures.slice(0, 3);
+    const remainingFeaturesCount = Math.max(0, allFeatures.length - 3);
+
+    // Derived location context
+    const locationLabel = obs.location || (obs.isDemo ? 'Botanical Reserve Baseline' : 'Outdoor Expedition Field');
+
+    // 1. SINGLE Consolidated Entry Status (No duplicate warnings across cards)
+    let entryStatus = {
+      badge: 'Study entry',
+      badgeClass: 'bg-[#FEE2E2] text-[#991B1B] border-[#FECACA]',
+      icon: '📓',
+      summary: 'Saved in field journal as a study record · Outdoor walk needed for living world rewards'
+    };
+
+    if (hasError) {
+      entryStatus = {
+        badge: 'Inference notice',
+        badgeClass: 'bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]',
+        icon: '⚠️',
+        summary: 'Local vision engine encountered an issue · Photo and notes preserved safely'
+      };
+    } else if (obs.isDemo || obs.eligibilityStatus === 'demo_baseline') {
+      entryStatus = {
+        badge: 'Reference baseline',
+        badgeClass: 'bg-[#EDEAE4] text-[#064E2D] border-[#CAD8C5]',
+        icon: '🔬',
+        summary: '3D simulator study specimen · Pre-verified for natural history exploration'
+      };
+    } else if (obs.eligibilityStatus === 'ineligible' || obs.isRewardEligible === false) {
+      entryStatus = {
+        badge: 'Study entry',
+        badgeClass: 'bg-[#FEE2E2] text-[#991B1B] border-[#FECACA]',
+        icon: '📓',
+        summary: 'Saved in field journal as a study record · Physical-world discoveries require outdoor exploration'
+      };
+    } else if (obs.eligibilityStatus === 'uncertain') {
+      entryStatus = {
+        badge: 'Needs review',
+        badgeClass: 'bg-[#FEF3C7] text-[#92400E] border-[#FDE68A]',
+        icon: '🔍',
+        summary: 'Outdoor authenticity unverified · Direct field notes can corroborate findings'
+      };
+    } else {
+      entryStatus = {
+        badge: isAlreadyClaimed ? 'Catalogued in Sanctuary' : 'Verified discovery',
+        badgeClass: 'bg-[#E8F5EE] text-[#064E2D] border-[#95D5B2]',
+        icon: '🌱',
+        summary: isAlreadyClaimed 
+          ? 'Transferred to your living sanctuary' 
+          : 'Authentic outdoor observation · Ready to collect findings'
+      };
+    }
+
+    // 2. Summary text
+    const summaryText = obs.structuredAnalysis?.evidence_summary || obs.notes || 'Natural features observed and catalogued.';
+
+    // 3. Next adventure text & tip
+    let nextAdventureText = 'Look for tree bark textures, leaf shapes, or stone moss within 15 minutes on foot.';
+    let nextAdventureTip = 'Put your phone away and explore safely. Observe nature without disturbing wildlife.';
+
+    if (obs.eligibilityStatus === 'ineligible' || obs.isRewardEligible === false) {
+      nextAdventureText = 'Take a 15-minute nature walk in a nearby park, trail, or garden to record authentic outdoor discoveries.';
+      nextAdventureTip = 'Put your phone away while walking and observe nature without disturbing wildlife.';
+    } else if (hasError) {
+      nextAdventureText = 'Check that your local Ollama engine is running, or enjoy a walk outside and capture a fresh photo when ready.';
+      nextAdventureTip = 'Your field photo and notes remain safely preserved in UNSEEN.';
+    } else if (obs.isDemo || obs.eligibilityStatus === 'demo_baseline') {
+      nextAdventureText = 'Head outside to spot similar living rock formations, tree canopies, or water features in your local environment.';
+      nextAdventureTip = 'Take a 15-minute walk to compare real-world textures and lighting.';
+    } else if (obs.structuredAnalysis?.follow_up_observation) {
+      nextAdventureText = obs.structuredAnalysis.follow_up_observation;
+      nextAdventureTip = 'Put your phone away and explore safely. Observe nature without disturbing wildlife.';
+    }
+
+    // Model display badge in details summary
+    const modelBadge = isRunningLocally 
+      ? `🟢 Qwen3-VL${obs.inferenceLatencySec ? ` · ${obs.inferenceLatencySec}s` : ''}` 
+      : (hasError ? '⚠️ Engine Notice' : '🔬 3D Baseline');
+
     journalPanel.innerHTML = `
-      <!-- Header -->
-      <div class="space-y-1 pb-3 border-b border-[#E2DED5]">
-        <div class="flex items-center justify-between">
-          <span class="text-[10px] font-heading font-extrabold text-[#538B57] uppercase tracking-wider">
-            FIELD JOURNAL · OBSERVATION RECORD
-          </span>
-          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-heading font-bold ${
-            isAlreadyClaimed ? 'bg-[#E8F5EE] text-[#064E2D] border border-[#95D5B2]' : 'bg-[#EDEAE4] text-[#538B57] border border-[#D9D4C8]'
-          }">
-            ${isAlreadyClaimed ? 'Transferred ✓' : `${confirmedCount} / ${obs.detectedElements.length} Confirmed`}
+      <!-- ================================================================ -->
+      <!-- 1. OBSERVATION TITLE & STATUS HIERARCHY                          -->
+      <!-- ================================================================ -->
+      <div class="space-y-2 pb-4 border-b border-[#E2DED5]">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5 text-[10px] font-heading font-extrabold uppercase tracking-wider text-[#538B57]">
+            <span>🌿</span>
+            <span>FIELD JOURNAL</span>
+            <span>·</span>
+            <span class="truncate max-w-[150px] sm:max-w-none">${locationLabel}</span>
+          </div>
+
+          <!-- Single consolidated status badge -->
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-heading font-bold border shrink-0 ${entryStatus.badgeClass}">
+            <span>${entryStatus.icon}</span>
+            <span>${entryStatus.badge}</span>
           </span>
         </div>
-        <h2 class="font-display font-extrabold text-2xl text-[#064E2D] tracking-tight">
-          What did you find?
-        </h2>
-        <p class="text-xs text-[#538B57] leading-relaxed">
-          Physical evidence evaluated against botanical catalog records.
-        </p>
+
+        <div>
+          <h2 id="discovery-journal-title" class="font-display font-extrabold text-2xl text-[#064E2D] tracking-tight leading-snug">
+            ${cleanTitle}
+          </h2>
+          <p class="text-xs text-[#5A6E5F] font-medium leading-relaxed mt-1">
+            ${entryStatus.summary}
+          </p>
+        </div>
       </div>
 
-      <!-- Field Researcher Notes Card -->
-      <div class="p-3.5 rounded-2xl bg-[#EDEAE4] border border-[#D9D4C8] space-y-1">
-        <div class="flex items-center justify-between text-[10px] font-heading font-extrabold text-[#538B57] uppercase tracking-wider">
-          <span>Field Notes</span>
-          <span>Direct Entry</span>
-        </div>
-        <p class="text-xs text-[#064E2D] italic font-medium leading-relaxed">
-          "${obs.fieldNote || obs.notes || 'No researcher notes recorded for this specimen.'}"
-        </p>
-      </div>
-
-      <!-- Evidence Integrity & Method Card -->
-      <div class="p-3.5 rounded-2xl bg-[#EDEAE4] border border-[#D9D4C8] text-xs space-y-1.5">
+      <!-- ================================================================ -->
+      <!-- 2. WHAT WE NOTICED (Concise summary + max 3 prominent features)  -->
+      <!-- ================================================================ -->
+      <div class="p-4 rounded-2xl bg-[#FFFFFF] border border-[#D9D4C8] shadow-2xs space-y-2.5 text-xs">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-heading font-extrabold text-[#538B57] uppercase tracking-wider">
-            Evidence Pipeline
+          <span class="font-heading font-extrabold text-[11px] text-[#064E2D] uppercase tracking-wider">
+            What We Noticed
           </span>
-          <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${
-            (obs.inferenceSource || '').includes('Vision') 
-              ? 'bg-[#E8F5EE] text-[#064E2D] border border-[#95D5B2]' 
-              : 'bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]'
-          }">
-            ${obs.inferenceSource || 'Demo Specimen Baseline'}
-          </span>
+          <span class="text-[10px] text-[#538B57] font-medium">Field Record</span>
         </div>
-        <p class="text-[11px] text-[#4A5B4E] leading-relaxed">
-          ${obs.imageSrc 
-            ? 'Candidate findings evaluated from your uploaded walk photograph. 3D viewport displays reference model for feature identification.' 
-            : 'Candidate findings evaluated against verified reference specimen baseline. The 3D scene visualizes the physical specimen.'}
+
+        <p class="text-xs text-[#064E2D] font-medium leading-relaxed">
+          ${summaryText}
         </p>
-        ${!obs.imageSrc ? `
-          <div class="pt-1 flex items-center justify-between text-[11px]">
-            <span class="text-[#538B57]">Have a real walk photograph?</span>
-            <button id="btn-attach-custom-photo" class="font-bold text-[#064E2D] hover:underline cursor-pointer">
-              + Attach walk photo
-            </button>
+
+        ${(obs.fieldNote && obs.fieldNote.trim() !== summaryText.trim()) ? `
+          <div class="pt-2 border-t border-[#E2DED5] flex items-start gap-2 text-xs text-[#2D3830]">
+            <span class="shrink-0 text-[#538B57]">✍️</span>
+            <span class="italic font-serif leading-relaxed text-[#064E2D]">"${obs.fieldNote}"</span>
+          </div>
+        ` : ''}
+
+        ${prominentFeatures.length > 0 ? `
+          <div class="pt-2 border-t border-[#E2DED5] flex flex-wrap gap-1.5 items-center">
+            ${prominentFeatures.map(f => {
+              const shortName = f.length > 38 ? f.slice(0, 36) + '…' : f;
+              return `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F8F6F1] border border-[#CAD8C5] text-xs font-heading font-bold text-[#064E2D]" title="${f}">
+                  <span>${getFindIcon(f)}</span>
+                  <span>${shortName}</span>
+                </span>
+              `;
+            }).join('')}
+            ${remainingFeaturesCount > 0 ? `
+              <span class="text-[10px] text-[#538B57] font-medium pl-1">
+                +${remainingFeaturesCount} more in details
+              </span>
+            ` : ''}
           </div>
         ` : ''}
       </div>
 
-      <!-- Candidate Findings List -->
-      <div class="space-y-1.5">
-        <div class="flex items-center justify-between text-[11px] font-heading font-extrabold text-[#064E2D] uppercase tracking-wider">
-          <span>Candidate Findings:</span>
-          <span class="text-[10px] text-[#538B57] font-medium">Toggle to confirm or exclude</span>
-        </div>
-
-        <div class="findings-list divide-y divide-[#E2DED5] border-y border-[#E2DED5]">
-          ${obs.detectedElements.map(el => {
-            const icon = getFindIcon(el.name, el.category);
-            const isConfirmed = !!el.confirmed;
-            const evidenceStatus = el.evidenceStatus || 'Pre-verified Baseline';
-            const statusClass = isConfirmed
-              ? evidenceStatus.includes('Vision Verified') 
-                ? 'text-[#064E2D]' 
-                : evidenceStatus.includes('Demo') 
-                  ? 'text-[#92400E]' 
-                  : 'text-[#538B57]'
-              : 'text-[#9CA3AF] line-through';
-
-            return `
-              <div class="finding-row py-3 flex items-center justify-between gap-3 transition-colors rounded-xl px-2" data-row-id="${el.id}">
-                
-                <!-- Left: Icon & Description -->
-                <div class="flex items-center gap-3 min-w-0">
-                  <div class="w-8 h-8 rounded-lg bg-[#E8F5EE] text-[#064E2D] flex items-center justify-center text-base shrink-0 border border-[#CAD8C5]">
-                    ${icon}
-                  </div>
-                  <div class="min-w-0">
-                    <div class="flex items-center gap-1.5">
-                      <span class="font-heading font-bold text-xs text-[#064E2D] truncate">${el.name}</span>
-                      <span class="text-[11px] text-[#538B57] hidden sm:inline">· ${el.category}</span>
-                    </div>
-                    <div class="text-[10px] font-medium ${statusClass}">
-                      ${isConfirmed ? evidenceStatus : 'Excluded from claim'}
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Right: Reward & Toggle -->
-                <div class="flex items-center gap-2.5 shrink-0">
-                  <div class="text-right">
-                    ${isConfirmed && el.grantsItemName ? `
-                      <div class="text-[11px] font-bold text-[#E96D2C]">${el.grantsItemName}</div>
-                    ` : ''}
-                    <div class="text-[10px] text-[#538B57] font-medium">
-                      ${isConfirmed ? `+${el.suggestedReward || 0} DM` : '0 DM'}
-                    </div>
-                  </div>
-
-                  <button 
-                    class="btn-toggle-find px-2.5 py-1 rounded-lg text-xs font-heading font-bold transition-all cursor-pointer ${
-                      isConfirmed 
-                        ? 'bg-[#E8F5EE] text-[#064E2D] border border-[#95D5B2] hover:bg-[#D4EDDF]' 
-                        : 'bg-[#EDEAE4] text-[#6B7280] border border-[#D9D4C8] hover:bg-[#E2DED5]'
-                    }"
-                    data-el-id="${el.id}"
-                    aria-label="${isConfirmed ? 'Exclude finding' : 'Confirm finding'}"
-                  >
-                    ${isConfirmed ? '✓ Keep' : 'Skip'}
-                  </button>
-                </div>
-
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-
-      <!-- Transfer Summary & Primary Action CTA -->
-      <div class="transfer-card p-4 rounded-2xl bg-[#EDEAE4] border border-[#D9D4C8] space-y-3.5 shadow-xs">
-        
+      <!-- ================================================================ -->
+      <!-- 3. NEXT ADVENTURE (One friendly, safe objective)                 -->
+      <!-- ================================================================ -->
+      <div class="p-4 rounded-2xl bg-[#F4F9F5] border border-[#CAD8C5] space-y-2 shadow-2xs">
         <div class="flex items-center justify-between text-xs">
-          <div>
-            <span class="font-heading font-extrabold text-[#064E2D] uppercase tracking-wider text-[10px]">Sanctuary Rewards:</span>
-            <div class="text-[#064E2D] font-medium text-xs mt-0.5">
-              ${eligibleItems.length > 0 
-                ? eligibleItems.map(i => i.grantsItemName).join(' · ') 
-                : 'No placeable objects eligible'}
-            </div>
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-lg bg-[#E7CA49]/30 text-[#064E2D] flex items-center justify-center text-xs font-bold shrink-0">🧭</span>
+            <span class="font-heading font-extrabold text-[#064E2D] uppercase tracking-wider text-[11px]">
+              Next Adventure
+            </span>
           </div>
-          <div class="text-right shrink-0">
-            <span class="font-heading font-extrabold text-[#064E2D] uppercase tracking-wider text-[10px]">Materials Yield:</span>
-            <div class="text-base font-display font-extrabold text-[#064E2D]">
-              +${totalMaterials} DM
-            </div>
-          </div>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-heading font-bold bg-[#EDEAE4] text-[#538B57] border border-[#D9D4C8]">
+            ${isEligible ? '~15 min on foot' : 'Outdoor Step'}
+          </span>
         </div>
 
-        ${isAlreadyClaimed ? `
-          <div class="pt-2.5 border-t border-[#D9D4C8] flex flex-col sm:flex-row items-center justify-between gap-2.5">
-            <div class="flex items-center gap-2 text-xs font-bold text-[#064E2D]">
-              <span class="w-2 h-2 rounded-full bg-[#538B57]"></span>
-              <span>Transferred to World Inventory</span>
-            </div>
-            <button id="btn-discovery-to-world" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#064E2D] text-[#EDEAE4] font-heading font-bold text-xs uppercase tracking-wider hover:bg-[#083D24] transition-all cursor-pointer shadow-md flex items-center justify-center gap-1.5">
-              <span>Enter My World</span>
-              <span>→</span>
-            </button>
-          </div>
-        ` : `
-          <div class="pt-2.5 border-t border-[#D9D4C8] space-y-1.5">
-            <button 
-              id="btn-claim-rewards" 
-              class="w-full py-3 px-5 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-[#EDEAE4] transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md ${
-                confirmedCount > 0 
-                  ? 'bg-[#064E2D] hover:bg-[#083D24] hover:shadow-lg active:scale-99' 
-                  : 'bg-[#9CA3AF] opacity-50 cursor-not-allowed'
-              }"
-              ${confirmedCount === 0 ? 'disabled' : ''}
-            >
-              <span>Bring discoveries to my world</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-              </svg>
-            </button>
-            ${confirmedCount === 0 ? `
-              <p class="text-[10px] text-[#6B7280] text-center">Confirm at least one verified finding above to transfer rewards.</p>
-            ` : ''}
-          </div>
-        `}
+        <p class="text-xs text-[#064E2D] font-bold leading-snug pl-8">
+          ${nextAdventureText}
+        </p>
 
+        <div class="pl-8 pt-1 text-[10px] text-[#538B57] flex items-center gap-1.5 border-t border-[#CAD8C5]/60">
+          <span>🌿</span>
+          <span>${nextAdventureTip}</span>
+        </div>
       </div>
+
+      <!-- ================================================================ -->
+      <!-- 4. MORE DETAILS (Collapsed AI Transparency & Diagnostics)         -->
+      <!-- ================================================================ -->
+      <details class="group rounded-2xl border border-[#D9D4C8] bg-[#EDEAE4]/70 overflow-hidden text-xs transition-all shadow-2xs">
+        <summary class="p-3.5 flex items-center justify-between cursor-pointer select-none list-none hover:bg-[#E2DED5]/60 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <span class="text-sm">🔍</span>
+            <div>
+              <span class="font-heading font-extrabold text-[#064E2D] uppercase tracking-wider text-[11px] block">
+                More details & diagnostics
+              </span>
+              <span class="text-[10px] text-[#538B57]">Full vision analysis, uncertainties & local AI runtime</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${
+              isRunningLocally 
+                ? 'bg-[#E8F5EE] text-[#064E2D] border border-[#95D5B2]' 
+                : hasError 
+                  ? 'bg-[#FEF2F2] text-[#991B1B] border border-[#FECACA]' 
+                  : 'bg-[#EDEAE4] text-[#538B57] border border-[#D9D4C8]'
+            }">
+              ${modelBadge}
+            </span>
+            <span class="text-[#538B57] text-xs transition-transform group-open:rotate-180">▼</span>
+          </div>
+        </summary>
+
+        <div class="p-4 pt-1 space-y-3 border-t border-[#D9D4C8]/60 bg-[#FFFFFF]/70">
+          <!-- Runtime Model Details -->
+          <div class="p-2.5 rounded-xl bg-[#EDEAE4] border border-[#D9D4C8] space-y-1">
+            <div class="flex items-center justify-between text-[11px]">
+              <span class="font-heading font-extrabold text-[#538B57] uppercase tracking-wider">Vision Engine:</span>
+              <span class="font-mono text-[10px] text-[#064E2D] font-bold truncate max-w-[210px]" title="${obs.modelName || this.activeModel}">
+                ${obs.modelName || this.activeModel}
+              </span>
+            </div>
+            <div class="flex items-center justify-between text-[10px] text-[#5A6E5F] pt-1 border-t border-[#D9D4C8]/60">
+              <span>Ollama Q4_K_M GGUF · Apple Silicon</span>
+              <span>100% On-Device · Latency: ${obs.inferenceLatencySec ? `${obs.inferenceLatencySec}s` : 'Instant'}</span>
+            </div>
+          </div>
+
+          <!-- Error notice if inference failed -->
+          ${hasError ? `
+            <div class="p-3 rounded-xl bg-[#FFFBEB] border border-[#FDE68A] text-xs text-[#92400E] space-y-1">
+              <div class="font-heading font-bold text-xs text-[#B45309]">⚠️ Local Vision Notice</div>
+              <p class="text-[11px] text-[#78350F]">${obs.analysisError}</p>
+              <div class="text-[10px] text-[#B45309] font-medium pt-1 border-t border-[#FDE68A]/60">
+                UNSEEN preserves your photo and notes without fabricating simulated findings.
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Complete visible features breakdown -->
+          ${allFeatures.length > 0 ? `
+            <div class="space-y-1">
+              <span class="text-[10px] font-heading font-extrabold text-[#538B57] uppercase tracking-wider">All Visible Features (${allFeatures.length}):</span>
+              <div class="flex flex-wrap gap-1.5">
+                ${allFeatures.map(f => `
+                  <span class="px-2 py-0.5 rounded-md bg-[#FFFFFF] border border-[#CAD8C5] text-[10px] font-medium text-[#14281D]">
+                    • ${f}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Cautious hypotheses -->
+          ${hasStructured && (obs.structuredAnalysis.possible_interpretations || []).length > 0 ? `
+            <div class="space-y-1">
+              <span class="text-[10px] font-heading font-extrabold text-[#92400E] uppercase tracking-wider">Unverified Hypotheses:</span>
+              <div class="space-y-1">
+                ${obs.structuredAnalysis.possible_interpretations.map(h => `
+                  <div class="text-[11px] text-[#78350F] italic bg-[#FEF3C7]/60 p-2 rounded-lg border border-[#FDE68A]">
+                    "${h}" <span class="not-italic text-[10px] font-bold text-[#B45309]">· (Hypothesis, not proven fact)</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Physical uncertainties -->
+          ${hasStructured && (obs.structuredAnalysis.uncertainties || []).length > 0 ? `
+            <div class="space-y-1">
+              <span class="text-[10px] font-heading font-extrabold text-[#5A6E5F] uppercase tracking-wider">Physical Uncertainties:</span>
+              <ul class="space-y-0.5 text-[11px] text-[#4A5B4E] list-disc list-inside bg-[#FFFFFF] p-2 rounded-xl border border-[#CAD8C5]">
+                ${obs.structuredAnalysis.uncertainties.map(u => `<li>${u}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+
+          <!-- Photo attachment & Test triggers -->
+          <div class="pt-2 border-t border-[#D9D4C8]/60 flex items-center gap-2">
+            <button id="btn-attach-custom-photo" class="flex-1 py-1.5 px-2.5 rounded-xl bg-[#F8F6F1] hover:bg-[#FFFFFF] border border-[#D9D4C8] text-[11px] font-heading font-bold text-[#064E2D] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-2xs hover:shadow-xs">
+              <span>📷</span>
+              <span>Upload Photo</span>
+            </button>
+            <button id="btn-sample-discovery-photo" class="flex-1 py-1.5 px-2.5 rounded-xl bg-[#E8F5EE] hover:bg-[#D4EDDF] border border-[#95D5B2] text-[11px] font-heading font-bold text-[#064E2D] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-2xs hover:shadow-xs">
+              <span>🌲</span>
+              <span>Test Specimen Photo</span>
+            </button>
+          </div>
+        </div>
+      </details>
+
+      <!-- ================================================================ -->
+      <!-- 5. JOURNAL ACTION (State-Aware: Study Entry vs Eligible vs Error)-->
+      <!-- ================================================================ -->
+      ${hasError ? `
+        <!-- Case A: Inference Failure -->
+        <div class="p-4 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] space-y-3 shadow-2xs">
+          <div class="flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span class="text-base">⚠️</span>
+              <span class="font-heading font-extrabold text-[#92400E] uppercase tracking-wider text-[11px]">
+                Analysis Notice
+              </span>
+            </div>
+            <span class="text-[10px] font-heading font-bold text-[#92400E] px-2 py-0.5 rounded-full bg-[#FEF3C7] border border-[#FDE68A]">
+              Evidence Preserved
+            </span>
+          </div>
+
+          <p class="text-xs text-[#78350F] leading-relaxed">
+            ${obs.analysisError || 'Local vision analysis could not be completed.'} Your field photo and notes remain preserved.
+          </p>
+
+          <div class="flex items-center gap-2 pt-2 border-t border-[#FDE68A]/70">
+            <button id="btn-retry-inference" class="flex-1 py-2 px-3 rounded-xl bg-[#064E2D] text-[#EDEAE4] font-heading font-bold text-xs uppercase tracking-wider hover:bg-[#083D24] transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm">
+              <span>🔄</span><span>Retry Analysis</span>
+            </button>
+            <button id="btn-edit-observation" class="flex-1 py-2 px-3 rounded-xl bg-[#EDEAE4] text-[#064E2D] font-heading font-bold text-xs uppercase tracking-wider hover:bg-[#E2DED5] border border-[#CAD8C5] transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+              <span>✏️</span><span>Edit Observation</span>
+            </button>
+          </div>
+        </div>
+      ` : (obs.eligibilityStatus === 'ineligible' || obs.isRewardEligible === false) ? `
+        <!-- Case B: Study Entry / Digital Rendering (No large empty reward box) -->
+        <div class="p-4 rounded-2xl bg-[#EDEAE4] border border-[#D9D4C8] space-y-3 shadow-2xs">
+          <div class="flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span class="text-base">📓</span>
+              <span class="font-heading font-extrabold text-[#064E2D] uppercase tracking-wider text-[11px]">
+                Field Journal Record
+              </span>
+            </div>
+            <span class="text-[10px] font-heading font-bold text-[#78350F] px-2 py-0.5 rounded-full bg-[#F8F6F1] border border-[#D9D4C8]">
+              Study Record Preserved
+            </span>
+          </div>
+
+          <p class="text-xs text-[#5A6E5F] leading-relaxed">
+            This study observation is preserved in your field journal. Living Sanctuary transfers and physical rewards are reserved for authentic outdoor nature walks.
+          </p>
+
+          <div class="pt-2 border-t border-[#D9D4C8]">
+            <button id="btn-save-study-journal" class="w-full py-2.5 px-4 rounded-xl font-heading font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+              isPreserved 
+                ? 'bg-[#E8F5EE] text-[#064E2D] border border-[#95D5B2] cursor-default' 
+                : 'bg-[#064E2D] text-[#EDEAE4] hover:bg-[#083D24] shadow-sm cursor-pointer'
+            }">
+              <span>${isPreserved ? '✓ Recorded in Field Journal' : 'Record in Field Journal'}</span>
+            </button>
+          </div>
+        </div>
+      ` : `
+        <!-- Case C: Eligible Outdoor Observation or Baseline Specimen -->
+        <div class="space-y-3">
+          <!-- Findings to Collect List -->
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-heading font-extrabold text-[#064E2D] uppercase tracking-wider text-[11px]">
+              Findings to Collect
+            </span>
+            <span class="text-[10px] font-heading font-bold text-[#538B57]">
+              ${validConfirmedCount} of ${totalCandidates} findings confirmed
+            </span>
+          </div>
+
+          ${candidates.length > 0 ? `
+            <div class="space-y-2">
+              ${candidates.map(el => {
+                const icon = getFindIcon(el.name, el.category);
+                const isConfirmed = !!el.confirmed;
+                return `
+                  <div class="finding-card p-3 rounded-2xl bg-[#FFFFFF] border ${
+                    isConfirmed ? 'border-[#95D5B2] bg-[#F7FCF9]' : 'border-[#E2DED5]'
+                  } shadow-2xs flex items-center justify-between gap-3" data-row-id="${el.id}">
+                    <div class="flex items-center gap-3 min-w-0">
+                      <div class="w-9 h-9 rounded-xl ${
+                        isConfirmed ? 'bg-[#E8F5EE] border-[#95D5B2]' : 'bg-[#F8F6F1] border-[#E2DED5]'
+                      } text-[#064E2D] flex items-center justify-center text-base shrink-0 border">
+                        ${icon}
+                      </div>
+                      <div class="min-w-0">
+                        <div class="font-heading font-extrabold text-xs sm:text-sm text-[#064E2D] truncate">
+                          ${el.name}
+                        </div>
+                        <div class="text-[11px] text-[#538B57] truncate">
+                          ${el.category || 'Natural Feature'}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-2.5 shrink-0">
+                      <div class="text-right">
+                        ${el.grantsItemName ? `
+                          <div class="text-[10px] font-heading font-extrabold text-[#E96D2C]">
+                            ${el.grantsItemName}
+                          </div>
+                        ` : ''}
+                        <div class="text-[10px] text-[#538B57] font-mono font-bold">
+                          ${isConfirmed ? `+${el.suggestedReward || 0} DM` : `(+${el.suggestedReward || 0} DM)`}
+                        </div>
+                      </div>
+
+                      <button 
+                        class="btn-toggle-find px-3 py-1.5 rounded-xl text-xs font-heading font-bold transition-all cursor-pointer ${
+                          isConfirmed 
+                            ? 'bg-[#064E2D] text-[#EDEAE4] hover:bg-[#083D24] shadow-xs' 
+                            : 'bg-[#F8F6F1] text-[#4A5B4E] border border-[#D9D4C8] hover:bg-[#EDEAE4]'
+                        }"
+                        data-el-id="${el.id}"
+                        aria-label="${isConfirmed ? 'Remove finding' : 'Collect finding'}"
+                      >
+                        ${isConfirmed ? '✓ Collected' : '+ Collect'}
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          ` : `
+            <div class="p-4 rounded-2xl bg-[#EDEAE4] border border-[#D9D4C8] text-center text-xs text-[#6B7280]">
+              No candidate findings recorded for this specimen.
+            </div>
+          `}
+
+          <!-- Yield & Action Box -->
+          <div class="p-3.5 rounded-2xl bg-[#EDEAE4] border border-[#D9D4C8] space-y-2.5 shadow-2xs">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-heading font-extrabold text-[#064E2D] uppercase tracking-wider text-[10px]">
+                Sanctuary Yield:
+              </span>
+              <span class="font-display font-extrabold text-sm text-[#064E2D]">
+                +${totalMaterials} Discovery Materials ${eligibleItems.length > 0 ? `· ${eligibleItems.map(i => i.grantsItemName).join(', ')}` : ''}
+              </span>
+            </div>
+
+            ${isAlreadyClaimed ? `
+              <div class="pt-2 border-t border-[#D9D4C8] flex items-center justify-between gap-3">
+                <div class="flex items-center gap-1.5 text-xs text-[#064E2D] font-heading font-bold">
+                  <span>✓</span>
+                  <span>Catalogued in Sanctuary</span>
+                </div>
+                <button id="btn-discovery-to-world" class="px-4 py-2 rounded-xl bg-[#064E2D] text-[#EDEAE4] font-heading font-bold text-xs uppercase tracking-wider hover:bg-[#083D24] transition-all cursor-pointer shadow-sm flex items-center gap-1.5">
+                  <span>Enter My World</span>
+                  <span>→</span>
+                </button>
+              </div>
+            ` : `
+              <div class="pt-2 border-t border-[#D9D4C8] space-y-1.5">
+                <button 
+                  id="btn-claim-rewards" 
+                  class="w-full py-2.5 px-4 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-[#EDEAE4] transition-all flex items-center justify-center gap-2 shadow-sm ${
+                    validConfirmedCount > 0 
+                      ? 'bg-[#064E2D] hover:bg-[#083D24] cursor-pointer' 
+                      : 'bg-[#9CA3AF] opacity-60 cursor-not-allowed'
+                  }"
+                  ${validConfirmedCount === 0 ? 'disabled' : ''}
+                >
+                  <span>Bring discoveries to my world</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                  </svg>
+                </button>
+                ${validConfirmedCount === 0 ? `
+                  <p class="text-[10px] text-[#6B7280] text-center">Tap '+ Collect' on at least one finding above to bring to your world.</p>
+                ` : ''}
+              </div>
+            `}
+          </div>
+        </div>
+      `}
     `;
 
     // Reattach listeners inside journal panel
@@ -1521,7 +1783,7 @@ export class DiscoveryAgent {
   }
 
   attachJournalEvents() {
-    // 1. Finding Toggle Buttons
+    // 1. Finding Toggle Buttons (for eligible observations)
     this.containerEl.querySelectorAll('.btn-toggle-find').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -1530,7 +1792,7 @@ export class DiscoveryAgent {
       });
     });
 
-    // 2. Primary Claim Rewards Action
+    // 2. Primary Claim Rewards Action (for eligible observations)
     const claimBtn = this.containerEl.querySelector('#btn-claim-rewards');
     if (claimBtn) {
       claimBtn.addEventListener('click', () => {
@@ -1546,12 +1808,69 @@ export class DiscoveryAgent {
       });
     }
 
-    // 4. Attach Custom Photo Trigger in Journal
+    // 4. Record Study Entry in Journal
+    const saveStudyBtn = this.containerEl.querySelector('#btn-save-study-journal');
+    if (saveStudyBtn) {
+      saveStudyBtn.addEventListener('click', () => {
+        this.recordStudyEntryInJournal();
+      });
+    }
+
+    // 5. Retry Inference (for failed local inference)
+    const retryBtn = this.containerEl.querySelector('#btn-retry-inference');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', async () => {
+        if (this.currentObservation) {
+          await this.analyzeObservation({
+            imageSrc: this.currentObservation.imageSrc,
+            fieldNote: this.currentObservation.fieldNote,
+            title: this.currentObservation.title
+          });
+        }
+      });
+    }
+
+    // 6. Edit in Observation (for failed local inference or adjustments)
+    const editBtn = this.containerEl.querySelector('#btn-edit-observation');
+    if (editBtn) {
+      editBtn.addEventListener('click', () => {
+        if (this.onNavigate) {
+          this.onNavigate('observe');
+        } else {
+          window.location.hash = 'observe';
+        }
+      });
+    }
+
+    // 7. Attach Custom Photo Trigger in Collapsed Details
     const attachPhotoBtn = this.containerEl.querySelector('#btn-attach-custom-photo');
     const fileInput = this.containerEl.querySelector('#discovery-photo-input');
     if (attachPhotoBtn && fileInput) {
       attachPhotoBtn.addEventListener('click', () => {
         fileInput.click();
+      });
+    }
+
+    // 8. Load Sample Photo in Collapsed Details
+    const samplePhotoBtn = this.containerEl.querySelector('#btn-sample-discovery-photo');
+    if (samplePhotoBtn) {
+      samplePhotoBtn.addEventListener('click', async () => {
+        try {
+          const res = await fetch('/experiments/kill-test/photos/p08_a.jpeg');
+          const blob = await res.blob();
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            const dataUrl = e.target.result;
+            await this.analyzeObservation({
+              imageSrc: dataUrl,
+              fieldNote: 'Field observation: solitary oak tree with expansive canopy in grassy field.',
+              title: 'Solitary Oak Tree Observation'
+            });
+          };
+          reader.readAsDataURL(blob);
+        } catch (err) {
+          console.error('Failed to load sample photo', err);
+        }
       });
     }
   }
