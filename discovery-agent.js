@@ -1214,6 +1214,17 @@ export class DiscoveryAgent {
     });
   }
 
+  async retryCurrentObservation() {
+    if (this.currentObservation && this.currentObservation.imageSrc) {
+      return await this.analyzeObservation({
+        imageSrc: this.currentObservation.imageSrc,
+        fieldNote: this.currentObservation.fieldNote,
+        title: this.currentObservation.title
+      });
+    }
+    return null;
+  }
+
   recordStudyEntryInJournal() {
     const obs = this.currentObservation;
     if (!obs) return;
