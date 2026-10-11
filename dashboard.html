@@ -400,25 +400,27 @@
     </section>
 
     <!-- ==================================================================== -->
-    <!-- SCREEN B: RETURN & OBSERVATION UPLOAD (3D DISCOVERY EXPERIENCE)      -->
+    <!-- ==================================================================== -->
+    <!-- SCREEN B: RETURN & OBSERVATION UPLOAD (FIELD DISCOVERY JOURNAL)       -->
     <!-- ==================================================================== -->
     <section id="screen-observe" class="screen-view w-full h-full relative overflow-hidden flex flex-col md:flex-row justify-between p-4 sm:p-6 md:p-8 z-10 pointer-events-none hidden">
 
-      <!-- Left / Top: Floating Landmark Focus HUD -->
+      <!-- Left / Top: Floating Expedition Orientation Card -->
       <div class="pointer-events-auto max-w-sm space-y-2 pt-1 self-start">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cream/90 backdrop-blur-md border border-mint text-forest text-xs font-heading font-extrabold tracking-wider shadow-2xs">
-          <span class="w-2 h-2 rounded-full bg-citrus animate-pulse"></span>
-          <span>3D SPECIMEN IN FOCUS</span>
+          <span class="w-2 h-2 rounded-full bg-fern animate-pulse"></span>
+          <span>FIELD EXPEDITION LOG</span>
         </div>
-        <div class="p-3.5 rounded-2xl bg-cream/85 backdrop-blur-md border border-sage-border/80 shadow-md space-y-1">
-          <h3 id="observe-hud-title" class="font-display font-black text-xl text-forest tracking-tight">Stone Archway</h3>
+        <div class="p-3.5 rounded-2xl bg-cream/85 backdrop-blur-md border border-sage-border/80 shadow-md space-y-1.5">
+          <div class="flex items-center justify-between">
+            <h3 id="observe-hud-title" class="font-display font-black text-lg text-forest tracking-tight">Elder Grove Wilds</h3>
+            <span id="observe-hud-badge" class="px-2 py-0.5 rounded-full bg-[#E8F5EE] border border-[#95D5B2] text-[10px] font-bold text-forest">Walk Complete</span>
+          </div>
           <p id="observe-hud-desc" class="text-xs text-text-muted leading-relaxed">
-            Weathered granite masonry &amp; creeping ivy roots.
+            Record what stopped you in your tracks during your walk. Your photograph will be analyzed locally on-device.
           </p>
           <div class="pt-1 flex items-center gap-2 text-[10px] font-heading font-bold text-fern">
-            <span>🧭 Drag 3D scene to orbit</span>
-            <span>·</span>
-            <span>Click landmark to inspect</span>
+            <span>🧭 Drag background to orbit landscape</span>
           </div>
         </div>
       </div>
@@ -426,163 +428,156 @@
       <!-- Right: Editorial Field Journal Panel -->
       <div class="pointer-events-auto w-full max-w-lg md:max-w-md lg:max-w-lg h-full max-h-full flex flex-col overflow-y-auto custom-scrollbar observe-journal-panel rounded-3xl p-5 sm:p-7 space-y-4 shadow-2xl border border-sage-border relative self-end md:self-auto">
         
-        <!-- Header -->
-        <div class="space-y-1 border-b border-sage-border/60 pb-3">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] font-heading font-black text-fern uppercase tracking-widest">
-              FIELD JOURNAL · SPECIMEN RECORD
-            </span>
-            <span id="observe-walk-summary-badge" class="px-2.5 py-0.5 rounded-full bg-mint-soft text-[10px] font-heading font-bold text-forest border border-mint">
+        <!-- Header: Expedition & Record Identity -->
+        <div class="space-y-1.5 border-b border-sage-border/60 pb-3">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 text-[10px] font-heading font-black text-fern uppercase tracking-widest">
+              <span>🌿</span>
+              <span>FIELD JOURNAL · OBSERVATION RECORD</span>
+            </div>
+            <span id="observe-walk-summary-badge" class="px-2.5 py-0.5 rounded-full bg-[#E8F5EE] text-[10px] font-heading font-bold text-forest border border-[#95D5B2] shrink-0">
               Walk Completed
             </span>
           </div>
-          <h2 class="font-display font-black text-2xl sm:text-3xl text-forest tracking-tight">What caught your eye?</h2>
-          <p class="text-xs text-text-muted leading-relaxed">
-            You went out to notice something. Let's take a closer look.
+          <h2 class="font-display font-black text-2xl sm:text-3xl text-forest tracking-tight">Record your field observation</h2>
+          <p id="observe-walk-summary-text" class="text-xs text-text-muted leading-relaxed">
+            Capture what caught your attention in the physical world. Your photograph brings living discoveries back to your Sanctuary.
           </p>
         </div>
 
-        <!-- 1. Discovery Specimen Selector (Concise 3-item list) -->
-        <div class="space-y-1.5">
+        <!-- 1. FIELD PHOTOGRAPH (PRIMARY INTERACTION) -->
+        <div class="space-y-2">
           <div class="flex items-center justify-between">
-            <label class="text-[11px] font-heading font-black text-forest uppercase tracking-wider">
-              1. SELECT DISCOVERY TO EXAMINE:
+            <label class="text-[11px] font-heading font-black text-forest uppercase tracking-wider flex items-center gap-1.5">
+              <span>📷</span>
+              <span>Field Photograph</span>
             </label>
-            <span class="text-[10px] font-heading font-bold text-fern">
-              Camera aligns in 3D
-            </span>
-          </div>
-          
-          <div class="space-y-1.5" id="observe-preset-samples">
-            <!-- Sample 1: Stone Archway -->
-            <button type="button" class="btn-observe-sample observe-specimen-card observe-specimen-active w-full p-2.5 sm:p-3 rounded-2xl text-left flex items-center justify-between transition-all cursor-pointer" data-sample="sample_archway">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <span class="w-8 h-8 rounded-xl bg-citrus/20 border border-citrus/40 flex items-center justify-center text-forest text-sm shrink-0">🏛️</span>
-                <div class="min-w-0">
-                  <div class="font-heading font-extrabold text-xs sm:text-sm text-forest truncate">Stone Archway</div>
-                  <div class="text-[11px] text-text-muted truncate">Granite masonry &amp; creeping ivy roots</div>
-                </div>
-              </div>
-              <span class="specimen-indicator w-3 h-3 rounded-full bg-citrus shrink-0 border border-forest"></span>
-            </button>
-
-            <!-- Sample 2: Forest Stream -->
-            <button type="button" class="btn-observe-sample observe-specimen-card w-full p-2.5 sm:p-3 rounded-2xl text-left flex items-center justify-between transition-all cursor-pointer" data-sample="sample_stream">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <span class="w-8 h-8 rounded-xl bg-sky/20 border border-sky/40 flex items-center justify-center text-forest text-sm shrink-0">💧</span>
-                <div class="min-w-0">
-                  <div class="font-heading font-extrabold text-xs sm:text-sm text-forest truncate">Forest Stream</div>
-                  <div class="text-[11px] text-text-muted truncate">Clear runoff, river stones &amp; wetland reeds</div>
-                </div>
-              </div>
-              <span class="specimen-indicator w-3 h-3 rounded-full bg-sage-border shrink-0"></span>
-            </button>
-
-            <!-- Sample 3: Compacted Trail -->
-            <button type="button" class="btn-observe-sample observe-specimen-card w-full p-2.5 sm:p-3 rounded-2xl text-left flex items-center justify-between transition-all cursor-pointer" data-sample="sample_trailhead">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <span class="w-8 h-8 rounded-xl bg-mint/20 border border-mint/40 flex items-center justify-center text-forest text-sm shrink-0">🪵</span>
-                <div class="min-w-0">
-                  <div class="font-heading font-extrabold text-xs sm:text-sm text-forest truncate">Compacted Trail</div>
-                  <div class="text-[11px] text-text-muted truncate">Packed pine needles &amp; wooden trail marker</div>
-                </div>
-              </div>
-              <span class="specimen-indicator w-3 h-3 rounded-full bg-sage-border shrink-0"></span>
-            </button>
-          </div>
-        </div>
-
-        <!-- 2. Integrated Field Evidence (Photo Upload Area) -->
-        <div class="space-y-1.5">
-          <div class="flex items-center justify-between">
-            <label class="text-[11px] font-heading font-black text-forest uppercase tracking-wider">
-              2. FIELD PHOTOGRAPH (OPTIONAL EVIDENCE):
-            </label>
-            <span class="text-[10px] text-text-muted">
-              JPEG, PNG, WebP · Private
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#E8F5EE] border border-[#95D5B2] text-[10px] font-bold text-[#064E2D]" title="Evaluated locally upon discovery">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#538B57] animate-pulse"></span>
+              <span>Local Vision AI Ready</span>
             </span>
           </div>
 
           <!-- Upload Dropzone (shown when no custom photo uploaded) -->
-          <div id="observe-dropzone" class="observe-dropzone rounded-2xl p-3 sm:p-4 text-center cursor-pointer transition-all border-2 border-dashed border-sage-border hover:border-fern group">
-            <input type="file" id="observe-photo-input" accept="image/*" class="hidden">
-            <div class="flex items-center justify-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-cream-card shadow-xs flex items-center justify-center text-forest group-hover:scale-105 transition-transform text-sm shrink-0">
-                📷
+          <div id="observe-dropzone" class="observe-dropzone rounded-2xl p-6 sm:p-7 text-center cursor-pointer transition-all border-2 border-dashed border-sage-border hover:border-fern group bg-[#F8F2E6]/80 hover:bg-[#F0ECE1]">
+            <input type="file" id="observe-photo-input" accept="image/*" capture="environment" class="hidden">
+            <div class="flex flex-col items-center justify-center gap-2.5">
+              <div class="w-14 h-14 rounded-2xl bg-cream-card shadow-xs flex items-center justify-center text-forest group-hover:scale-105 transition-transform text-3xl border border-sage-border">
+                📸
               </div>
-              <div class="text-left min-w-0">
-                <div class="text-xs font-heading font-bold text-forest group-hover:text-fern transition-colors">
-                  Drop your walk photograph here, or click to browse
+              <div class="space-y-1">
+                <div class="text-sm font-heading font-bold text-forest group-hover:text-fern transition-colors">
+                  Add your walk photograph here
                 </div>
-                <div class="text-[10px] text-text-muted">
-                  Supports mobile camera capture · Kept on this device
+                <div class="text-[11px] text-text-muted">
+                  Tap to take a photo or select an image · Kept private &amp; 100% on-device
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Dedicated Uploaded Photo Evidence Card (hidden by default) -->
-          <div id="observe-photo-evidence-card" class="hidden rounded-2xl p-2.5 bg-cream-card border border-sage-border shadow-xs space-y-2">
+          <div id="observe-photo-evidence-card" class="hidden rounded-2xl p-3 bg-cream-card border border-sage-border shadow-xs space-y-2">
             <div class="flex items-center justify-between">
-              <span class="text-[10px] font-heading font-bold text-forest flex items-center gap-1.5">
+              <span class="text-[10px] font-heading font-bold text-forest flex items-center gap-1.5 truncate max-w-[200px]">
                 <span class="w-2 h-2 rounded-full bg-fern"></span>
-                <span id="observe-evidence-label">Attached Field Photo Evidence</span>
+                <span id="observe-evidence-label" class="truncate">Attached Field Photo</span>
               </span>
-              <button type="button" id="btn-remove-photo" class="text-[10px] font-heading font-bold text-text-muted hover:text-tangerine transition-colors cursor-pointer">
-                ✕ Remove
-              </button>
+              <div class="flex items-center gap-2 shrink-0">
+                <button type="button" id="btn-replace-photo" class="text-[10px] font-heading font-bold text-forest hover:text-fern px-2 py-0.5 rounded-lg bg-[#E8F5EE] border border-[#95D5B2] transition-colors cursor-pointer flex items-center gap-1">
+                  <span>🔄</span>
+                  <span>Replace Photo</span>
+                </button>
+                <button type="button" id="btn-remove-photo" class="text-[10px] font-heading font-bold text-text-muted hover:text-tangerine transition-colors cursor-pointer">
+                  ✕ Remove
+                </button>
+              </div>
             </div>
-            <div class="relative w-full h-32 sm:h-36 rounded-xl overflow-hidden bg-cream-warm border border-sage-border">
+            
+            <div class="relative w-full h-44 sm:h-52 rounded-xl overflow-hidden bg-[#EDEAE4] border border-sage-border">
               <img id="observe-preview-img" src="" alt="Field Evidence Preview" class="w-full h-full object-cover">
-              <div class="absolute bottom-1.5 left-1.5 px-2 py-0.5 rounded-md bg-forest/80 backdrop-blur-xs text-[10px] text-warm-paper font-heading font-medium">
-                Uploaded Walk Evidence
+              <div class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-forest/85 backdrop-blur-xs text-[10px] text-warm-paper font-heading font-medium flex items-center gap-1.5 shadow-sm">
+                <span>📸</span>
+                <span>Field Observation Photograph</span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 3. Field Notes Entry Area -->
+        <!-- 2. FIELD NOTES (SECONDARY INTERACTION) -->
         <div class="space-y-1.5">
           <div class="flex items-center justify-between">
-            <label for="observe-field-note" class="text-[11px] font-heading font-black text-forest uppercase tracking-wider">
-              3. FIELD NOTES:
+            <label for="observe-field-note" class="text-[11px] font-heading font-black text-forest uppercase tracking-wider flex items-center gap-1.5">
+              <span>✍️</span>
+              <span>What caught your eye?</span>
+              <span class="text-[10px] font-normal lowercase text-text-muted font-sans">(optional)</span>
             </label>
             <span id="observe-notes-prompt-hint" class="text-[10px] text-fern font-medium truncate max-w-[200px]">
-              Notice masonry joints &amp; ivy roots...
+              Notes inspiration:
             </span>
           </div>
 
-          <!-- Structured Quick-Insert Tags -->
+          <!-- Lightweight Writing Prompt Inspiration Chips -->
           <div class="flex items-center gap-1.5 overflow-x-auto pb-1 custom-scrollbar">
-            <button type="button" class="btn-note-tag px-2 py-0.5 rounded-lg bg-cream-warm hover:bg-mint-soft text-[10px] font-heading font-bold text-forest border border-sage-border transition-colors cursor-pointer" data-tag="Observed">
-              + Direct Observation
+            <span class="text-[10px] font-heading font-bold text-text-muted uppercase tracking-wider shrink-0">Prompts:</span>
+            <button type="button" class="btn-note-prompt px-2.5 py-1 rounded-lg bg-cream-warm hover:bg-mint-soft text-[10px] font-heading font-bold text-forest border border-sage-border transition-colors cursor-pointer shrink-0" data-prompt="Texture: ">
+              🍂 Texture
             </button>
-            <button type="button" class="btn-note-tag px-2 py-0.5 rounded-lg bg-cream-warm hover:bg-mint-soft text-[10px] font-heading font-bold text-forest border border-sage-border transition-colors cursor-pointer" data-tag="Hypothesis">
-              + Hypothesis
+            <button type="button" class="btn-note-prompt px-2.5 py-1 rounded-lg bg-cream-warm hover:bg-mint-soft text-[10px] font-heading font-bold text-forest border border-sage-border transition-colors cursor-pointer shrink-0" data-prompt="Shape: ">
+              🌿 Shape
             </button>
-            <button type="button" class="btn-note-tag px-2 py-0.5 rounded-lg bg-cream-warm hover:bg-mint-soft text-[10px] font-heading font-bold text-forest border border-sage-border transition-colors cursor-pointer" data-tag="Curiosity">
-              + Uncertain Detail
+            <button type="button" class="btn-note-prompt px-2.5 py-1 rounded-lg bg-cream-warm hover:bg-mint-soft text-[10px] font-heading font-bold text-forest border border-sage-border transition-colors cursor-pointer shrink-0" data-prompt="Unusual detail: ">
+              ✨ Something unusual
             </button>
           </div>
 
           <textarea 
             id="observe-field-note" 
             rows="3" 
-            placeholder="What did you actually notice? Describe the texture, shape, sound, movement or anything unusual."
+            placeholder="What caught your eye? Describe what you noticed in person — bark textures, leaf shapes, sounds, movement, or curious natural features."
             class="journal-paper-ruled w-full px-3.5 py-2.5 rounded-xl border border-sage-border text-xs text-text-dark placeholder:text-text-muted/60 focus:outline-none focus:border-forest focus:ring-1 focus:ring-forest/20 resize-none font-sans"
           ></textarea>
         </div>
 
-        <!-- 4. Analysis Action CTA -->
-        <div class="pt-1 space-y-1.5">
-          <button id="btn-submit-observation" class="btn-forest-primary w-full py-3.5 px-4 rounded-2xl text-xs font-heading font-black tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer shadow-lg hover:scale-101 active:scale-99 transition-all">
-            <span id="btn-submit-obs-text">Examine this discovery</span>
-            <span id="btn-submit-obs-icon">→</span>
+        <!-- 3. Primary Action CTA & Feedback Area -->
+        <div class="pt-1 space-y-2">
+          <!-- Actionable Notice Container (shown on missing photo or error) -->
+          <div id="observe-action-notice" class="hidden p-2.5 rounded-xl text-xs font-medium space-y-1"></div>
+
+          <button id="btn-submit-observation" class="btn-forest-primary w-full py-4 px-5 rounded-2xl text-xs font-heading font-black tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer shadow-lg hover:scale-101 active:scale-99 transition-all">
+            <span id="btn-submit-obs-icon">✨</span>
+            <span id="btn-submit-obs-text">Discover</span>
           </button>
+          
           <div class="text-center text-[10px] text-text-muted">
-            Verifies physical features · Awards Discovery Materials &amp; Sanctuary unlocks
+            Analyzed locally on-device · Unlocks Discovery Materials and living items for your Sanctuary
           </div>
         </div>
+
+        <!-- Unobtrusive Developer & Demo Testing Entry Point -->
+        <details id="observe-simulator-drawer" class="pt-2 border-t border-sage-border/40 text-xs text-text-muted opacity-60 hover:opacity-100 transition-opacity">
+          <summary class="cursor-pointer text-[10px] font-heading font-bold text-fern hover:text-forest select-none py-1 flex items-center justify-between">
+            <span>🧪 Developer &amp; Sample Testing</span>
+            <span class="text-[9px]">▼</span>
+          </summary>
+          <div class="pt-2 pb-1 space-y-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <button type="button" id="btn-load-sample-photo" class="px-2.5 py-1.5 rounded-xl bg-linen hover:bg-cream border border-sage-border text-[10px] font-heading font-bold text-forest transition-colors cursor-pointer flex items-center gap-1 shadow-2xs">
+                <span>🌲</span>
+                <span>Load Sample Photo (p08_a.jpeg)</span>
+              </button>
+              <button type="button" id="btn-submit-simulator-test" class="px-2.5 py-1.5 rounded-xl bg-linen hover:bg-cream border border-sage-border text-[10px] font-heading font-bold text-forest transition-colors cursor-pointer flex items-center gap-1 shadow-2xs">
+                <span>🔬</span>
+                <span>Run Simulator Baseline</span>
+              </button>
+            </div>
+            <div class="hidden" id="observe-preset-samples">
+              <button type="button" class="btn-observe-sample observe-specimen-active" data-sample="sample_archway"></button>
+              <button type="button" class="btn-observe-sample" data-sample="sample_stream"></button>
+              <button type="button" class="btn-observe-sample" data-sample="sample_trailhead"></button>
+            </div>
+          </div>
+        </details>
 
       </div>
     </section>
