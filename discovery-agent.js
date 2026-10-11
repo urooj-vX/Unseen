@@ -236,6 +236,11 @@ export function evaluateEvidenceEligibility({ structuredAnalysis, fieldNote = ''
   };
 }
 
+export function isObservationSynthetic(obs) {
+  if (!obs) return false;
+  return obs.eligibilityStatus === 'ineligible' && !obs.analysisError;
+}
+
 export function getCleanObservationTitle(obs) {
   if (!obs) return 'Field Observation';
 
