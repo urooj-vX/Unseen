@@ -4,7 +4,7 @@
 
 import { DashboardState, WALKING_REWARD_TABLE } from './dashboard-state.js';
 import { SanctuaryScene, WildernessScene, WorldScene } from './world-scene.js';
-import { DiscoveryAgent, SAMPLE_OBSERVATIONS } from './discovery-agent.js';
+import { DiscoveryAgent, SAMPLE_OBSERVATIONS, getCleanObservationTitle } from './discovery-agent.js';
 import { WalkScene3D } from './walk-scene-3d.js';
 
 let state = null;
@@ -173,6 +173,20 @@ function setupNavigation() {
   const worldExitBtn = document.getElementById('btn-world-exit');
   if (worldExitBtn) {
     worldExitBtn.addEventListener('click', () => navigateToScreen('sanctuary'));
+  }
+
+  const journalBtn = document.getElementById('btn-open-journal');
+  if (journalBtn) {
+    journalBtn.addEventListener('click', () => navigateToScreen('discovery'));
+  }
+
+  const mobileJournalBtn = document.getElementById('btn-mobile-journal');
+  if (mobileJournalBtn) {
+    mobileJournalBtn.addEventListener('click', () => {
+      const mobileDrawer = document.getElementById('mobile-nav-drawer');
+      if (mobileDrawer) mobileDrawer.classList.add('hidden');
+      navigateToScreen('discovery');
+    });
   }
 }
 
@@ -673,12 +687,12 @@ function selectObservationSample(sampleId) {
     if (isTarget) {
       b.classList.add('observe-specimen-active');
       if (indicator) {
-        indicator.className = 'specimen-indicator w-3 h-3 rounded-full bg-citrus shrink-0 border border-forest';
+        indicator.className = 'specimen-indicator w-2.5 h-2.5 rounded-full bg-citrus shrink-0 border border-forest';
       }
     } else {
       b.classList.remove('observe-specimen-active');
       if (indicator) {
-        indicator.className = 'specimen-indicator w-3 h-3 rounded-full bg-sage-border shrink-0';
+        indicator.className = 'specimen-indicator w-2.5 h-2.5 rounded-full bg-sage-border shrink-0';
       }
     }
   });
@@ -740,49 +754,337 @@ async function handleExamineDiscovery() {
 
   const photoToProcess = userUploadedPhotoSrc;
 
-  // Purposeful examination animation state
+  // 1. Missing-photo behavior
+  if (!photoToProcess) {
+    if (noticeEl) {
+      noticeEl.className = 'p-3 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] text-xs text-[#92400E] space-y-1 block';
+      noticeEl.innerHTML = `
+        <div class="font-heading font-bold text-xs text-[#B45309] flex items-center gap-1.5">
+          <span>📷</span>
+          <span>Field Photograph Required</span>
+        </div>
+        <p class="text-[11px] text-[#78350F] leading-relaxed">
+          Please attach a field photograph from your walk before discovering. 
+          Or expand <em>Developer &amp; Sample Testing</em> below if you want to test without a photo.
+        </p>
+      `;
+    }
+    showToast('Please attach a field photograph to discover.', 'warning');
+    return;
+  }
+
+  if (noticeEl) {
+    noticeEl.className = 'hidden';
+    noticeEl.innerHTML = '';
+  }
+
+  // 2. Clear visual processing state (keep player on Observation screen!)
   if (submitBtn) submitBtn.disabled = true;
-  if (submitText) submitText.textContent = 'Examining physical evidence...';
-  if (submitIcon) submitIcon.innerHTML = '<span class="inline-block animate-spin">🔍</span>';
+  if (submitText) submitText.textContent = 'Discovering with Local Vision AI...';
+  if (submitIcon) submitIcon.innerHTML = '<span class="inline-block animate-spin">🌿</span>';
 
-  // Navigate to discovery screen immediately so the player sees the live evaluation
-  navigateToScreen('discovery');
-
-  if (discoveryAgent) {
-    if (photoToProcess) {
-      // Analyze actual user uploaded photograph with local vision model
+  try {
+    if (discoveryAgent) {
       await discoveryAgent.analyzeObservation({
         imageSrc: photoToProcess,
         fieldNote: fieldNote,
         title: 'Walk Field Observation'
       });
+    }
 
-      // Clear the upload inputs from observe screen so it doesn't linger
-      userUploadedPhotoSrc = null;
-      const fileInput = document.getElementById('observe-photo-input');
-      if (fileInput) fileInput.value = '';
-      const evidenceCard = document.getElementById('observe-photo-evidence-card');
-      if (evidenceCard) evidenceCard.classList.add('hidden');
-      const dropzone = document.getElementById('observe-dropzone');
-      if (dropzone) dropzone.classList.remove('hidden');
+    const obs = discoveryAgent?.currentObservation || state.pendingObservation;
+    if (obs) {
+      showDiscoveryReveal(obs);
     } else {
-      // 3D Specimen selection (no photo attached)
-      await discoveryAgent.analyzeObservation({
-        imageSrc: null,
-        fieldNote: fieldNote,
-        sampleId: selectedObservationSample || 'sample_archway',
-        isDemo: true
-      });
+      showToast('Could not complete observation.', 'warning');
+    }
+  } catch (err) {
+    console.error('Observation discovery failed', err);
+    // Preserve user photo and notes on failure - show friendly in-game message
+    if (noticeEl) {
+      noticeEl.className = 'p-3 rounded-2xl bg-[#FFF5F5] border border-[#FECACA] text-xs text-[#991B1B] space-y-1.5 block';
+      noticeEl.innerHTML = `
+        <div class="font-heading font-bold text-xs text-[#7F1D1D] flex items-center gap-1.5">
+          <span>🍃</span>
+          <span>Could Not Complete Discovery</span>
+        </div>
+        <p class="text-[11px] text-[#991B1B] leading-relaxed">
+          Local vision analysis could not connect or timed out. Your photograph and field notes have been safely kept.
+        </p>
+        <button type="button" id="btn-retry-discovery" class="mt-1 px-3 py-1.5 rounded-xl bg-forest text-cream text-[11px] font-heading font-bold hover:bg-forest-deep transition-colors cursor-pointer">
+          Retry Discovery ↻
+        </button>
+      `;
+      const retryBtn = document.getElementById('btn-retry-discovery');
+      if (retryBtn) {
+        retryBtn.addEventListener('click', handleExamineDiscovery);
+      }
+    }
+    showToast('Inference unavailable. Your photo and notes were kept.', 'error');
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+    if (submitText) submitText.textContent = 'Discover';
+    if (submitIcon) submitIcon.textContent = '✨';
+  }
+}
+
+function clearObservationInputs() {
+  userUploadedPhotoSrc = null;
+  const fileInput = document.getElementById('observe-photo-input');
+  if (fileInput) fileInput.value = '';
+  const evidenceCard = document.getElementById('observe-photo-evidence-card');
+  if (evidenceCard) evidenceCard.classList.add('hidden');
+  const dropzone = document.getElementById('observe-dropzone');
+  if (dropzone) dropzone.classList.remove('hidden');
+  const noteInput = document.getElementById('observe-field-note');
+  if (noteInput) noteInput.value = '';
+  const noticeEl = document.getElementById('observe-action-notice');
+  if (noticeEl) {
+    noticeEl.className = 'hidden';
+    noticeEl.innerHTML = '';
+  }
+}
+
+function showDiscoveryReveal(obs) {
+  const modal = document.getElementById('modal-discovery-reveal');
+  if (!modal || !obs) return;
+
+  const photoImg = document.getElementById('reveal-photo-img');
+  const titleEl = document.getElementById('reveal-title');
+  const descEl = document.getElementById('reveal-description');
+  const detailsSec = document.getElementById('reveal-details-section');
+  const detailsContainer = document.getElementById('reveal-details-container');
+  const badgeIcon = document.getElementById('reveal-badge-icon');
+  const badgeText = document.getElementById('reveal-badge-text');
+
+  const rewardBox = document.getElementById('reveal-reward-box');
+  const rewardIcon = document.getElementById('reveal-reward-icon');
+  const rewardTitle = document.getElementById('reveal-reward-title');
+  const rewardSubtitle = document.getElementById('reveal-reward-subtitle');
+  const rewardBadge = document.getElementById('reveal-reward-badge');
+
+  const btnPrimary = document.getElementById('btn-reveal-primary');
+  const btnPrimaryText = document.getElementById('btn-reveal-primary-text');
+  const btnSecondary = document.getElementById('btn-reveal-secondary');
+  const btnCloseX = document.getElementById('btn-close-reveal-x');
+
+  // 1. Photo thumbnail
+  if (photoImg) {
+    if (obs.imageSrc) {
+      photoImg.src = obs.imageSrc;
+      photoImg.classList.remove('hidden');
+    } else {
+      photoImg.src = '';
+      photoImg.classList.add('hidden');
     }
   }
 
-  if (noteInput) noteInput.value = '';
+  // 2. Memorable, clean discovery title
+  const cleanTitle = getCleanObservationTitle(obs);
+  if (titleEl) titleEl.textContent = cleanTitle;
 
-  if (submitBtn) submitBtn.disabled = false;
-  if (submitText) submitText.textContent = 'Examine this discovery';
-  if (submitIcon) submitIcon.textContent = '→';
+  // 3. Up to 3 interesting details
+  if (detailsContainer) {
+    const rawDetails = [];
+    if (obs.structuredAnalysis?.visible_features && Array.isArray(obs.structuredAnalysis.visible_features)) {
+      rawDetails.push(...obs.structuredAnalysis.visible_features);
+    }
+    if (rawDetails.length === 0 && obs.detectedElements && Array.isArray(obs.detectedElements)) {
+      rawDetails.push(...obs.detectedElements.map(d => d.name));
+    }
+    const displayDetails = rawDetails.slice(0, 3);
 
-  showToast('Evidence examined! Review candidate findings.', 'success');
+    if (displayDetails.length > 0) {
+      if (detailsSec) detailsSec.classList.remove('hidden');
+      detailsContainer.innerHTML = displayDetails.map(detail => {
+        const clean = String(detail).replace(/^a\s+|^an\s+|^the\s+/i, '').slice(0, 36);
+        return `<span class="px-2.5 py-1 rounded-xl bg-[#EDEAE4] text-forest text-[11px] font-heading font-bold border border-sage-border/80 shadow-2xs">✦ ${clean}</span>`;
+      }).join('');
+    } else {
+      if (detailsSec) detailsSec.classList.add('hidden');
+    }
+  }
+
+  // 4. Rewards & State Handling based on evidence eligibility
+  const isEligible = obs.isRewardEligible && obs.allowPhysicalRewards && !obs.analysisError;
+  const isSynthetic = obs.eligibilityStatus === 'ineligible' && !obs.analysisError;
+  const isError = Boolean(obs.analysisError);
+
+  if (isEligible) {
+    // ----------------------------------------------------
+    // CASE A: Eligible Real-World Physical Discovery
+    // ----------------------------------------------------
+    if (badgeIcon) badgeIcon.textContent = '🌿';
+    if (badgeText) badgeText.textContent = 'A New Discovery!';
+
+    if (descEl) {
+      descEl.textContent = obs.fieldNote || obs.structuredAnalysis?.evidence_summary || obs.notes || 'Observed natural physical features in the field.';
+    }
+
+    // Auto-claim reward into state/inventory if not already claimed
+    let claimResult = null;
+    const isAlreadyClaimed = state.claimedObservationIds && state.claimedObservationIds.has(obs.id);
+
+    if (!isAlreadyClaimed) {
+      const validConfirmed = (obs.detectedElements || []).filter(el => !el.ineligible);
+      claimResult = state.claimObservationRewards(obs.id, validConfirmed, obs);
+
+      if (claimResult && claimResult.success) {
+        window.newlyEarnedItemIds = new Set((claimResult.earnedItems || []).map(i => i.itemId));
+        updateTopBar();
+      }
+    }
+
+    if (rewardBox) {
+      rewardBox.className = 'p-3.5 rounded-2xl bg-cream-warm border border-citrus/60 shadow-xs flex items-center justify-between';
+      if (rewardIcon) rewardIcon.textContent = '💎';
+      
+      const matsEarned = claimResult ? claimResult.earnedMaterials : (obs.detectedElements?.reduce((s, e) => s + (e.suggestedReward || 1), 0) || 2);
+      const itemsList = claimResult?.earnedItems?.length > 0 
+        ? claimResult.earnedItems.map(i => `${i.qty}x ${i.name}`).join(', ')
+        : 'Sanctuary discoveries';
+
+      if (rewardTitle) rewardTitle.textContent = isAlreadyClaimed ? 'Discovery Saved' : `+${matsEarned} Discovery Materials`;
+      if (rewardSubtitle) rewardSubtitle.textContent = isAlreadyClaimed ? 'Already added to your Sanctuary backpack' : `Unlocked ${itemsList} for your garden`;
+      if (rewardBadge) {
+        rewardBadge.textContent = isAlreadyClaimed ? 'Saved' : 'Earned';
+        rewardBadge.className = 'px-2.5 py-1 rounded-xl bg-forest text-cream text-[10px] font-heading font-extrabold shadow-2xs';
+      }
+    }
+
+    // Primary CTA: Visit My Sanctuary
+    if (btnPrimaryText) btnPrimaryText.textContent = 'Visit My Sanctuary';
+    btnPrimary.onclick = () => {
+      modal.classList.add('hidden');
+      clearObservationInputs();
+      navigateToScreen('sanctuary');
+      showToast('Welcome to your Sanctuary! Newly earned items are in your backpack.', 'success');
+    };
+
+    // Secondary CTA: Keep Exploring
+    btnSecondary.textContent = 'Keep Exploring';
+    btnSecondary.onclick = () => {
+      modal.classList.add('hidden');
+      clearObservationInputs();
+      showToast('Observation recorded! Ready for your next discovery.', 'info');
+    };
+
+  } else if (isSynthetic) {
+    // ----------------------------------------------------
+    // CASE B: Screenshot / Rendering / Non-Physical Image
+    // ----------------------------------------------------
+    if (badgeIcon) badgeIcon.textContent = '📓';
+    if (badgeText) badgeText.textContent = 'Field Study Record';
+
+    if (descEl) {
+      descEl.textContent = obs.fieldNote 
+        ? `${obs.fieldNote} — Recorded as a study note. Real-world outdoor exploration unlocks Sanctuary materials.`
+        : 'Recorded in your Field Journal as a study note. Real-world outdoor discoveries unlock living Sanctuary materials.';
+    }
+
+    if (rewardBox) {
+      rewardBox.className = 'p-3.5 rounded-2xl bg-linen border border-sage-border/80 shadow-xs flex items-center justify-between';
+      if (rewardIcon) rewardIcon.textContent = '📓';
+      if (rewardTitle) rewardTitle.textContent = 'Field Study Note';
+      if (rewardSubtitle) rewardSubtitle.textContent = '0 DM · Physical exploration unlocks living items';
+      if (rewardBadge) {
+        rewardBadge.textContent = 'Recorded';
+        rewardBadge.className = 'px-2.5 py-1 rounded-xl bg-linen text-forest border border-sage-border text-[10px] font-heading font-bold shadow-2xs';
+      }
+    }
+
+    // Primary CTA: Keep Exploring
+    if (btnPrimaryText) btnPrimaryText.textContent = 'Keep Exploring';
+    btnPrimary.onclick = () => {
+      modal.classList.add('hidden');
+      clearObservationInputs();
+    };
+
+    // Secondary CTA: Close
+    btnSecondary.textContent = 'Close';
+    btnSecondary.onclick = () => {
+      modal.classList.add('hidden');
+      clearObservationInputs();
+    };
+
+  } else if (isError) {
+    // ----------------------------------------------------
+    // CASE D: Local Vision Inference Failure / Offline
+    // ----------------------------------------------------
+    if (badgeIcon) badgeIcon.textContent = '⚠️';
+    if (badgeText) badgeText.textContent = 'Inference Unavailable';
+
+    if (descEl) {
+      descEl.textContent = obs.analysisError || 'Local vision analysis could not complete. Your photograph and notes are safely kept.';
+    }
+
+    if (rewardBox) {
+      rewardBox.className = 'p-3.5 rounded-2xl bg-[#FFF5F5] border border-[#FECACA] shadow-xs flex items-center justify-between';
+      if (rewardIcon) rewardIcon.textContent = '🍃';
+      if (rewardTitle) rewardTitle.textContent = 'Analysis Incomplete';
+      if (rewardSubtitle) rewardSubtitle.textContent = '0 DM · Photograph and field notes safely preserved';
+      if (rewardBadge) {
+        rewardBadge.textContent = 'Retry Available';
+        rewardBadge.className = 'px-2.5 py-1 rounded-xl bg-forest text-cream text-[10px] font-heading font-bold shadow-2xs';
+      }
+    }
+
+    if (btnPrimaryText) btnPrimaryText.textContent = 'Retry Discovery';
+    btnPrimary.onclick = () => {
+      modal.classList.add('hidden');
+      handleExamineDiscovery();
+    };
+
+    btnSecondary.textContent = 'Close';
+    btnSecondary.onclick = () => {
+      modal.classList.add('hidden');
+    };
+
+  } else {
+    // ----------------------------------------------------
+    // CASE C: Insufficient Evidence or Unclear Observation
+    // ----------------------------------------------------
+    if (badgeIcon) badgeIcon.textContent = '🔍';
+    if (badgeText) badgeText.textContent = 'Needs Closer Observation';
+
+    if (descEl) {
+      descEl.textContent = 'The camera didn\'t capture clear natural details this time. Try taking a steady photo closer to the specimen on your next walk!';
+    }
+
+    if (rewardBox) {
+      rewardBox.className = 'p-3.5 rounded-2xl bg-linen border border-sage-border/80 shadow-xs flex items-center justify-between';
+      if (rewardIcon) rewardIcon.textContent = '🌱';
+      if (rewardTitle) rewardTitle.textContent = '0 Materials Earned';
+      if (rewardSubtitle) rewardSubtitle.textContent = 'Take a closer outdoor photo next walk';
+      if (rewardBadge) {
+        rewardBadge.textContent = 'Pending';
+        rewardBadge.className = 'px-2.5 py-1 rounded-xl bg-linen text-text-muted border border-sage-border text-[10px] font-heading font-bold shadow-2xs';
+      }
+    }
+
+    if (btnPrimaryText) btnPrimaryText.textContent = 'Keep Exploring';
+    btnPrimary.onclick = () => {
+      modal.classList.add('hidden');
+      clearObservationInputs();
+    };
+
+    btnSecondary.textContent = 'Close';
+    btnSecondary.onclick = () => {
+      modal.classList.add('hidden');
+      clearObservationInputs();
+    };
+  }
+
+  // Close X button
+  if (btnCloseX) {
+    btnCloseX.onclick = () => {
+      modal.classList.add('hidden');
+      clearObservationInputs();
+    };
+  }
+
+  // Open the reveal modal
+  modal.classList.remove('hidden');
 }
 
 function setObservationWalkSummary(record) {
