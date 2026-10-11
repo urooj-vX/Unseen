@@ -10,6 +10,10 @@ __pycache__/
 *.tmp
 *.log
 
+# Dependencies & build output
+node_modules/
+dist/
+
 # Environments & Virtual Environments
 .venv/
 venv/
@@ -37,6 +41,9 @@ secrets/
 # Data & World state
 data/world.json
 logs/
+
+# Scratch & local developer scratchpad
+scratch/
 
 # Exclude raw image dataset from repository (privacy & rights compliance)
 experiments/kill-test/photos/*.jpeg
