@@ -638,6 +638,9 @@ export class DashboardState {
     });
 
     this.saveState();
+    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('sanctuary:inventory-updated', { detail: { earnedItems, earnedMaterials } }));
+    }
     return {
       success: true,
       earnedItems,
@@ -698,6 +701,9 @@ export class DashboardState {
     });
 
     this.saveState();
+    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('sanctuary:inventory-updated', { detail: { earnedItems, earnedMaterials } }));
+    }
     return {
       success: true,
       object: newPlaced,
@@ -734,6 +740,9 @@ export class DashboardState {
     });
 
     this.saveState();
+    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('sanctuary:inventory-updated', { detail: { earnedItems, earnedMaterials } }));
+    }
     return {
       success: true,
       object: newPlaced,
@@ -764,6 +773,9 @@ export class DashboardState {
     });
 
     this.saveState();
+    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent('sanctuary:inventory-updated', { detail: { earnedItems, earnedMaterials } }));
+    }
     return {
       success: true,
       message: obj.itemId === 'house_foundation' ? 'Foundation cleared.' : `${itemMeta?.name || 'Object'} returned to inventory.`
