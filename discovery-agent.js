@@ -244,6 +244,59 @@ export function evaluateEvidenceEligibility({ structuredAnalysis, fieldNote = ''
 }
 
 
+export function getCleanObservationTitle(obs) {
+  if (!obs) return 'Field Observation';
+
+  // 1. Try dominant_subject from vision analysis
+  if (obs.structuredAnalysis?.dominant_subject) {
+    let sub = obs.structuredAnalysis.dominant_subject.trim();
+    sub = sub.replace(/[\w-]+\.(jpe?g|png|webp|gif|bmp)/gi, '').trim();
+    if (sub.length >= 3) {
+      const match = sub.match(/^(?:a\b|an\b|the\b)?\s*([a-z0-9\s-]{3,40}?)(?:,\s*|\s+(?:including|with|set\s+against|against|on|in)\s+|\.|$)/i);
+      const cleanSub = (match && match[1].trim().length >= 3) ? match[1].trim() : sub.slice(0, 40).trim();
+      if (cleanSub.length >= 3 && !/test\s*photo/i.test(cleanSub)) {
+        return cleanSub
+          .replace(/^(?:a\b|an\b|the\b)\s*/i, '')
+          .split(/\s+/)
+          .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+          .join(' ');
+      }
+    }
+  }
+
+  // 2. Try clean title if available
+  if (obs.title) {
+    let clean = obs.title
+      .replace(/Test Photo:\s*/gi, '')
+      .replace(/\(Real Outdoor Test\)/gi, '')
+      .replace(/\(3D Baseline\)/gi, '')
+      .replace(/[\w-]+\.(jpe?g|png|webp|gif|bmp)/gi, '')
+      .replace(/[_\(\)\[\]]/g, ' ')
+      .trim();
+    if (clean.length >= 3 && !/test\s*photo/i.test(clean)) {
+      return clean;
+    }
+  }
+
+  // 3. Try clean version of detectedElements[0]
+  if (obs.detectedElements && obs.detectedElements.length > 0) {
+    let first = (obs.detectedElements[0].name || '').trim();
+    first = first.replace(/[\w-]+\.(jpe?g|png|webp|gif|bmp)/gi, '').trim();
+    if (first.length >= 3 && !/test\s*photo/i.test(first)) {
+      const match = first.match(/^(?:a\b|an\b|the\b)?\s*([a-z0-9\s-]{3,40}?)(?:,\s*|\s+(?:including|with)\s+|\.|$)/i);
+      const cleanFirst = (match && match[1].trim().length >= 3) ? match[1].trim() : first.slice(0, 40).trim();
+      return cleanFirst
+        .replace(/^(?:a\b|an\b|the\b)\s*/i, '')
+        .split(/\s+/)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join(' ');
+    }
+  }
+
+  return 'Natural Field Observation';
+}
+
+
 export const SAMPLE_OBSERVATIONS = [
   {
     id: 'sample_archway',
@@ -892,6 +945,52 @@ export class DiscoveryAgent {
   /* -------------------------------------------------------------------------- */
   /* LIFECYCLE FOR 3D ENGINE                                                    */
   /* -------------------------------------------------------------------------- */
+  claimObservation() {
+    const obs = this.currentObservation;
+    if (!obs) return;
+
+    if (obs.eligibilityStatus === 'ineligible' || obs.isRewardEligible === false) {
+      alert('This observation is ineligible for physical-world rewards. Digital renderings and non-physical images cannot be transferred to the Sanctuary.');
+      return;
+    }
+
+    if (obs.claimed || this.state.claimedObservationIds.has(obs.id)) {
+      alert('This observation has already been transferred to your sanctuary.');
+      return;
+    }
+
+    let confirmed = (obs.detectedElements || []).filter(e => e.confirmed && !e.ineligible);
+    if (confirmed.length === 0) {
+      const eligible = (obs.detectedElements || []).filter(e => !e.ineligible);
+      if (eligible.length > 0) {
+        eligible.forEach(e => { e.confirmed = true; });
+        confirmed = eligible;
+      }
+    }
+
+    if (confirmed.length === 0) {
+      alert('Please confirm at least one verified physical finding before claiming.');
+      return;
+    }
+
+    const result = this.state.claimObservationRewards(obs.id, confirmed, obs);
+    if (result.success) {
+      obs.claimed = true;
+      this.justClaimed = true;
+      this.state.setPendingObservation(obs);
+      this.updateJournalDOM();
+      if (this.onClaimSuccess) {
+        this.onClaimSuccess(result);
+      }
+    } else {
+      alert(result.message);
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /* LIFECYCLE FOR 3D ENGINE                                                    */
+  /* -------------------------------------------------------------------------- */
+
   pause3D() {
     if (this.specimen3D) {
       this.specimen3D.pause();
