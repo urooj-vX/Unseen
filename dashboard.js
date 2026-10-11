@@ -562,40 +562,73 @@ function setupObservationScreen() {
       if (fileInput) fileInput.value = '';
       const evidenceCard = document.getElementById('observe-photo-evidence-card');
       if (evidenceCard) evidenceCard.classList.add('hidden');
+      const dropzone = document.getElementById('observe-dropzone');
       if (dropzone) dropzone.classList.remove('hidden');
-      showToast('Photo removed. Using 3D specimen reference.', 'info');
+      const noticeEl = document.getElementById('observe-action-notice');
+      if (noticeEl) {
+        noticeEl.className = 'hidden';
+        noticeEl.innerHTML = '';
+      }
+      showToast('Photo removed.', 'info');
     });
   }
 
-  // 4. Quick-insert Field Note Tags
-  const tagBtns = document.querySelectorAll('.btn-note-tag');
+  // 6. Lightweight writing prompt chips
+  const promptBtns = document.querySelectorAll('.btn-note-prompt, .btn-note-tag');
   const noteInput = document.getElementById('observe-field-note');
-  tagBtns.forEach(btn => {
+  promptBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       if (!noteInput) return;
-      const tagType = btn.getAttribute('data-tag');
-      let snippet = '';
-      if (tagType === 'Observed') snippet = '[Direct Observation]: ';
-      else if (tagType === 'Hypothesis') snippet = '[Hypothesis]: ';
-      else if (tagType === 'Curiosity') snippet = '[Uncertain Detail]: ';
-
-      const start = noteInput.selectionStart || 0;
-      const end = noteInput.selectionEnd || 0;
-      const val = noteInput.value;
-      const prefix = val.length > 0 && !val.endsWith('\n') ? '\n' : '';
-      noteInput.value = val.substring(0, start) + prefix + snippet + val.substring(end);
+      const prompt = btn.getAttribute('data-prompt') || (btn.getAttribute('data-tag') ? `[${btn.getAttribute('data-tag')}]: ` : '');
+      if (!prompt) return;
+      const current = noteInput.value;
+      const prefix = current.trim().length > 0 && !current.endsWith('\n') ? '\n' : '';
+      noteInput.value = current + prefix + prompt;
       noteInput.focus();
-      noteInput.selectionStart = noteInput.selectionEnd = start + prefix.length + snippet.length;
+      noteInput.selectionStart = noteInput.selectionEnd = noteInput.value.length;
     });
   });
 
-  // 5. Submit "Examine this discovery" button
+  // 7. Submit "Examine Discovery" primary button
   const submitBtn = document.getElementById('btn-submit-observation');
   if (submitBtn) {
     submitBtn.addEventListener('click', handleExamineDiscovery);
   }
 
-  // Initial selection
+  // 8. Separate Simulator Baseline testing button
+  const simSubmitBtn = document.getElementById('btn-submit-simulator-test');
+  if (simSubmitBtn) {
+    simSubmitBtn.addEventListener('click', async () => {
+      const noteInput = document.getElementById('observe-field-note');
+      const fieldNote = noteInput ? noteInput.value.trim() : '';
+
+      simSubmitBtn.disabled = true;
+      simSubmitBtn.innerHTML = '<span>⏳</span><span>Simulating Baseline...</span>';
+
+      try {
+        if (discoveryAgent) {
+          await discoveryAgent.analyzeObservation({
+            imageSrc: null,
+            fieldNote: fieldNote,
+            sampleId: selectedObservationSample || 'sample_archway',
+            isDemo: true
+          });
+        }
+        const obs = discoveryAgent?.currentObservation || state.pendingObservation;
+        if (obs) {
+          showDiscoveryReveal(obs);
+        }
+      } catch (err) {
+        console.error('Simulator baseline load failed', err);
+        showToast('Failed to load simulator baseline.', 'error');
+      } finally {
+        simSubmitBtn.disabled = false;
+        simSubmitBtn.innerHTML = '<span>🔬</span><span>Run Simulator Baseline</span>';
+      }
+    });
+  }
+
+  // Initial selection for simulator drawer
   selectObservationSample('sample_archway');
 }
 
