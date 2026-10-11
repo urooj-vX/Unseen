@@ -8,6 +8,8 @@ import { DiscoverySpecimen3D } from './discovery-scene-3d.js';
 
 export const LOCAL_VISION_MODEL_TAG = 'hf.co/Qwen/Qwen3-VL-2B-Instruct-GGUF:Q4_K_M';
 
+export const VISION_STRUCTURED_PROMPT = ;
+
 export const SAMPLE_OBSERVATIONS = [
   {
     id: 'sample_archway',
@@ -98,7 +100,7 @@ export class DiscoveryAgent {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: LOCAL_VISION_MODEL_TAG,
-          prompt: 'Describe what is visible.',
+          prompt: VISION_STRUCTURED_PROMPT,
           images: [base64Data],
           stream: false
         })
