@@ -1259,18 +1259,23 @@ function renderSanctuaryInventoryTray() {
     const meta = state.getCatalogueItem(itemId);
     if (!meta) return '';
 
+    const isNew = window.newlyEarnedItemIds && window.newlyEarnedItemIds.has(itemId);
+
     return `
       <button 
         type="button"
-        class="sanctuary-inv-card shrink-0 p-2 sm:p-2.5 rounded-2xl flex flex-col justify-between w-28 h-20 text-left select-none relative cursor-pointer"
+        class="sanctuary-inv-card shrink-0 p-2 sm:p-2.5 rounded-2xl flex flex-col justify-between w-28 h-20 text-left select-none relative cursor-pointer ${isNew ? 'sanctuary-inv-card-new' : ''}"
         draggable="true"
         data-item-id="${itemId}"
       >
         <div class="flex items-start justify-between w-full">
           <span class="text-xl leading-none">${meta.icon}</span>
-          <span class="px-2 py-0.5 rounded-full bg-mint-soft text-[10px] font-heading font-black text-forest border border-mint leading-none">
-            ×${qty}
-          </span>
+          <div class="flex items-center gap-1">
+            ${isNew ? '<span class="px-1.5 py-0.2 rounded-full bg-citrus text-[8px] font-heading font-black text-forest border border-citrus shadow-2xs">NEW</span>' : ''}
+            <span class="px-2 py-0.5 rounded-full bg-mint-soft text-[10px] font-heading font-black text-forest border border-mint leading-none">
+              ×${qty}
+            </span>
+          </div>
         </div>
         <div class="w-full">
           <div class="font-heading font-extrabold text-[11px] text-forest truncate leading-tight">${meta.name}</div>
@@ -1286,6 +1291,7 @@ function renderSanctuaryInventoryTray() {
     const meta = state.getCatalogueItem(itemId);
 
     card.addEventListener('dragstart', (e) => {
+      if (window.newlyEarnedItemIds) window.newlyEarnedItemIds.delete(itemId);
       tray.querySelectorAll('.sanctuary-inv-card').forEach(c => c.classList.remove('sanctuary-inv-card-active'));
       card.classList.add('sanctuary-inv-card-active');
       activeDragItemId = itemId;
@@ -1303,6 +1309,7 @@ function renderSanctuaryInventoryTray() {
     });
 
     card.addEventListener('click', () => {
+      if (window.newlyEarnedItemIds) window.newlyEarnedItemIds.delete(itemId);
       if (!scene) return;
       const isAlreadyActive = card.classList.contains('sanctuary-inv-card-active');
 
