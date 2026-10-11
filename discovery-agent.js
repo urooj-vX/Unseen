@@ -122,6 +122,9 @@ export function evaluateEvidenceEligibility({ structuredAnalysis, fieldNote = ''
 
   const noteLower = (fieldNote || '').toLowerCase();
 
+  // Guard: Evaluate ONLY affirmative description fields (evidence_summary, visible_features).
+  // The 'uncertainties' key contains model boundary hedges on what the photo cannot prove;
+  // scanning uncertainties for synthetic phrases causes false positives on genuine outdoor photos.
   // Synthetic / digital rendering indicators
   const syntheticKeywords = [
     'digital rendering',
