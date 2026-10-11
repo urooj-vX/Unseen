@@ -327,12 +327,12 @@ export class DashboardState {
           });
         }
         this.placedObjects = loadedObjects;
-        this.saveState();
         this.activeWalkSession = parsed.activeWalkSession || null;
         this.completedWalks = parsed.completedWalks || [];
         this.pendingObservation = parsed.pendingObservation || null;
         this.claimedObservationIds = new Set(parsed.claimedObservationIds || ['sample_preset_1']);
         this.activities = parsed.activities || createDefaultActivities();
+        this.saveState();
         return;
       }
     } catch (e) {
@@ -367,8 +367,8 @@ export class DashboardState {
         activeWalkSession: this.activeWalkSession,
         completedWalks: this.completedWalks,
         pendingObservation: this.pendingObservation,
-        claimedObservationIds: Array.from(this.claimedObservationIds),
-        activities: this.activities.slice(0, 30),
+        claimedObservationIds: Array.from(this.claimedObservationIds || []),
+        activities: (this.activities || []).slice(0, 30),
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch (e) {
