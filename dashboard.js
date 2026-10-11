@@ -530,7 +530,31 @@ function setupObservationScreen() {
     });
   }
 
-  // 3. Remove photo button
+  // 3. Sample photo load button
+  const samplePhotoBtn = document.getElementById('btn-load-sample-photo');
+  if (samplePhotoBtn) {
+    samplePhotoBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      try {
+        const res = await fetch('/experiments/kill-test/photos/p08_a.jpeg');
+        const blob = await res.blob();
+        const file = new File([blob], 'p08_a.jpeg', { type: 'image/jpeg' });
+        handlePhotoFile(file);
+      } catch (err) {
+        console.error('Failed to load sample photo', err);
+      }
+    });
+  }
+
+  // 4. Replace photo button
+  const replacePhotoBtn = document.getElementById('btn-replace-photo');
+  if (replacePhotoBtn) {
+    replacePhotoBtn.addEventListener('click', () => {
+      if (fileInput) fileInput.click();
+    });
+  }
+
+  // 5. Remove photo button
   const removePhotoBtn = document.getElementById('btn-remove-photo');
   if (removePhotoBtn) {
     removePhotoBtn.addEventListener('click', () => {
@@ -589,11 +613,16 @@ function handlePhotoFile(file) {
     const evidenceCard = document.getElementById('observe-photo-evidence-card');
     const dropzone = document.getElementById('observe-dropzone');
     const label = document.getElementById('observe-evidence-label');
+    const noticeEl = document.getElementById('observe-action-notice');
 
     if (img) img.src = userUploadedPhotoSrc;
-    if (label) label.textContent = `Attached: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+    if (label) label.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
     if (evidenceCard) evidenceCard.classList.remove('hidden');
     if (dropzone) dropzone.classList.add('hidden');
+    if (noticeEl) {
+      noticeEl.className = 'hidden';
+      noticeEl.innerHTML = '';
+    }
 
     showToast('Field photograph attached! Ready to examine.', 'success');
   };
@@ -660,10 +689,15 @@ function updateObservationScreenUI() {
   if (summaryBadge && state && state.lastWalkCompletedMinutes) {
     summaryBadge.textContent = `${state.lastWalkCompletedMinutes}m Walk Logged`;
   }
+  const hudBadge = document.getElementById('observe-hud-badge');
+  if (hudBadge && state && state.lastWalkCompletedMinutes) {
+    hudBadge.textContent = `${state.lastWalkCompletedMinutes}m Walk Logged`;
+  }
   selectObservationSample(selectedObservationSample || 'sample_archway');
 }
 
 async function handleExamineDiscovery() {
+  const noticeEl = document.getElementById('observe-action-notice');
   const submitBtn = document.getElementById('btn-submit-observation');
   const submitText = document.getElementById('btn-submit-obs-text');
   const submitIcon = document.getElementById('btn-submit-obs-icon');
