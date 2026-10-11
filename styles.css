@@ -945,3 +945,118 @@ button:focus-visible, a:focus-visible {
   pointer-events: none;
   will-change: transform;
 }
+
+/* ========================================================================== */
+/* DISCOVERY TAB — PREMIUM INDIE FIELD JOURNAL & DISCOVERY STYLING            */
+/* ========================================================================== */
+.journal-paper-panel {
+  background-color: #FBF9F5;
+  background-image: 
+    radial-gradient(#E8E3D7 0.75px, transparent 0.75px),
+    radial-gradient(#E8E3D7 0.75px, #FBF9F5 0.75px);
+  background-size: 28px 28px;
+  background-position: 0 0, 14px 14px;
+}
+
+.finding-card {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.2s ease,
+              background-color 0.2s ease;
+}
+
+.finding-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -6px rgba(6, 78, 45, 0.12);
+}
+
+.finding-card:active {
+  transform: translateY(0px) scale(0.99);
+}
+
+.quest-card {
+  background: linear-gradient(135deg, #FFFDF8 0%, #F5EFE4 100%);
+  border: 1.5px solid #D8CFC0;
+  box-shadow: 0 4px 16px -4px rgba(78, 62, 40, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.quest-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #E7CA49;
+}
+
+.journal-stamp-effect {
+  animation: stamp-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes stamp-pop {
+  0% {
+    opacity: 0;
+    transform: scale(2.4) rotate(-16deg);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.95) rotate(-3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(-4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .finding-card, .finding-card:hover, .finding-card:active {
+    transform: none !important;
+    transition: none !important;
+  }
+  .journal-stamp-effect {
+    animation: none !important;
+    transform: rotate(-4deg);
+  }
+  .discovery-reveal-card {
+    animation: none !important;
+  }
+}
+
+/* Discovery Reveal Modal Animation & Card Styling */
+.discovery-reveal-card {
+  animation: reveal-modal-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-shadow: 0 24px 60px -12px rgba(6, 78, 45, 0.25), 0 12px 28px -8px rgba(24, 42, 32, 0.12);
+}
+
+@keyframes reveal-modal-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Sanctuary Inventory Tray: Newly Earned Item Highlight */
+.sanctuary-inv-card-new {
+  position: relative;
+  border-color: #E7CA49 !important;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FEF9C3 100%) !important;
+  box-shadow: 0 0 16px rgba(231, 202, 73, 0.45) !important;
+  animation: inv-new-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes inv-new-glow {
+  0% {
+    box-shadow: 0 0 8px rgba(231, 202, 73, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(231, 202, 73, 0.6);
+  }
+}
+
