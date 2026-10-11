@@ -544,6 +544,10 @@ export class DashboardState {
     return this.pendingObservation;
   }
 
+  hasClaimedObservation(observationId) {
+    return this.claimedObservationIds ? this.claimedObservationIds.has(observationId) : false;
+  }
+
   claimObservationRewards(observationId, confirmedElements, observationMetadata = null) {
     if (this.claimedObservationIds.has(observationId)) {
       return { success: false, message: 'This observation has already been claimed.' };
