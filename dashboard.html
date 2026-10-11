@@ -128,9 +128,6 @@
       <button class="nav-screen-btn px-3.5 py-1.5 rounded-full text-xs font-heading font-bold transition-all text-text-muted hover:text-forest" data-screen="observe">
         📷 Observation
       </button>
-      <button class="nav-screen-btn px-3.5 py-1.5 rounded-full text-xs font-heading font-bold transition-all text-text-muted hover:text-forest" data-screen="discovery">
-        💎 Discovery Tab
-      </button>
       <button class="nav-screen-btn px-3.5 py-1.5 rounded-full text-xs font-heading font-bold transition-all text-text-muted hover:text-forest" data-screen="sanctuary">
         🏛️ Your Sanctuary
       </button>
@@ -161,6 +158,12 @@
         </div>
       </div>
 
+      <!-- Field Journal History Button -->
+      <button id="btn-open-journal" class="p-2 rounded-full hover:bg-sage-soft text-text-muted hover:text-forest transition-colors text-xs font-heading font-bold flex items-center gap-1" title="Field Journal &amp; Past Discoveries">
+        <span>📓</span>
+        <span class="hidden lg:inline text-[11px]">Journal</span>
+      </button>
+
       <!-- Mobile Screen Menu Trigger -->
       <button id="btn-mobile-screen-toggle" class="md:hidden p-2 rounded-xl bg-cream-card border border-sage-border text-forest font-bold">
         ☰
@@ -177,10 +180,10 @@
   <!-- MOBILE SCREEN DRAWER -->
   <div id="mobile-nav-drawer" class="md:hidden fixed top-16 left-0 right-0 bg-cream-card/95 border-b border-sage-border p-4 z-40 hidden flex flex-col gap-2 shadow-2xl backdrop-blur-md">
     <button class="nav-screen-btn w-full py-2.5 px-4 rounded-xl text-left text-xs font-heading font-bold bg-cream-warm text-forest" data-screen="walk">🥾 1. Walk Timer</button>
-    <button class="nav-screen-btn w-full py-2.5 px-4 rounded-xl text-left text-xs font-heading font-bold bg-cream-warm text-forest" data-screen="observe">📷 2. Return &amp; Observation</button>
-    <button class="nav-screen-btn w-full py-2.5 px-4 rounded-xl text-left text-xs font-heading font-bold bg-cream-warm text-forest" data-screen="discovery">💎 3. Discovery Tab &amp; Inventory</button>
-    <button class="nav-screen-btn w-full py-2.5 px-4 rounded-xl text-left text-xs font-heading font-bold bg-cream-warm text-forest" data-screen="sanctuary">🏛️ 4. Your Sanctuary</button>
-    <button class="nav-screen-btn w-full py-2.5 px-4 rounded-xl text-left text-xs font-heading font-extrabold bg-forest text-cream" data-screen="world">🌲 5. The Wilds (Expedition Reserve)</button>
+    <button class="nav-screen-btn w-full py-2.5 px-4 rounded-xl text-left text-xs font-heading font-bold bg-cream-warm text-forest" data-screen="observe">📷 2. Observation</button>
+    <button class="nav-screen-btn w-full py-2.5 px-4 rounded-xl text-left text-xs font-heading font-bold bg-cream-warm text-forest" data-screen="sanctuary">🏛️ 3. Your Sanctuary</button>
+    <button class="nav-screen-btn w-full py-2.5 px-4 rounded-xl text-left text-xs font-heading font-extrabold bg-forest text-cream" data-screen="world">🌲 4. The Wilds</button>
+    <button class="w-full py-2 px-4 rounded-xl text-left text-xs font-heading font-bold bg-linen text-text-muted hover:text-forest" id="btn-mobile-journal">📓 Past Field Observations</button>
   </div>
 
   <!-- APPLICATION VIEWS CONTAINER -->
