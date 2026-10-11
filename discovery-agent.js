@@ -8,7 +8,81 @@ import { DiscoverySpecimen3D } from './discovery-scene-3d.js';
 
 export const LOCAL_VISION_MODEL_TAG = 'hf.co/Qwen/Qwen3-VL-2B-Instruct-GGUF:Q4_K_M';
 
-export const VISION_STRUCTURED_PROMPT = ;
+export const VISION_STRUCTURED_PROMPT = `Describe ONLY what is directly visible in this photograph. Do not guess species, geological age, ecological relationships, or causal history. Do not state assumptions as facts.
+
+Reply with strict JSON with these exact keys:
+{
+  "visible_features": ["specific visible detail 1", "specific visible detail 2"],
+  "scene_type": "physical_outdoors" | "digital_rendering" | "illustration" | "screen_capture" | "indoor" | "uncertain",
+  "possible_interpretations": ["cautious unverified hypothesis 1"],
+  "uncertainties": ["what this photograph cannot prove or establish"],
+  "follow_up_observation": "one safe, realistic clue or feature to look for next on foot within 15 minutes without disturbing nature",
+  "evidence_summary": "concise factual summary of visible physical elements only"
+}
+Output only the JSON object.`;
+
+export function parseJsonFromResponse(rawText) {
+  if (!rawText || typeof rawText !== 'string') return null;
+  const clean = rawText.trim();
+  try {
+    return JSON.parse(clean);
+  } catch (err) {
+    const match = clean.match(/\{[\s\S]*\}/);
+    if (match) {
+      try {
+        return JSON.parse(match[0]);
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  }
+}
+
+export function validateVisionAnalysis(parsed) {
+  if (!parsed || typeof parsed !== 'object') return null;
+
+  const visible_features = Array.isArray(parsed.visible_features)
+    ? parsed.visible_features.map(s => String(s).trim()).filter(Boolean)
+    : [];
+
+  const validSceneTypes = ['physical_outdoors', 'digital_rendering', 'illustration', 'screen_capture', 'indoor', 'uncertain'];
+  let scene_type = typeof parsed.scene_type === 'string' ? parsed.scene_type.trim().toLowerCase() : 'uncertain';
+  if (!validSceneTypes.includes(scene_type)) {
+    scene_type = 'uncertain';
+  }
+
+  const possible_interpretations = Array.isArray(parsed.possible_interpretations)
+    ? parsed.possible_interpretations.map(s => String(s).trim()).filter(Boolean)
+    : (parsed.possible_interpretations ? [String(parsed.possible_interpretations).trim()] : []);
+
+  const uncertainties = Array.isArray(parsed.uncertainties)
+    ? parsed.uncertainties.map(s => String(s).trim()).filter(Boolean)
+    : (parsed.uncertainties ? [String(parsed.uncertainties).trim()] : []);
+
+  const follow_up_observation = typeof parsed.follow_up_observation === 'string' && parsed.follow_up_observation.trim()
+    ? parsed.follow_up_observation.trim()
+    : 'Find another visible feature within ~100m on foot without disturbing natural habitat.';
+
+  const evidence_summary = typeof parsed.evidence_summary === 'string' && parsed.evidence_summary.trim()
+    ? parsed.evidence_summary.trim()
+    : (visible_features.join('. ') || '');
+
+  if (visible_features.length === 0 && !evidence_summary) {
+    return null;
+  }
+
+  return {
+    visible_features,
+    scene_type,
+    possible_interpretations,
+    uncertainties,
+    follow_up_observation,
+    evidence_summary
+  };
+}
+
+
 
 export const SAMPLE_OBSERVATIONS = [
   {
