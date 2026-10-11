@@ -6,6 +6,8 @@
 
 import { DiscoverySpecimen3D } from './discovery-scene-3d.js';
 
+export const LOCAL_VISION_MODEL_TAG = 'hf.co/Qwen/Qwen3-VL-2B-Instruct-GGUF:Q4_K_M';
+
 export const SAMPLE_OBSERVATIONS = [
   {
     id: 'sample_archway',
@@ -73,6 +75,40 @@ export class DiscoveryAgent {
     this.render();
   }
 
+
+  async checkOllamaStatus() {
+    try {
+      const res = await fetch('http://127.0.0.1:11434/api/tags');
+      if (!res.ok) return { available: false, modelFound: false };
+      const data = await res.json();
+      const models = data.models || [];
+      const hasModel = models.some(m => m.name && (m.name.includes('Qwen3-VL-2B') || m.name.includes(LOCAL_VISION_MODEL_TAG)));
+      return { available: true, modelFound: hasModel, models };
+    } catch (err) {
+      return { available: false, modelFound: false, error: err.message };
+    }
+  }
+
+  async analyzeObservation({ imageSrc = null, fieldNote = '', title = 'Field Observation' }) {
+    if (!imageSrc) return null;
+    const base64Data = imageSrc.includes(',') ? imageSrc.split(',')[1] : imageSrc;
+    try {
+      const response = await fetch('http://127.0.0.1:11434/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: LOCAL_VISION_MODEL_TAG,
+          prompt: 'Describe what is visible.',
+          images: [base64Data],
+          stream: false
+        })
+      });
+      return await response.json();
+    } catch (err) {
+      console.warn('Local Ollama inference failed:', err.message);
+      return null;
+    }
+  }
   inferSpecimenKey(obs) {
     if (!obs) return 'sample_archway';
     const combined = ((obs.title || '') + ' ' + (obs.notes || '') + ' ' + (obs.fieldNote || '')).toLowerCase();
