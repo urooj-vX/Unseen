@@ -345,6 +345,229 @@ export class DiscoveryAgent {
       return null;
     }
   }
+  deriveCandidateDetections(structuredAnalysis, fieldNote = '', analysisError = null, eligibility = null) {
+    const detections = [];
+    let idCounter = 1;
+
+    // Strict Evidence Integrity: If local inference failed and no field note was recorded,
+    // do NOT substitute fabricated findings. Return an empty list.
+    if (!structuredAnalysis && !fieldNote) {
+      if (analysisError) {
+        return [];
+      }
+    }
+
+    // 1. DETERMINISTIC EVIDENCE-ELIGIBILITY GATE:
+    // If the observation is identified as a digital rendering, illustration, screen capture, or non-physical scene:
+    if (eligibility && eligibility.status === 'ineligible') {
+      const features = structuredAnalysis ? (structuredAnalysis.visible_features || []) : [];
+      if (features.length > 0) {
+        features.forEach((feat, idx) => {
+          detections.push({
+            id: `det_inelig_${idx + 1}`,
+            name: feat,
+            category: 'Digital / Rendered Feature',
+            evidenceStatus: 'Ineligible · Identified as Digital Rendering / Non-Physical',
+            confirmed: false,
+            suggestedReward: 0,
+            grantsItem: null,
+            grantsItemName: null,
+            ineligible: true
+          });
+        });
+      } else {
+        detections.push({
+          id: `det_inelig_1`,
+          name: 'Digital Image Subject',
+          category: 'Digital / Rendered Feature',
+          evidenceStatus: 'Ineligible · Identified as Digital Rendering / Non-Physical',
+          confirmed: false,
+          suggestedReward: 0,
+          grantsItem: null,
+          grantsItemName: null,
+          ineligible: true
+        });
+      }
+      return detections;
+    }
+
+    // 2. UNCERTAIN SCENE CLASSIFICATION:
+    // Treat uncertain scene classification as uncertain, not as proof that image is real or fake.
+    // Never let model-generated text alone establish a verified real-world fact.
+    if (eligibility && eligibility.status === 'uncertain') {
+      const features = structuredAnalysis ? (structuredAnalysis.visible_features || []) : [];
+      features.forEach((feat, idx) => {
+        detections.push({
+          id: `det_uncert_${idx + 1}`,
+          name: feat,
+          category: 'Unverified Subject',
+          evidenceStatus: 'Authenticity Uncertain · Direct physical corroboration required',
+          confirmed: false,
+          suggestedReward: 0,
+          grantsItem: null,
+          grantsItemName: null,
+          ineligible: true
+        });
+      });
+      return detections;
+    }
+
+    // 3. PHYSICAL OUTDOOR DISCOVERY (ELIGIBLE OR DEMO BASELINE)
+    const visibleText = structuredAnalysis
+      ? (structuredAnalysis.visible_features.join(' ') + ' ' + (structuredAnalysis.evidence_summary || '')).toLowerCase()
+      : '';
+    const noteText = (fieldNote || '').toLowerCase();
+    const combined = visibleText + ' ' + noteText;
+
+    const checkMatch = (keywords) => keywords.some(k => combined.includes(k));
+    const keywordsInText = (keywords, text) => keywords.some(k => text.includes(k));
+    const isDirectNote = (keywords) => keywords.some(k => noteText.includes(k)) && (noteText.includes('[direct observation]') || noteText.includes('observed'));
+
+    // 1. Deciduous Tree Canopy (Ancient Oak)
+    if (checkMatch(['oak', 'deciduous', 'tree', 'canopy', 'branches', 'bark', 'trunk'])) {
+      const fromVision = structuredAnalysis && keywordsInText(['oak', 'deciduous', 'tree', 'canopy', 'branches', 'bark', 'trunk'], visibleText);
+      const confirmedByUser = isDirectNote(['oak', 'deciduous', 'tree']);
+      detections.push({
+        id: `det_${idCounter++}`,
+        name: 'Deciduous Tree Canopy',
+        category: 'Canopy Flora',
+        evidenceStatus: confirmedByUser
+          ? 'Direct User Observation (Field Note)'
+          : (fromVision ? 'AI Visual Candidate (Unverified · Review to confirm)' : 'Grounded in Field Notes (Unverified)'),
+        confirmed: confirmedByUser,
+        suggestedReward: 2,
+        grantsItem: 'ancient_oak',
+        grantsItemName: 'Ancient Oak (x1)'
+      });
+    }
+
+    // 2. Evergreen Conifer Spire (Pine Cluster)
+    if (checkMatch(['pine', 'conifer', 'evergreen', 'spruce', 'fir', 'needle'])) {
+      const fromVision = structuredAnalysis && keywordsInText(['pine', 'conifer', 'evergreen', 'spruce', 'fir', 'needle'], visibleText);
+      const confirmedByUser = isDirectNote(['pine', 'conifer', 'evergreen']);
+      detections.push({
+        id: `det_${idCounter++}`,
+        name: 'Evergreen Conifer Spire',
+        category: 'Canopy Flora',
+        evidenceStatus: confirmedByUser
+          ? 'Direct User Observation (Field Note)'
+          : (fromVision ? 'AI Visual Candidate (Unverified · Review to confirm)' : 'Grounded in Field Notes (Unverified)'),
+        confirmed: confirmedByUser,
+        suggestedReward: 1,
+        grantsItem: 'pine_cluster',
+        grantsItemName: 'Pine Cluster (x1)'
+      });
+    }
+
+    // 3. Historic Stone Masonry / Cairn
+    if (checkMatch(['arch', 'masonry', 'cairn', 'ruin', 'stone wall', 'monument', 'carved stone'])) {
+      const fromVision = structuredAnalysis && keywordsInText(['arch', 'masonry', 'cairn', 'ruin', 'stone wall', 'monument', 'carved stone'], visibleText);
+      const confirmedByUser = isDirectNote(['arch', 'masonry', 'cairn']);
+      detections.push({
+        id: `det_${idCounter++}`,
+        name: 'Historic Stone Masonry',
+        category: 'Historic Masonry',
+        evidenceStatus: confirmedByUser
+          ? 'Direct User Observation (Field Note)'
+          : (fromVision ? 'AI Visual Candidate (Unverified · Review to confirm)' : 'Grounded in Field Notes (Unverified)'),
+        confirmed: confirmedByUser,
+        suggestedReward: 2,
+        grantsItem: 'stone_cairn',
+        grantsItemName: 'Stone Cairn (x1)'
+      });
+    }
+
+    // 4. Granite Boulder & Rock
+    if (checkMatch(['boulder', 'granite', 'rock', 'stone', 'pebble', 'dust', 'gravel']) && !combined.includes('arch') && !combined.includes('masonry')) {
+      const fromVision = structuredAnalysis && keywordsInText(['boulder', 'granite', 'rock', 'stone', 'pebble', 'dust', 'gravel'], visibleText);
+      const confirmedByUser = isDirectNote(['boulder', 'granite', 'rock']);
+      detections.push({
+        id: `det_${idCounter++}`,
+        name: 'Granite Boulder & Rock',
+        category: 'Geology',
+        evidenceStatus: confirmedByUser
+          ? 'Direct User Observation (Field Note)'
+          : (fromVision ? 'AI Visual Candidate (Unverified · Review to confirm)' : 'Grounded in Field Notes (Unverified)'),
+        confirmed: confirmedByUser,
+        suggestedReward: 1,
+        grantsItem: 'mossy_boulder',
+        grantsItemName: 'Mossy Boulder (x1)'
+      });
+    }
+
+    // 5. Freshwater Stream Corridor
+    if (checkMatch(['stream', 'creek', 'river', 'water', 'brook', 'pond', 'wetland', 'runoff'])) {
+      const fromVision = structuredAnalysis && keywordsInText(['stream', 'creek', 'river', 'water', 'brook', 'pond', 'wetland', 'runoff'], visibleText);
+      const confirmedByUser = isDirectNote(['stream', 'creek', 'water']);
+      detections.push({
+        id: `det_${idCounter++}`,
+        name: 'Freshwater Stream Corridor',
+        category: 'Hydrology',
+        evidenceStatus: confirmedByUser
+          ? 'Direct User Observation (Field Note)'
+          : (fromVision ? 'AI Visual Candidate (Unverified · Review to confirm)' : 'Grounded in Field Notes (Unverified)'),
+        confirmed: confirmedByUser,
+        suggestedReward: 2,
+        grantsItem: 'stream_tile',
+        grantsItemName: 'Forest Stream (x1)'
+      });
+    }
+
+    // 6. Beaten Earth Trail
+    if (checkMatch(['trail', 'path', 'dirt road', 'footpath', 'track', 'walkway', 'ground'])) {
+      const fromVision = structuredAnalysis && keywordsInText(['trail', 'path', 'dirt road', 'footpath', 'track', 'walkway', 'ground'], visibleText);
+      const confirmedByUser = isDirectNote(['trail', 'path', 'footpath']);
+      detections.push({
+        id: `det_${idCounter++}`,
+        name: 'Beaten Earth Trail',
+        category: 'Pedestrian Trail',
+        evidenceStatus: confirmedByUser
+          ? 'Direct User Observation (Field Note)'
+          : (fromVision ? 'AI Visual Candidate (Unverified · Review to confirm)' : 'Grounded in Field Notes (Unverified)'),
+        confirmed: confirmedByUser,
+        suggestedReward: 1,
+        grantsItem: 'earth_trail',
+        grantsItemName: 'Beaten Trail (x2)'
+      });
+    }
+
+    // 7. Wild Ferns & Forest Undergrowth
+    if (checkMatch(['fern', 'moss', 'lichen', 'ivy', 'undergrowth', 'foliage', 'wildflower', 'grass', 'plant', 'shrub', 'bush', 'vegetation'])) {
+      const fromVision = structuredAnalysis && keywordsInText(['fern', 'moss', 'lichen', 'ivy', 'undergrowth', 'foliage', 'wildflower', 'grass', 'plant', 'shrub', 'bush', 'vegetation'], visibleText);
+      const confirmedByUser = isDirectNote(['fern', 'moss', 'lichen']);
+      detections.push({
+        id: `det_${idCounter++}`,
+        name: 'Wild Ferns & Undergrowth',
+        category: 'Forest Undergrowth',
+        evidenceStatus: confirmedByUser
+          ? 'Direct User Observation (Field Note)'
+          : (fromVision ? 'AI Visual Candidate (Unverified · Review to confirm)' : 'Grounded in Field Notes (Unverified)'),
+        confirmed: confirmedByUser,
+        suggestedReward: 1,
+        grantsItem: 'wild_ferns',
+        grantsItemName: 'Wild Ferns (x1)'
+      });
+    }
+
+    // If nothing matched, provide an honest finding
+    if (detections.length === 0 && structuredAnalysis) {
+      const isOutdoorEligible = eligibility && eligibility.isRewardEligible;
+      detections.push({
+        id: `det_${idCounter++}`,
+        name: isOutdoorEligible ? 'Natural Field Subject' : 'Uncatalogued Field Subject',
+        category: 'Field Observation',
+        evidenceStatus: isOutdoorEligible ? 'Authentic Outdoor Evidence Verified' : 'Physical Feature Outside Botanical Baseline · Review needed',
+        confirmed: isOutdoorEligible,
+        suggestedReward: isOutdoorEligible ? 2 : 0,
+        grantsItem: isOutdoorEligible ? 'wild_ferns' : null,
+        grantsItemName: isOutdoorEligible ? 'Wild Ferns (x1)' : null
+      });
+    }
+
+    return detections;
+  }
+
+
   inferSpecimenKey(obs) {
     if (!obs) return 'sample_archway';
     const combined = ((obs.title || '') + ' ' + (obs.notes || '') + ' ' + (obs.fieldNote || '')).toLowerCase();
