@@ -84,6 +84,150 @@ export function validateVisionAnalysis(parsed) {
 
 
 
+export function evaluateEvidenceEligibility({ structuredAnalysis, fieldNote = '', isDemo = false }) {
+  // If baseline demo specimen in simulator
+  if (isDemo) {
+    return {
+      status: 'demo_baseline',
+      isRewardEligible: true,
+      badge: '🔬 3D Specimen Baseline',
+      title: 'Simulation Reference Specimen',
+      reason: 'Pre-verified 3D natural history baseline specimen. Interactive simulator study model for demonstration.',
+      allowPhysicalRewards: true
+    };
+  }
+
+  if (!structuredAnalysis) {
+    return {
+      status: 'ineligible',
+      isRewardEligible: false,
+      badge: '⚠️ Unverified Evidence',
+      title: 'Inference Not Available',
+      reason: 'Local vision analysis failed or returned malformed data. Physical discoveries cannot be verified without supporting evidence.',
+      allowPhysicalRewards: false
+    };
+  }
+
+  // Separate affirmative descriptions from uncertainties
+  // Uncertainties list what the photograph CANNOT prove and should not be used as affirmative detection of synthetic media
+  const affirmativeModelText = [
+    structuredAnalysis.evidence_summary || '',
+    ...(structuredAnalysis.visible_features || [])
+  ].join(' ').toLowerCase();
+
+  const allModelText = [
+    affirmativeModelText,
+    ...(structuredAnalysis.uncertainties || [])
+  ].join(' ').toLowerCase();
+
+  const noteLower = (fieldNote || '').toLowerCase();
+
+  // Synthetic / digital rendering indicators
+  const syntheticKeywords = [
+    'digital rendering',
+    'digital render',
+    '3d render',
+    '3d model',
+    'computer-generated',
+    'computer generated',
+    'cgi',
+    'vector graphic',
+    'stylized illustration',
+    'illustration',
+    'screenshot',
+    'screen capture',
+    'video game',
+    'virtual environment',
+    'simulated environment',
+    'not a real-world',
+    'does not depict a real-world',
+    'not a real location',
+    'fictional',
+    'synthetic image',
+    'graphic design'
+  ];
+
+  const hasExplicitRenderingType = ['digital_rendering', 'illustration', 'screen_capture'].includes(structuredAnalysis.scene_type);
+  const hasSyntheticKeyword = syntheticKeywords.some(kw => affirmativeModelText.includes(kw));
+
+  // 1. Digital rendering / illustration / screen capture detected
+  if (hasExplicitRenderingType || hasSyntheticKeyword) {
+    return {
+      status: 'ineligible',
+      isRewardEligible: false,
+      badge: '⛔ Ineligible for Physical Discovery Rewards',
+      title: 'Non-Physical Scene / Digital Rendering',
+      reason: 'Local vision analysis identified this image as a digital rendering, illustration, or synthetic screen capture. UNSEEN requires authentic real-world outdoor field evidence to grant physical-world rewards and Sanctuary additions. This entry is preserved in your field journal as a test/reference note only.',
+      allowPhysicalRewards: false
+    };
+  }
+
+  // 2. Indoor scene (not outdoor nature)
+  if (structuredAnalysis.scene_type === 'indoor') {
+    return {
+      status: 'ineligible',
+      isRewardEligible: false,
+      badge: '⛔ Ineligible: Indoor Environment',
+      title: 'Indoor Environment',
+      reason: 'Physical outdoor exploration requires outdoor natural or landscape features. Indoor environments cannot grant botanical sanctuary discoveries.',
+      allowPhysicalRewards: false
+    };
+  }
+
+  // 3. Uncertain scene classification
+  // Only consider genuinely uncertain when scene_type is 'uncertain' or affirmative text explicitly doubts authenticity.
+  // Model uncertainty statements in 'uncertainties' (which report what the camera cannot prove) do not override an affirmative 'physical_outdoors' classification.
+  const uncertainKeywords = [
+    'uncertain if real',
+    'unclear whether this is a photograph',
+    'cannot determine if real'
+  ];
+  const hasAffirmativeUncertainKeyword = uncertainKeywords.some(kw => affirmativeModelText.includes(kw));
+  const isExplicitlyUncertain = structuredAnalysis.scene_type === 'uncertain' || hasAffirmativeUncertainKeyword;
+
+  if (isExplicitlyUncertain) {
+    const hasDirectUserConfirmation = noteLower.includes('[direct observation]') || 
+                                       noteLower.includes('[observed]') ||
+                                       noteLower.includes('physically observed') ||
+                                       noteLower.includes('observed') ||
+                                       noteLower.includes('found') ||
+                                       noteLower.includes('saw') ||
+                                       noteLower.includes('walk') ||
+                                       (noteLower.trim().length > 3 && !noteLower.includes('render') && !noteLower.includes('test'));
+
+    if (!hasDirectUserConfirmation) {
+      return {
+        status: 'uncertain',
+        isRewardEligible: false,
+        badge: '⚠️ Authenticity Uncertain',
+        title: 'Authenticity Unverified',
+        reason: 'Physical-world authenticity cannot be established from photograph evidence alone. The observation remains unverified and ineligible for rewards unless accompanied by direct human field notes.',
+        allowPhysicalRewards: false
+      };
+    } else {
+      return {
+        status: 'eligible',
+        isRewardEligible: true,
+        badge: '✓ Corroborated Outdoor Evidence',
+        title: 'Corroborated Field Discovery',
+        reason: 'Observation corroborated by direct human field notes. Candidate findings may be reviewed and verified.',
+        allowPhysicalRewards: true
+      };
+    }
+  }
+
+  // 4. Eligible real-world outdoor observation
+  return {
+    status: 'eligible',
+    isRewardEligible: true,
+    badge: '✓ Physical Outdoor Evidence',
+    title: 'Physical Field Observation',
+    reason: 'Authentic outdoor physical observation verified. Candidate findings may be reviewed and confirmed.',
+    allowPhysicalRewards: true
+  };
+}
+
+
 export const SAMPLE_OBSERVATIONS = [
   {
     id: 'sample_archway',
