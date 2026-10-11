@@ -544,20 +544,30 @@ export class DashboardState {
     return this.pendingObservation;
   }
 
-  claimObservationRewards(observationId, confirmedElements) {
+  claimObservationRewards(observationId, confirmedElements, observationMetadata = null) {
     if (this.claimedObservationIds.has(observationId)) {
       return { success: false, message: 'This observation has already been claimed.' };
     }
 
-    if (!confirmedElements || confirmedElements.length === 0) {
-      return { success: false, message: 'Please confirm at least one verified observation element.' };
+    const obs = observationMetadata || (this.pendingObservation && this.pendingObservation.id === observationId ? this.pendingObservation : null);
+    if (obs && (obs.eligibilityStatus === 'ineligible' || obs.isRewardEligible === false)) {
+      return { 
+        success: false, 
+        message: 'This observation is ineligible for physical-world rewards (identified as a digital rendering or non-physical scene).' 
+      };
+    }
+
+    // Filter out any elements marked ineligible
+    const validConfirmed = (confirmedElements || []).filter(el => !el.ineligible);
+    if (validConfirmed.length === 0) {
+      return { success: false, message: 'Please confirm at least one verified physical observation element.' };
     }
 
     let earnedItems = [];
     let earnedMaterials = 0;
 
     // Deterministic Reward Rules based on confirmed elements:
-    confirmedElements.forEach(el => {
+    validConfirmed.forEach(el => {
       const cat = (el.category || '').toLowerCase();
       const name = (el.name || '').toLowerCase();
 
@@ -598,6 +608,15 @@ export class DashboardState {
         earnedItems.push({ itemId: 'handcart', name: 'Survey Handcart', qty: 1 });
       }
     });
+
+    // Safeguard: A verified eligible physical outdoor observation must receive at least baseline rewards
+    if (earnedMaterials === 0 && obs && obs.isRewardEligible) {
+      earnedMaterials = 2;
+    }
+    if (earnedItems.length === 0 && obs && obs.isRewardEligible) {
+      this.addInventoryItem('wild_ferns', 1);
+      earnedItems.push({ itemId: 'wild_ferns', name: 'Wild Ferns', qty: 1 });
+    }
 
     this.discoveryMaterials += earnedMaterials;
     this.claimedObservationIds.add(observationId);
