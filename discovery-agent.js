@@ -84,6 +84,19 @@ export function validateVisionAnalysis(parsed) {
 
 
 
+export function generateObservationId(imageSrc, isDemo = false, sampleId = null) {
+  if (isDemo) return `demo_${sampleId || 'sample'}`;
+  if (!imageSrc || typeof imageSrc !== 'string') return `obs_${Date.now()}`;
+  let hash = 0;
+  const len = imageSrc.length;
+  const step = Math.max(1, Math.floor(len / 100));
+  for (let i = 0; i < len; i += step) {
+    hash = ((hash << 5) - hash) + imageSrc.charCodeAt(i);
+    hash |= 0;
+  }
+  return `obs_img_${Math.abs(hash).toString(36)}`;
+}
+
 export function evaluateEvidenceEligibility({ structuredAnalysis, fieldNote = '', isDemo = false }) {
   // If baseline demo specimen in simulator
   if (isDemo) {
